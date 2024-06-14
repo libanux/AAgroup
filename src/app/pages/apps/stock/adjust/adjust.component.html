@@ -86,56 +86,123 @@
 </mat-card>
 
 
-
-
+<!-- MAIN TABLE -->
 <div class="table-card">
+
     <div class="w-100 table-responsive">
-      <!-- Check if ADJUST_ARRAY has data -->
-      <ng-container *ngIf="ADJUST_ARRAY.filteredData.length > 0; else noDataTemplate">
-        <table mat-table [dataSource]="ADJUST_ARRAY" class="mat-table">
-          <!-- Iterate over column headers -->
-          <ng-container *ngFor="let column of columnHeaders;">
-            <!-- Define matColumnDef dynamically -->
-            <ng-container [matColumnDef]="column.key">
-              <th mat-header-cell *matHeaderCellDef>{{ column.title }}</th>
-
-              <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
-
-                <!-- Handle input fields based on column key -->
-                <ng-container *ngIf="column.key !== 'action'; else actionColumn">
-                  <input class="input-text" matInput [(ngModel)]="element[column.key]"
-                         (ngModelChange)="onEdit(element, column.key, $event, rowIndex)" />
-                </ng-container>
-
-                <!-- Handle action column separately -->
-                <ng-template #actionColumn>
-                  <div class="action-link" (click)="REMOVE_ADJUST()">
-                    <a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" /></svg></a>
-                  </div>
-                </ng-template>
-
-              </td>
-            </ng-container>
-          </ng-container>
-  
-          <!-- Define the header row using columnHeaders -->
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <!-- Define the data rows using displayedColumns -->
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </ng-container>
-      
-      <!-- Template for no data -->
-      <ng-template #noDataTemplate>
-        <table mat-table class="mat-table">
-            @for(header of columnHeaders; track header){
-            <ng-container matColumnDef="{{header.key}}"><th mat-header-cell *matHeaderCellDef>{{header.title}}</th></ng-container>
-            }
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        </table>
         
-        <div class="no-items-found">No items found</div>
-      </ng-template>
+    @if(ADJUST_ARRAY.filteredData.length > 0){
+        <table mat-table [dataSource]="ADJUST_ARRAY" class="mat-table">
+            <!-- Item Name Column -->
+            <ng-container matColumnDef="itemName">
+                <th mat-header-cell *matHeaderCellDef> Item Name </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput [(ngModel)]="element.itemName"
+                        (ngModelChange)="onEdit(element, 'itemName', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- Barcode Column -->
+            <ng-container matColumnDef="barcode">
+                <th mat-header-cell *matHeaderCellDef> Barcode </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput [(ngModel)]="element.barcode"
+                        (ngModelChange)="onEdit(element, 'barcode', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- Description Column -->
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Description </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput [(ngModel)]="element.description"
+                        (ngModelChange)="onEdit(element, 'description', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- Category Column -->
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef> Category </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput [(ngModel)]="element.category"
+                        (ngModelChange)="onEdit(element, 'category', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- quantity_available Column -->
+            <ng-container matColumnDef="quantity_available">
+                <th mat-header-cell *matHeaderCellDef> Quantity Available </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput type="number" [(ngModel)]="element.onHandQuantity"
+                        (ngModelChange)="onEdit(element, 'quantity_available', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- new_quantity_on_hand Column -->
+            <ng-container matColumnDef="new_quantity_on_hand">
+                <th mat-header-cell *matHeaderCellDef> Quantity On Hand </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput type="number" [(ngModel)]="new_quantity_on_hand"
+                        (ngModelChange)="onEdit(element, 'new_quantity_on_hand', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- quantity_adjusted Column -->
+            <ng-container matColumnDef="quantity_adjusted">
+                <th mat-header-cell *matHeaderCellDef> Quantity Adjusted </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <input class="input-text" matInput type="number" [(ngModel)]="quantity_adjusted"
+                        (ngModelChange)="ON_CHANGE_ADJUST_QUANTITY(element, 'quantity_adjusted', $event, rowIndex)" />
+                </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element; let rowIndex = index;"
+                    [class.editing]="editRowIndex === rowIndex">
+                    <div class="action-link" (click)="REMOVE_ADJUST()">
+                        <a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                                fill="#5f6368">
+                                <path
+                                    d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+                            </svg></a>
+                    </div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    }
+
+    @else {
+<table mat-table class="mat-table">
+    <ng-container matColumnDef="itemName"><th mat-header-cell *matHeaderCellDef> Item Name </th></ng-container>
+    <ng-container matColumnDef="barcode"><th mat-header-cell *matHeaderCellDef> Barcode </th></ng-container>
+    <ng-container matColumnDef="description"><th mat-header-cell *matHeaderCellDef> Description </th></ng-container>
+    <ng-container matColumnDef="category"><th mat-header-cell *matHeaderCellDef> Category </th></ng-container>
+    <ng-container matColumnDef="quantity_available"><th mat-header-cell *matHeaderCellDef> Quantity Available </th></ng-container>
+    <ng-container matColumnDef="new_quantity_on_hand"><th mat-header-cell *matHeaderCellDef> Quantity On Hand </th></ng-container>
+    <ng-container matColumnDef="quantity_adjusted"><th mat-header-cell *matHeaderCellDef> Quantity Adjusted </th></ng-container>
+    <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef> Action </th></ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+</table>
+
+<div class="no-items-found">No Products found</div>
+}
+    
 
     </div>
-  </div>
+
+
+</div>

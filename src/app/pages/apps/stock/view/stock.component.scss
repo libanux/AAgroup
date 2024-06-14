@@ -17,6 +17,29 @@
             div {
                 padding: 0;
             }
+
+            .btns-div{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                column-gap: 10px;
+                align-items: flex-end;
+                justify-content: flex-end;
+                .invoice-btn {
+                    background-color: #075d11fb;
+                    border-style: none;
+                    padding: 10px;
+                    border-radius: 8px;
+                    color: white;
+                }
+        
+                .invoice-btn:hover {
+                    cursor: pointer;
+                    background-color: #075d11cc;
+                    color: rgb(255, 255, 255);
+                }
+            }
+        
         }
     }
 

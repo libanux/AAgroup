@@ -62,7 +62,6 @@ columnHeaders = [
   ngOnInit(): void {
     console.log(this.ADJUST_ARRAY);
     this.displayedColumns = this.columnHeaders.map(column => column.key);
-
   }
   
 
@@ -91,7 +90,8 @@ columnHeaders = [
 
   ADD_ADUST(object: Product) {
     this.New_adjust_Array.push(object);
-    this.FETCH_ADJUSTS()
+    this.FETCH_ADJUSTS();
+    
   }
 
 // OPEN UPDATE & DELETE DIALOGS

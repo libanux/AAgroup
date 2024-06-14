@@ -24,23 +24,6 @@
           </div>
 
           <!-- BARCODE-->
-          <!-- <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center"><mat-label
-                class="mat-subtitle-2 f-w-600 d-block m-b-16">Barcode</mat-label></div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="BARCODE" [(ngModel)]="ADDED_PRODUCT.barcode" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" />
-                </svg>
-              </mat-icon>
-              
-            </mat-form-field>
-          </div> -->
-
-          <!-- BARCODE-->
           <div class="col-md-4 d-flex flex-column">
             <div class="d-flex align-items-center">
               <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Barcode</mat-label>
@@ -176,10 +159,9 @@
   <!-- TABLE HEADER -->
   <header>
     <!-- SEARCH -->
-    <div class="searchbar ">
-      <mat-form-field appearance="outline" class="w-75">
-        <input matInput placeholder="Search Product's" aria-label="Product"
-          (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+    <div class="col-md-4 d-flex flex-column">
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="Search Categories..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
         <mat-icon matPrefix class="op-5">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
             width="24px" fill="#5f6368">
@@ -187,11 +169,18 @@
               d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
           </svg>
         </mat-icon>
+
       </mat-form-field>
     </div>
 
     <!-- DROPDOWN -->
     <div class="filter-div">
+
+      <div class="btns-div">
+        <button class="invoice-btn">Export Pdf</button>
+        <button class="invoice-btn">Export Excel</button>
+        <button class="invoice-btn">Print</button>
+      </div>
 
       <div>
         <mat-form-field class="theme-select" appearance="outline">
@@ -215,6 +204,7 @@
 
     </div>
 
+    
   </header>
 
   <mat-card-content>
@@ -228,13 +218,21 @@
 
           <ng-container matColumnDef="{{ column }}">
 
-@if(column == 'cost' || column == 'sale'){
-<th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT_COST()">
+@if( column == 'sale'){
+<th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT('sale')">
 {{ column | titlecase }}
 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#000000"><path d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" /></svg>
 </th>
 }
 
+@else if(column == 'cost'){
+  <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT('cost')">
+  {{ column | titlecase }}
+  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#000000"><path d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" /></svg>
+  </th>
+}
+
+  
 @else{
 <th mat-header-cell *matHeaderCellDef>{{ TableHeaders[displayedColumns.indexOf(column)] }}</th>
 }
