@@ -15,7 +15,7 @@ export class AdjustComponent implements OnInit{
   PRODUCTS_ARRAY = products;
   filteredProducts: any[]
   quantity_adjusted = 0;
-  added_Product : Product =  new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  added_Product : Product =  new Product('', '', '', '', 0, 0, 0, 0);
 
   New_adjust_Array: Product[] = []
   ADJUST_ARRAY = new MatTableDataSource<Product>([]);
@@ -37,6 +37,22 @@ export class AdjustComponent implements OnInit{
     'action'
   ];
 
+// Define your column headers
+columnHeaders = [
+  { key: 'itemName', title: 'Item Name' },
+  { key: 'barcode', title: 'Barcode' },
+  { key: 'description', title: 'Description' },
+  { key: 'category', title: 'Category' },
+  { key: 'quantity_available', title: 'Quantity Available' },
+  { key: 'new_quantity_on_hand', title: 'New Quantity on Hand' },
+  { key: 'quantity_adjusted', title: 'Quantity Adjusted' },
+  { key: 'action', title: 'Action' }
+];
+
+// Extract the keys from columnHeaders for mat-table
+
+
+
   searchQuery: string;
   editRowIndex: number = -1;
 
@@ -44,7 +60,9 @@ export class AdjustComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log(this.ADJUST_ARRAY)
+    console.log(this.ADJUST_ARRAY);
+    this.displayedColumns = this.columnHeaders.map(column => column.key);
+
   }
   
 

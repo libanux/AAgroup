@@ -16,7 +16,7 @@ export const ChartsRoutes: Routes = [
         component: AdjustComponent,
       },
       {
-        path: 'Adjustement',
+        path: 'Adjustment',
         component: AdjustementComponent,
       },
     ],

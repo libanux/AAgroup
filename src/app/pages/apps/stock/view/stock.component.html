@@ -82,17 +82,14 @@
               <!-- Check if the column is 'status' -->
               <ng-container *ngIf="column !== 'action'; else actionColumn">
                 <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
-                    <ng-container *ngIf="column !== 'category'; else categoryColumn">
                       <ng-container *ngIf="column !== 'cost'; else costColumn">
                         {{ element[column] }}
                       </ng-container>
-                    </ng-container>
                 </ng-container>
               </ng-container>
 
               <!-- Apply specific design if the column is 'status' -->
               <ng-template #barcodeColumn>{{ element[column] }}</ng-template>
-              <ng-template #categoryColumn>{{ (element[column]).CategoryName }}</ng-template>
               <ng-template #costColumn>$ {{ element[column] }}</ng-template>
 
               <ng-template #actionColumn>
@@ -115,7 +112,7 @@
               <div class="details-container p-3 rounded border mb-3 mx-2">
                 <div class="detail-body mt-3">
                   <div class="col-md-4">
-                    <div class="detail-field"><strong>category:</strong> {{ element.category.categoryName }}</div>
+                    <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
                     <div class="detail-field"><strong>itemName:</strong> {{ element.itemName }}</div>
                     <div class="detail-field"><strong>description:</strong> {{ element.description }}</div>
                   </div>

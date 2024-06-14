@@ -33,12 +33,23 @@ export class AdjustementComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'dateCreation',
+    'user',
+    'adjustedItems',
+    'description',
     'LastModifiedTime',
     'LastModifiedUser',
-    'adjustedItems',
-    'user',
-    'description',
     'action'
+  ];
+
+  TableHeaders: string[] = [
+    'ID',
+    'Date Creation',
+    'User',
+    'Adjusted Products',
+    'description',
+    'Last Modified Date',
+    'Last Modified User',
+    'Action'
   ];
 
   columnsToDisplayWithExpand = [...this.displayedColumns];

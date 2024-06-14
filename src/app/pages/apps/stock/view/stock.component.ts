@@ -73,11 +73,11 @@ stocksArray = new MatTableDataSource<Product>([]);
 
   //stock ON EDIT
   viewstock: Product
-  stockExample = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
-  editedstock = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  stockExample =  new Product('', '', '','', 0, 0, 0, 0);
+  editedstock=  new Product('', '', '','', 0, 0, 0, 0);
 
 constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
-  this.viewstock = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  this.viewstock =  new Product('', '', '','', 0, 0, 0, 0);
 }
 
 ngOnInit(): void {
@@ -142,7 +142,7 @@ SORT(){
 // CANCEL UPDATE
 CANCEL_UPDATE(): void {
   this.ShowAddButoon = true;
-  this.editedstock = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  this.editedstock =  new Product('', '', '','', 0, 0, 0, 0);
 }
 
 APPLY_SEARCH_FILTER(filterValue: string): void {
