@@ -1,1 +1,754 @@
-<p>reports works!</p>
+<mat-card class="cardWithShadow">
+    <mat-card-content class="p-0">
+      <mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+    
+<mat-tab>
+
+          <ng-template mat-tab-label>
+            <div class="d-flex align-items-center">
+              <mat-icon>
+                <i-tabler name="lock" class="icon-20 m-r-8"></i-tabler>
+              </mat-icon>
+            </div>
+            Inventory
+          </ng-template>
+          <mat-card-content class="p-y-24 b-t-1">
+     <!-- WHOLE TABLE -->
+<mat-card class="cardWithShadow">
+
+  <!-- TABLE HEADER -->
+  <header>
+    <!-- SEARCH -->
+
+    <div class="col-md-4 d-flex flex-column">
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="Search Inventory..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+        <mat-icon matPrefix class="op-5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+            width="24px" fill="#5f6368">
+            <path
+              d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+          </svg>
+        </mat-icon>
+
+      </mat-form-field>
+    </div>
+    
+    <!-- DROPDOWN -->
+    <div class="filter-div">
+
+      <div>          
+        <label for="">Stock in Date</label>
+        <mat-form-field class="theme-select" appearance="outline">
+          <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
+            placeholder="Today">
+            <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <label for="">Category</label>
+        <mat-form-field class="theme-select" appearance="outline">
+          <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
+            placeholder="All">
+            <mat-option [value]="'All'">All</mat-option>
+            <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
+              }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <input type="checkbox" id="myCheckbox" checked>
+        <label for="myCheckbox">Skip zero Quantity</label>
+        
+      </div>
+      <div class="btns-div">
+        <button class="invoice-btn">Export Pdf</button>
+        <button class="invoice-btn">Export Excel</button>
+        <button class="invoice-btn">Print</button>
+      </div>
+    </div>
+
+  </header>
+
+  <mat-card-content>
+
+    <!-- TABLE BODY -->
+    <div class="table-responsive">
+      <table mat-table [dataSource]="stocksArray" multiTemplateDataRows>
+
+        <!-- Iterate over displayedColumns using ngFor -->
+        <ng-container *ngFor="let column of displayedColumns;">
+
+          <ng-container matColumnDef="{{ column }}">
+
+            @if(column == 'cost' || column == 'sale'){
+            <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT()">
+              {{ column | titlecase }}
+              <!-- @if(column == 'cost'){ -->
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                fill="#000000">
+                <path
+                  d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+              </svg>
+              <!-- } -->
+            </th>
+            }
+
+            @else{
+            <th mat-header-cell *matHeaderCellDef>
+              {{ column | titlecase }}
+              @if(column == 'cost'){
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                fill="#000000">
+                <path
+                  d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+              </svg>
+              }
+            </th>
+            }
+
+            <td mat-cell *matCellDef="let element" (click)="expandRow($event, element, column)">
+
+              <!-- Check if the column is 'status' -->
+              <ng-container *ngIf="column !== 'action'; else actionColumn">
+                <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
+                      <ng-container *ngIf="column !== 'cost'; else costColumn">
+                        {{ element[column] }}
+                      </ng-container>
+                </ng-container>
+              </ng-container>
+
+              <!-- Apply specific design if the column is 'status' -->
+              <ng-template #barcodeColumn>{{ element[column] }}</ng-template>
+              <ng-template #costColumn>$ {{ element[column] }}</ng-template>
+
+              <ng-template #actionColumn>
+                <div class="action-link">
+                  <!-- <a (click)="EDIT_STOCK(element)"><i-tabler name="edit" class="icon-18"></i-tabler></a> -->
+                  <a><i-tabler name="trash" class="icon-18"></i-tabler></a>
+                </div>
+              </ng-template>
+
+            </td>
+
+          </ng-container>
+
+        </ng-container>
+
+        <!-- EXPANDED ROW DETAILS -->
+        <ng-container matColumnDef="expandedDetail">
+          <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+            <div [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+              <div class="details-container p-3 rounded border mb-3 mx-2">
+                <div class="detail-body mt-3">
+                  <div class="col-md-4">
+                    <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
+                    <div class="detail-field"><strong>itemName:</strong> {{ element.itemName }}</div>
+                    <div class="detail-field"><strong>description:</strong> {{ element.description }}</div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="detail-field"><strong>cost:</strong> {{ element.cost }}</div>
+                    <div class="detail-field"><strong>sale:</strong> {{ element.sale }}</div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="detail-field QR">
+                      <strong>barcode: {{ element.barcode }}</strong>
+                      <svg xmlns="http://www.w3.org/2000/svg" height="60px" width="60px" viewBox="0 -960 960 960"
+                        fill="#000000">
+                        <path
+                          d="M48-192v-576h72v576H48Zm120 0v-576h72v576h-72Zm120 0v-576h48v576h-48Zm120 0v-576h72v576h-72Zm120 0v-576h96v576h-96Zm144 0v-576h48v576h-48Zm144 0v-576h96v576h-96Z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+
+        <!-- HEADER AND ROW DEFINITIONS -->
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+        <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand" class="example-element-row"
+          [class.example-expanded-row]="expandedElement === element"
+          (click)="expandedElement = expandedElement === element ? null : element;">
+        </tr>
+        <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+      </table>
+    </div>
+
+    <!-- TABLE PAGINATION -->
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
+    </mat-paginator>
+  </mat-card-content>
+
+</mat-card>
+
+</mat-card-content>
+</mat-tab>
+
+
+
+<mat-tab>
+
+  <ng-template mat-tab-label>
+    <div class="d-flex align-items-center">
+      <mat-icon>
+        <i-tabler name="receipt" class="icon-20 m-r-8"></i-tabler>
+      </mat-icon>
+    </div>
+    Purchase
+  </ng-template>
+  <mat-card-content class="p-y-24 b-t-1">
+<!-- WHOLE TABLE -->
+<mat-card class="cardWithShadow">
+
+<!-- TABLE HEADER -->
+<header>
+<!-- SEARCH -->
+
+<div class="col-md-4 d-flex flex-column">
+<mat-form-field appearance="outline" class="w-100">
+<input matInput placeholder="Search Purchase..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+<mat-icon matPrefix class="op-5">
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+    width="24px" fill="#5f6368">
+    <path
+      d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+  </svg>
+</mat-icon>
+
+</mat-form-field>
+</div>
+
+<!-- DROPDOWN -->
+<div class="filter-div">
+
+<div>
+<mat-form-field class="theme-select" appearance="outline">
+  <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
+    placeholder="Today">
+    <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+
+<div>
+<mat-form-field class="theme-select" appearance="outline">
+  <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
+    placeholder="All">
+    <mat-option [value]="'All'">All</mat-option>
+    <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
+      }}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+<div class="btns-div">
+<button class="invoice-btn">Export Pdf</button>
+<button class="invoice-btn">Export Excel</button>
+<button class="invoice-btn">Print</button>
+</div>
+</div>
+
+</header>
+
+<mat-card-content>
+
+<!-- TABLE BODY -->
+<div class="table-responsive">
+<table mat-table [dataSource]="stocksArray" multiTemplateDataRows>
+
+<!-- Iterate over displayedColumns using ngFor -->
+<ng-container *ngFor="let column of displayedColumns;">
+
+  <ng-container matColumnDef="{{ column }}">
+
+    @if(column == 'cost' || column == 'sale'){
+    <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT()">
+      {{ column | titlecase }}
+      <!-- @if(column == 'cost'){ -->
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+        fill="#000000">
+        <path
+          d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+      </svg>
+      <!-- } -->
+    </th>
+    }
+
+    @else{
+    <th mat-header-cell *matHeaderCellDef>
+      {{ column | titlecase }}
+      @if(column == 'cost'){
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+        fill="#000000">
+        <path
+          d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+      </svg>
+      }
+    </th>
+    }
+
+    <td mat-cell *matCellDef="let element" (click)="expandRow($event, element, column)">
+
+      <!-- Check if the column is 'status' -->
+      <ng-container *ngIf="column !== 'action'; else actionColumn">
+        <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
+              <ng-container *ngIf="column !== 'cost'; else costColumn">
+                {{ element[column] }}
+              </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Apply specific design if the column is 'status' -->
+      <ng-template #barcodeColumn>{{ element[column] }}</ng-template>
+      <ng-template #costColumn>$ {{ element[column] }}</ng-template>
+
+      <ng-template #actionColumn>
+        <div class="action-link">
+          <!-- <a (click)="EDIT_STOCK(element)"><i-tabler name="edit" class="icon-18"></i-tabler></a> -->
+          <a><i-tabler name="trash" class="icon-18"></i-tabler></a>
+        </div>
+      </ng-template>
+
+    </td>
+
+  </ng-container>
+
+</ng-container>
+
+<!-- EXPANDED ROW DETAILS -->
+<ng-container matColumnDef="expandedDetail">
+  <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+    <div [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+      <div class="details-container p-3 rounded border mb-3 mx-2">
+        <div class="detail-body mt-3">
+          <div class="col-md-4">
+            <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
+            <div class="detail-field"><strong>itemName:</strong> {{ element.itemName }}</div>
+            <div class="detail-field"><strong>description:</strong> {{ element.description }}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="detail-field"><strong>cost:</strong> {{ element.cost }}</div>
+            <div class="detail-field"><strong>sale:</strong> {{ element.sale }}</div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="detail-field QR">
+              <strong>barcode: {{ element.barcode }}</strong>
+              <svg xmlns="http://www.w3.org/2000/svg" height="60px" width="60px" viewBox="0 -960 960 960"
+                fill="#000000">
+                <path
+                  d="M48-192v-576h72v576H48Zm120 0v-576h72v576h-72Zm120 0v-576h48v576h-48Zm120 0v-576h72v576h-72Zm120 0v-576h96v576h-96Zm144 0v-576h48v576h-48Zm144 0v-576h96v576h-96Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </td>
+</ng-container>
+
+
+<!-- HEADER AND ROW DEFINITIONS -->
+<tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+<tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand" class="example-element-row"
+  [class.example-expanded-row]="expandedElement === element"
+  (click)="expandedElement = expandedElement === element ? null : element;">
+</tr>
+<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+</table>
+</div>
+
+<!-- TABLE PAGINATION -->
+<mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
+</mat-paginator>
+</mat-card-content>
+
+</mat-card>
+
+</mat-card-content>
+</mat-tab>
+           
+
+<mat-tab>
+
+  <ng-template mat-tab-label>
+    <div class="d-flex align-items-center">
+      <mat-icon>
+        <i-tabler name="bell" class="icon-20 m-r-8"></i-tabler>
+      </mat-icon>
+    </div>
+    Sales
+  </ng-template>
+  <mat-card-content class="p-y-24 b-t-1">
+<!-- WHOLE TABLE -->
+<mat-card class="cardWithShadow">
+
+<!-- TABLE HEADER -->
+<header>
+<!-- SEARCH -->
+
+<div class="col-md-4 d-flex flex-column">
+<mat-form-field appearance="outline" class="w-100">
+<input matInput placeholder="Search Sales..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+<mat-icon matPrefix class="op-5">
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+    width="24px" fill="#5f6368">
+    <path
+      d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+  </svg>
+</mat-icon>
+
+</mat-form-field>
+</div>
+
+<!-- DROPDOWN -->
+<div class="filter-div">
+
+<div>
+<mat-form-field class="theme-select" appearance="outline">
+  <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
+    placeholder="Today">
+    <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+
+<div>
+<mat-form-field class="theme-select" appearance="outline">
+  <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
+    placeholder="All">
+    <mat-option [value]="'All'">All</mat-option>
+    <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
+      }}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+<div class="btns-div">
+<button class="invoice-btn">Export Pdf</button>
+<button class="invoice-btn">Export Excel</button>
+<button class="invoice-btn">Print</button>
+</div>
+</div>
+
+</header>
+
+<mat-card-content>
+
+<!-- TABLE BODY -->
+<div class="table-responsive">
+<table mat-table [dataSource]="stocksArray" multiTemplateDataRows>
+
+<!-- Iterate over displayedColumns using ngFor -->
+<ng-container *ngFor="let column of displayedColumns;">
+
+  <ng-container matColumnDef="{{ column }}">
+
+    @if(column == 'cost' || column == 'sale'){
+    <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT()">
+      {{ column | titlecase }}
+      <!-- @if(column == 'cost'){ -->
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+        fill="#000000">
+        <path
+          d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+      </svg>
+      <!-- } -->
+    </th>
+    }
+
+    @else{
+    <th mat-header-cell *matHeaderCellDef>
+      {{ column | titlecase }}
+      @if(column == 'cost'){
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+        fill="#000000">
+        <path
+          d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+      </svg>
+      }
+    </th>
+    }
+
+    <td mat-cell *matCellDef="let element" (click)="expandRow($event, element, column)">
+
+      <!-- Check if the column is 'status' -->
+      <ng-container *ngIf="column !== 'action'; else actionColumn">
+        <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
+              <ng-container *ngIf="column !== 'cost'; else costColumn">
+                {{ element[column] }}
+              </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Apply specific design if the column is 'status' -->
+      <ng-template #barcodeColumn>{{ element[column] }}</ng-template>
+      <ng-template #costColumn>$ {{ element[column] }}</ng-template>
+
+      <ng-template #actionColumn>
+        <div class="action-link">
+          <!-- <a (click)="EDIT_STOCK(element)"><i-tabler name="edit" class="icon-18"></i-tabler></a> -->
+          <a><i-tabler name="trash" class="icon-18"></i-tabler></a>
+        </div>
+      </ng-template>
+
+    </td>
+
+  </ng-container>
+
+</ng-container>
+
+<!-- EXPANDED ROW DETAILS -->
+<ng-container matColumnDef="expandedDetail">
+  <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+    <div [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+      <div class="details-container p-3 rounded border mb-3 mx-2">
+        <div class="detail-body mt-3">
+          <div class="col-md-4">
+            <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
+            <div class="detail-field"><strong>itemName:</strong> {{ element.itemName }}</div>
+            <div class="detail-field"><strong>description:</strong> {{ element.description }}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="detail-field"><strong>cost:</strong> {{ element.cost }}</div>
+            <div class="detail-field"><strong>sale:</strong> {{ element.sale }}</div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="detail-field QR">
+              <strong>barcode: {{ element.barcode }}</strong>
+              <svg xmlns="http://www.w3.org/2000/svg" height="60px" width="60px" viewBox="0 -960 960 960"
+                fill="#000000">
+                <path
+                  d="M48-192v-576h72v576H48Zm120 0v-576h72v576h-72Zm120 0v-576h48v576h-48Zm120 0v-576h72v576h-72Zm120 0v-576h96v576h-96Zm144 0v-576h48v576h-48Zm144 0v-576h96v576h-96Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </td>
+</ng-container>
+
+
+<!-- HEADER AND ROW DEFINITIONS -->
+<tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+<tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand" class="example-element-row"
+  [class.example-expanded-row]="expandedElement === element"
+  (click)="expandedElement = expandedElement === element ? null : element;">
+</tr>
+<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+</table>
+</div>
+
+<!-- TABLE PAGINATION -->
+<mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
+</mat-paginator>
+</mat-card-content>
+
+</mat-card>
+
+</mat-card-content>
+</mat-tab>
+
+
+
+
+
+<mat-tab>
+
+  <ng-template mat-tab-label>
+    <div class="d-flex align-items-center">
+      <mat-icon>
+        <i-tabler name="user-circle" class="icon-20 m-r-8"></i-tabler>
+      </mat-icon>
+    </div>
+    Customer Payment Managment
+  </ng-template>
+  <mat-card-content class="p-y-24 b-t-1">
+<!-- WHOLE TABLE -->
+<mat-card class="cardWithShadow">
+
+<!-- TABLE HEADER -->
+<header>
+<!-- SEARCH -->
+
+<div class="col-md-4 d-flex flex-column">
+<mat-form-field appearance="outline" class="w-100">
+<input matInput placeholder="Search Customer Payment Managment..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+<mat-icon matPrefix class="op-5">
+  <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+    width="24px" fill="#5f6368">
+    <path
+      d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+  </svg>
+</mat-icon>
+
+</mat-form-field>
+</div>
+
+<!-- DROPDOWN -->
+<div class="filter-div">
+
+<div>
+<mat-form-field class="theme-select" appearance="outline">
+  <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
+    placeholder="Today">
+    <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+
+<div>
+<mat-form-field class="theme-select" appearance="outline">
+  <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
+    placeholder="All">
+    <mat-option [value]="'All'">All</mat-option>
+    <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
+      }}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+<div class="btns-div">
+<button class="invoice-btn">Export Pdf</button>
+<button class="invoice-btn">Export Excel</button>
+<button class="invoice-btn">Print</button>
+</div>
+</div>
+
+</header>
+
+<mat-card-content>
+
+<!-- TABLE BODY -->
+<div class="table-responsive">
+<table mat-table [dataSource]="stocksArray" multiTemplateDataRows>
+
+<!-- Iterate over displayedColumns using ngFor -->
+<ng-container *ngFor="let column of displayedColumns;">
+
+  <ng-container matColumnDef="{{ column }}">
+
+    @if(column == 'cost' || column == 'sale'){
+    <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT()">
+      {{ column | titlecase }}
+      <!-- @if(column == 'cost'){ -->
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+        fill="#000000">
+        <path
+          d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+      </svg>
+      <!-- } -->
+    </th>
+    }
+
+    @else{
+    <th mat-header-cell *matHeaderCellDef>
+      {{ column | titlecase }}
+      @if(column == 'cost'){
+      <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+        fill="#000000">
+        <path
+          d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+      </svg>
+      }
+    </th>
+    }
+
+    <td mat-cell *matCellDef="let element" (click)="expandRow($event, element, column)">
+
+      <!-- Check if the column is 'status' -->
+      <ng-container *ngIf="column !== 'action'; else actionColumn">
+        <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
+              <ng-container *ngIf="column !== 'cost'; else costColumn">
+                {{ element[column] }}
+              </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Apply specific design if the column is 'status' -->
+      <ng-template #barcodeColumn>{{ element[column] }}</ng-template>
+      <ng-template #costColumn>$ {{ element[column] }}</ng-template>
+
+      <ng-template #actionColumn>
+        <div class="action-link">
+          <!-- <a (click)="EDIT_STOCK(element)"><i-tabler name="edit" class="icon-18"></i-tabler></a> -->
+          <a><i-tabler name="trash" class="icon-18"></i-tabler></a>
+        </div>
+      </ng-template>
+
+    </td>
+
+  </ng-container>
+
+</ng-container>
+
+<!-- EXPANDED ROW DETAILS -->
+<ng-container matColumnDef="expandedDetail">
+  <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+    <div [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
+      <div class="details-container p-3 rounded border mb-3 mx-2">
+        <div class="detail-body mt-3">
+          <div class="col-md-4">
+            <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
+            <div class="detail-field"><strong>itemName:</strong> {{ element.itemName }}</div>
+            <div class="detail-field"><strong>description:</strong> {{ element.description }}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="detail-field"><strong>cost:</strong> {{ element.cost }}</div>
+            <div class="detail-field"><strong>sale:</strong> {{ element.sale }}</div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="detail-field QR">
+              <strong>barcode: {{ element.barcode }}</strong>
+              <svg xmlns="http://www.w3.org/2000/svg" height="60px" width="60px" viewBox="0 -960 960 960"
+                fill="#000000">
+                <path
+                  d="M48-192v-576h72v576H48Zm120 0v-576h72v576h-72Zm120 0v-576h48v576h-48Zm120 0v-576h72v576h-72Zm120 0v-576h96v576h-96Zm144 0v-576h48v576h-48Zm144 0v-576h96v576h-96Z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </td>
+</ng-container>
+
+
+<!-- HEADER AND ROW DEFINITIONS -->
+<tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+<tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand" class="example-element-row"
+  [class.example-expanded-row]="expandedElement === element"
+  (click)="expandedElement = expandedElement === element ? null : element;">
+</tr>
+<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+</table>
+</div>
+
+<!-- TABLE PAGINATION -->
+<mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
+</mat-paginator>
+</mat-card-content>
+
+</mat-card>
+
+</mat-card-content>
+</mat-tab>
+
+
+</mat-tab-group>
+</mat-card-content>
+</mat-card>

@@ -4,18 +4,28 @@
   <!-- TABLE HEADER -->
   <header>
     <!-- SEARCH -->
-    <div class="searchbar ">
-      <mat-form-field appearance="outline" class="w-75">
-        <input matInput placeholder="Search Product's" aria-label="Product" (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+
+    <div class="col-md-4 d-flex flex-column">
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="Search Categories..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
         <mat-icon matPrefix class="op-5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+            width="24px" fill="#5f6368">
+            <path
+              d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+          </svg>
         </mat-icon>
+
       </mat-form-field>
     </div>
-
+    
     <!-- DROPDOWN -->
     <div class="filter-div">
-
+      <div class="btns-div">
+        <button class="invoice-btn">Export Pdf</button>
+        <button class="invoice-btn">Export Excel</button>
+        <button class="invoice-btn">Print</button>
+      </div>
       <div>
         <mat-form-field class="theme-select" appearance="outline">
           <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
@@ -82,17 +92,14 @@
               <!-- Check if the column is 'status' -->
               <ng-container *ngIf="column !== 'action'; else actionColumn">
                 <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
-                    <ng-container *ngIf="column !== 'category'; else categoryColumn">
                       <ng-container *ngIf="column !== 'cost'; else costColumn">
                         {{ element[column] }}
                       </ng-container>
-                    </ng-container>
                 </ng-container>
               </ng-container>
 
               <!-- Apply specific design if the column is 'status' -->
               <ng-template #barcodeColumn>{{ element[column] }}</ng-template>
-              <ng-template #categoryColumn>{{ (element[column]).CategoryName }}</ng-template>
               <ng-template #costColumn>$ {{ element[column] }}</ng-template>
 
               <ng-template #actionColumn>
@@ -115,7 +122,7 @@
               <div class="details-container p-3 rounded border mb-3 mx-2">
                 <div class="detail-body mt-3">
                   <div class="col-md-4">
-                    <div class="detail-field"><strong>category:</strong> {{ element.category.categoryName }}</div>
+                    <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
                     <div class="detail-field"><strong>itemName:</strong> {{ element.itemName }}</div>
                     <div class="detail-field"><strong>description:</strong> {{ element.description }}</div>
                   </div>

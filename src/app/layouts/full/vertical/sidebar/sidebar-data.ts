@@ -24,9 +24,9 @@ export const navItems: NavItem[] = [
         route: 'apps/stock/Adjust',
       },
       {
-        displayName: 'Adjustement',
+        displayName: 'Adjustment',
         iconName: '',
-        route: 'apps/stock/Adjustement',
+        route: 'apps/stock/Adjustment',
       }
     ],
   },

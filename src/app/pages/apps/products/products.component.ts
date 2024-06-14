@@ -42,7 +42,15 @@ export class ProductsComponent implements OnInit {
     'sale',
     'action'
   ];
-
+  TableHeaders: string[] = [
+    'Barcode',
+    'Item Name',
+    'Description',
+    'Category',
+    'Cost',
+    'Sale',
+    'Action'
+  ];
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: Product | null = null;
 
@@ -74,18 +82,20 @@ export class ProductsComponent implements OnInit {
  selectedDate: Date | null = null; // Adjusted the type to accept null
 //PRODUCTS ARRAY
 productsArray = new MatTableDataSource<Product>([]);
+New_product_Array: Product[] = []
 
   //PRODUCT ON EDIT
   viewPRODUCT: Product
-  PRODUCTExample = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
-  ADDED_PRODUCT = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  PRODUCTExample =  new Product('', '', '','', 0, 0, 0, 0);
+  ADDED_PRODUCT =  new Product('', '', '','', 0, 0, 0, 0);
 
 constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
-  this.viewPRODUCT = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  this.viewPRODUCT=  new Product('', '', '','', 0, 0, 0, 0);
   // this.categoryArray = categories
 }
 
 ngOnInit(): void {
+  this.New_product_Array = products
   this.FETCH_PRODUCTS();
 }
 
@@ -127,7 +137,7 @@ expandRow(event: Event, element: any, column: string): void {
 
 //FETCH productsArray FROM API
 FETCH_PRODUCTS(): void {
-    this.productsArray = new MatTableDataSource(products);
+    this.productsArray = new MatTableDataSource(this.New_product_Array);
     this.totalCount = products.length;
     // this.productsService.GET_productsArray().subscribe({
     //   next: (response: any) => {
@@ -148,14 +158,18 @@ FETCH_PRODUCTS(): void {
 
 //ADD PRODUCT
 ADD_PRODUCT(obj: Product) {
-  this.productsService.ADD_PRODUCT(obj).subscribe({
-    next: (response: any) => { },
-    error: (error) => { },
-    complete: () => {
-      this.CANCEL_UPDATE();
-      this.FETCH_PRODUCTS();
-    }
-  });
+  this.New_product_Array.push(obj);
+  this.FETCH_PRODUCTS();
+  this.ADDED_PRODUCT =  new Product('', '', '','', 0, 0, 0, 0);
+
+  // this.productsService.ADD_PRODUCT(obj).subscribe({
+  //   next: (response: any) => { },
+  //   error: (error) => { },
+  //   complete: () => {
+  //     this.CANCEL_UPDATE();
+  //     this.FETCH_PRODUCTS();
+  //   }
+  // });
 }
 
 //TRIGGER THE DROP DOWN FILTER VALUES
@@ -182,8 +196,32 @@ FILTER_BY_CATEGORY(value: string){
   else {this.productsArray.filter = value.trim().toLowerCase();}
 }
 
-SORT_COST(){
-  console.log('hi')
+ASC: boolean = true;
+DES: boolean = false;
+
+SORT(value: string){
+  if (value === 'cost') {
+    if (this.ASC) {
+      this.New_product_Array.sort((a, b) => a.cost - b.cost);
+      this.ASC = false;
+      this.DES = true;
+    } else {
+      this.New_product_Array.sort((a, b) => b.cost - a.cost);
+      this.ASC = true;
+      this.DES = false;
+    }
+  } else {
+    if (this.ASC) {
+      this.New_product_Array.sort((a, b) => a.sale - b.sale);
+      this.ASC = false;
+      this.DES = true;
+    } else {
+      this.New_product_Array.sort((a, b) => b.sale - a.sale);
+      this.ASC = true;
+      this.DES = false;
+    }
+  }
+  this.FETCH_PRODUCTS();
 }
 
 //OPEN THE CALENDAR DIALOG
@@ -246,7 +284,7 @@ DELETE_PRODUCT(ID: any): void {
 CANCEL_UPDATE(): void {
   this.ShowAddButoon = true;
   this.CurrentAction = 'Add Product'
-  this.ADDED_PRODUCT = new Product('', '', '',new Category(-1, ''), 0, 0, 0, 0);
+  this.ADDED_PRODUCT=  new Product('', '', '','', 0, 0, 0, 0);
 }
 
 // OPEN UPDATE & DELETE DIALOGS
