@@ -1,44 +1,85 @@
 <!-- WHOLE TABLE -->
 <mat-card class="cardWithShadow">
  
-    <!-- TABLE HEADER -->
-      <header>
-          <!-- SEARCH -->
-        <!-- <div class="col-sm-4 p-20 searchbar ">
-          <mat-form-field appearance="outline" class="hide-hint custom-search ">
-            <input matInput placeholder="Search by supplier or date" />
-            <mat-icon matSuffix>
-              <i-tabler name="search" class="icon-15"></i-tabler>
+      <!-- TABLE HEADER -->
+  <header>
+
+    <div class="searchbar p-20">
+      <mat-form-field appearance="outline" class="w-100">
+        <input matInput placeholder="Search Product..." aria-label="Product"
+          (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+        <mat-icon matPrefix class="op-5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+            width="24px" fill="#5f6368">
+            <path
+              d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+          </svg>
+        </mat-icon>
+      </mat-form-field>
+    </div>
+
+    <div class="filter-date p-20">
+
+      <section>
+        @if(showDatePicker) {
+        <mat-form-field appearance="outline" class="date_picker">
+
+          <mat-date-range-input [rangePicker]="custompicker">
+            <input matStartDate placeholder="Start date" [(ngModel)]="START_DATE"
+              (ngModelChange)="handleStartDateChange($event)" />
+            <input matEndDate placeholder="End date" [(ngModel)]="END_DATE"
+              (ngModelChange)="handleEndDateChange($event)" />
+          </mat-date-range-input>
+
+          <mat-datepicker-toggle matIconSuffix [for]="custompicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #custompicker></mat-date-range-picker>
+
+        </mat-form-field>
+        }
+
+        <!-- DATE -->
+        <div class="dropdown">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select p placeholder="Today" [(ngModel)]="selectedMonth"
+              (selectionChange)="DROPDOWN_FILTERATION($event.value, 'month')">
+              @for(month of months; track month) {
+              <mat-option value={{month.value}}>{{month.viewValue}}</mat-option>
+              }
+
+            </mat-select>
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+              </svg>
             </mat-icon>
           </mat-form-field>
-        </div> -->
-        <div class="col-sm-4 p-20 searchbar ">
-        <mat-form-field appearance="outline" class="w-75">
-          <input matInput placeholder="Search invoices" aria-label="Product" 
-           >
+        </div>
+      </section>
+
+      <!-- Download As -->
+      <div class="dropdown">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select placeholder={{selectedDownloadOption}} [ngModel]="selectedDownloadOption"
+            (selectionChange)="DROPDOWN_FILTERATION($event.value, 'Download')">
+            @for(option of Options; track option) {
+            <mat-option value={{option.value}}>{{option.viewValue}}</mat-option>
+            }
+          </mat-select>
           <mat-icon matPrefix class="op-5">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
-              width="24px" fill="#5f6368">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
               <path
-                d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
             </svg>
           </mat-icon>
         </mat-form-field>
-</div>
+      </div>
 
-    
-           <!-- DROPDOWN -->
-        <div class="filter-date">
-          <mat-card-header class="d-flex">
-            <mat-form-field class="theme-select" appearance="outline">
-              <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)" placeholder="Today">
-                <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            
-          </mat-card-header>
-        </div>
-      </header>
+
+    </div>
+
+  </header>
   
       <mat-card-content>
   

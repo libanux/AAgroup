@@ -1,122 +1,102 @@
-<!-- <mat-card class="cardWithShadow">
-    <mat-card-content class="p-24">
-      <div class="row justify-content-between">
-  
-        <div class="col-lg-4">
-          <mat-form-field appearance="outline" class="w-100 hide-hint">
-            <input matInput placeholder="Search Users" (keyup)="APPLY_FILTER($any($event.target).value)"/>
-            <mat-icon matSuffix>
-              <i-tabler name="search" class="icon-20"></i-tabler>
+<mat-card class="cardWithShadow">
+  <mat-expansion-panel [expanded]="open_expansion_value === 1" (opened)="OPEN_PANEL()" (closed)="CLOSE_PANEL()">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="f-w-600 mat-body-1 currentAction">{{CurrentAction}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <!-- FIRST ROW :  FIRST NAME + LAST NAME  -->
+      <div class="row">
+         <!-- First Name -->
+         <div class="col-md-6 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">First Name</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="FIRST NAME" [(ngModel)]="selectedUser.firstname" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+              </svg>
             </mat-icon>
           </mat-form-field>
         </div>
-  
-        <div class="col-lg-4 d-flex align-items-center justify-content-end">
-          <button mat-flat-button (click)="OPEN_DIALOG('Add', {})" color="primary">
-            Add Admin
-          </button>
+        <!-- LAST NAME-->
+        <div class="col-md-6 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Last Name</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="LAST NAME" [(ngModel)]="selectedUser.lastname" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
         </div>
-  
+      </div>
+
+      <!-- SECOND ROW :  EMAIL + Permission -->
+      <div class="row">
+        <!-- EMAIL-->
+        <div class="col-md-6 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="EMAIL" [(ngModel)]="selectedUser.email" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- Permission-->
+        <div class="col-md-6 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Role</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select placeholder="ROLE" required [(ngModel)]="selectedUser.type">
+              <mat-option value="Office">Office</mat-option>
+              <mat-option value="Admin">Admin</mat-option>
+            </mat-select>
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M160-240v-480 172-12 320Zm0 80q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v131q-18-13-38-22.5T800-548v-92H447l-80-80H160v480h283q3 21 9.5 41t15.5 39H160Zm400 0v-22q0-45 44-71.5T720-280q72 0 116 26.5t44 71.5v22H560Zm160-160q-33 0-56.5-23.5T640-400q0-33 23.5-56.5T720-480q33 0 56.5 23.5T800-400q0 33-23.5 56.5T720-320Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="Buttons_div">
+        <div *ngIf="ShowAddButoon">
+          <button mat-flat-button color="primary" (click)="ADD_USER()"> Add Customer </button>
+        </div>
+
+        <div class="TwoButtons" *ngIf="!ShowAddButoon">
+          <button (click)="CANCEL_UPDATE()" mat-flat-button color="primary">Cancel</button>
+
+          <button mat-flat-button color="primary" (click)="UPDATE_USER()"
+            [disabled]="SHOW_LOADING_SPINNER || !DATA_CHANGED">
+            <span *ngIf="!SHOW_LOADING_SPINNER">Update Customer</span>
+            <mat-spinner diameter="20" *ngIf="SHOW_LOADING_SPINNER"></mat-spinner>
+          </button>
+
+        </div>
       </div>
     </mat-card-content>
-  </mat-card> -->
-
-
-
-<!-- Add User form -->
-<h4 class="mat-headline-6 m-y-24">Users</h4>
-<mat-card class="cardWithShadow theme-card">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-    <mat-tab label="Add User">
-      <mat-card-content>
-        <div class="row">
-
-
-          <!-- First Name -->
-          <div class="col-md-6 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">First Name</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="FIRST NAME" [(ngModel)]="selectedUser.firstname" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
-
-          <!-- last Name-->
-          <div class="col-md-6 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Last Name</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="LAST NAME" [(ngModel)]="selectedUser.lastname" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <!-- Email-->
-          <div class="col-md-6 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="EMAIL" [(ngModel)]="selectedUser.email" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
-
-
-          <!--Permission-->
-          <div class="col-md-6 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Role</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-select placeholder="ROLE" required [(ngModel)]="selectedUser.type">
-                <mat-option value="Office">Office</mat-option>
-                <mat-option value="Admin">Admin</mat-option>
-              </mat-select>
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M160-240v-480 172-12 320Zm0 80q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h240l80 80h320q33 0 56.5 23.5T880-640v131q-18-13-38-22.5T800-548v-92H447l-80-80H160v480h283q3 21 9.5 41t15.5 39H160Zm400 0v-22q0-45 44-71.5T720-280q72 0 116 26.5t44 71.5v22H560Zm160-160q-33 0-56.5-23.5T640-400q0-33 23.5-56.5T720-480q33 0 56.5 23.5T800-400q0 33-23.5 56.5T720-320Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="m-t-12 text-right" *ngIf="showUpdate">
-          <button mat-flat-button class="m-l-8 btn">Cancel</button>
-          <button mat-flat-button color="primary">Update</button>
-        </div>
-        <div class="m-t-12 text-right" *ngIf="!showUpdate">
-          <button mat-flat-button color="primary">Create</button>
-        </div>
-      </mat-card-content>
-    </mat-tab>
-  </mat-tab-group>
+  </mat-expansion-panel>
 </mat-card>
 
 
@@ -152,7 +132,7 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Action</th>
           <td mat-cell *matCellDef="let admin" class="action-link">
-            <a (click)="UPDATE_USER(admin)" class="m-r-10 cursor-pointer">
+            <a (click)="SELECT_USER(admin)" class="m-r-10 cursor-pointer">
               <i-tabler name="edit" class="icon-18"></i-tabler>
             </a>
             <a (click)="OPEN_DIALOG('Delete', admin)" class="m-r-10 cursor-pointer">
