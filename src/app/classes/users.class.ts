@@ -1,5 +1,5 @@
 //  DONE FROM API
-export class User {
+export class UserClass {
     _id: string;
     first_name: string;
     last_name: string;
@@ -8,12 +8,12 @@ export class User {
     role: string;
 
     constructor(
-        _id: string,
-        first_name: string,
-        last_name: string,
-        email: string,
-        password: string,
-        role: string
+        _id: string = '',
+        first_name: string = '',
+        last_name: string = '',
+        email: string = '',
+        password: string = '',
+        role: string = ''
     ) {
         this._id = _id;
         this.first_name = first_name;

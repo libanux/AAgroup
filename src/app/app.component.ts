@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  title = 'Daher Travel';
+  title = 'AA GROUP';
   isLoggedIn = false;
 
   constructor(private router:Router){}

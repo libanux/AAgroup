@@ -53,8 +53,7 @@ export class AppNavItemComponent implements OnChanges {
   }
 
   onItemSelected(item: NavItem) {
-
-    if(item.displayName == 'logout'){
+    if(item.displayName == 'Logout'){
         this.authService.LOGOUT();
         this.router.navigate(['/login']).then(() => {
           window.scrollTo(0, 0);
@@ -76,7 +75,6 @@ export class AppNavItemComponent implements OnChanges {
       }
     }
     }
-
   }
 
   onSubItemSelected(item: NavItem) {
