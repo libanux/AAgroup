@@ -182,19 +182,12 @@ export class CustomersComponent {
 
   // ADD NEW CUSTOMER
   ADD_CUSTOMER() {
-    // this.ADDED_VISA.customer =
-    // {
-    //   id: this.CUSTOMER_SELECTED.id,
-    //   name: this.CUSTOMER_SELECTED.name,
-    //   phoneNumber: this.CUSTOMER_SELECTED.phoneNumber,
-    // }
-
-    // this.SHOW_LOADING_SPINNER = true;
-    // this.visaService.ADD_VISA(this.ADDED_VISA).subscribe({
-    //   next: (response: any) => { },
-    //   error: (error) => { },
-    //   complete: () => { this.FETCH_VISA(); this.CANCEL_UPDATE(); }
-    // });
+    this.SHOW_LOADING_SPINNER = true;
+    this.customerService.ADD_CUSTOMER(this.ADDED_CUSTOMER).subscribe({
+      next: (response: any) => { },
+      error: (error) => { },
+      complete: () => { this.FETCH_CUSTOMERS(); this.CANCEL_UPDATE(); }
+    });
   }
 
 
