@@ -1,3 +1,4 @@
+//  DONE FROM API
 export class CustomerClass {
     _id: string;
     first_name: string;
