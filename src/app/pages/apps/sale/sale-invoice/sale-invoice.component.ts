@@ -6,11 +6,12 @@ import { Product } from 'src/app/classes/products.class';
 import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invoices.class';
 import { ProductsService } from 'src/app/services/products.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Download_Options, GeneralService } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-sale-invoice',
   templateUrl: './sale-invoice.component.html',
-  styleUrl: './sale-invoice.component.scss',
+  styleUrl:'../../../../../assets/scss/apps/general_table.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -23,9 +24,10 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   ],
 })
 export class SaleInvoiceComponent {
-  ShowAddButoon = true;
-  selectedMonth: string = '';
 
+// DOWNLOAD
+Options: any[] = Download_Options;
+selectedDownloadOption: string = 'Download as';
   //TABLE COLUMNS
   displayedColumns: string[] = [
     'supplier',
@@ -36,15 +38,34 @@ export class SaleInvoiceComponent {
     'action'
   ];
 
+
+  // VARIABLES
+  // These two valus are used for the add expnad row in the top of the page
+  panelOpenState = false;
+  open_expansion_value = 0;
+  // SHOW ADD BUTTON FOR ADD PRODUCT / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
+  ShowAddButoon = true;
+  CurrentAction: string = 'Add Product'
+  // 
+  selectedMonth: string = '';
+  selectedCategory: string = '';
+  // 
+  searchText: any;
+  totalCount = 0;
+
+  // DATE SELECTION
+  SEARCK_KEY = '';
+  FILTER_TYPE = ''
+  START_DATE = ''
+  END_DATE = ''
+  STATUS = ''
+
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: PurchaseInvoice | null = null;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
 
-  // 
-  searchText: any;
-  totalCount = 0;
   Cancelled = 0;
   Inprogress = 0;
   Completed = 0;
@@ -71,7 +92,7 @@ dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
  purchaseInvoiceExample = new PurchaseInvoice('', '', 0, 0 ,0, "");
   editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 
-constructor(public dialog: MatDialog, private productsService: ProductsService) {
+constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
   this.viewInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 }
 
@@ -83,15 +104,81 @@ onDateSelect(date: Date) {
   console.log('Selected Date:', date);
 }
 
-// cancelSelection() {
-//     this.showCalendar = false;
-//     this.selectedMonth = '';
-//     this.selectedDate = null;
-// }
+  // SEARCH
+  APPLY_SEARCH_FILTER(filterValue: string): void {
+    // this.productsArray.filter = filterValue.trim().toLowerCase();
+  }
 
-ngAfterViewInit(): void {
-  this.dataSource.paginator = this.paginator;
-}
+
+  // FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
+  showDatePicker = false;
+  DROPDOWN_FILTERATION(value: string, dropdown: string) {
+
+    // Date filtering
+    if (dropdown == 'month') {
+      if (value === 'Calendar') {
+        this.showDatePicker = true;
+      }
+
+      else {
+        this.START_DATE = '';
+        this.END_DATE = '';
+
+        this.showDatePicker = false;
+
+        this.FILTER_TYPE = value;
+
+        // this.FILTER_ARRAY_BY_DATE(value)
+      }
+    }
+
+    // Status filtering
+    else if (dropdown == 'status') {
+      if (value == 'all') {
+        // this.FILTER_ARRAY_BY_STATUS('')
+        this.STATUS = ''
+      }
+      else {
+        // this.FILTER_ARRAY_BY_STATUS(value)
+        this.STATUS = value
+      }
+    }
+
+    else if (dropdown == 'Download') {
+      // this.DOWNLOAD(value);
+      // this.selectedDownloadOption = 'Download as';
+    }
+  }
+
+
+  // DATE FILTERATION
+  FILTER_ARRAY_BY_DATE(filter_type: any) {
+    // this.FILTER_TYPE = filter_type
+    // this.paginator.firstPage();
+    // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
+  }
+
+  // Method to handle changes in start date input
+  handleStartDateChange(event: any): void {
+    this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+    this.FILTER_ARRAY_BY_DATE('custom')
+  }
+
+  // Method to handle changes in end date input
+  handleEndDateChange(event: any): void {
+    this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+    this.FILTER_ARRAY_BY_DATE('custom')
+  }
+
+  FORMAT_DATE_YYYYMMDD(date: Date): string {
+    return this.generalService.FORMAT_DATE_YYYYMMDD(date)
+  }
+
+  // Function to format date
+  FORMAT_DATE(dateString: string): string {
+    return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
+  }
+
 
 //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
 expandRow(event: Event, element: any, column: string): void {

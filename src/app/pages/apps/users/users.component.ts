@@ -9,10 +9,37 @@ import { AdminService } from 'src/app/services/Admins.service';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
-})
+  styleUrls: [
+    '../../../../assets/scss/apps/_add_expand.scss',
+    '../../../../assets/scss/apps/general_table.scss',
+  ],})
+
 export class UsersComponent {
 
+   // VARIABLES
+  // These two valus are used for the add expnad row in the top of the page
+  panelOpenState = false;
+  open_expansion_value = 0;
+  // SHOW ADD BUTTON FOR ADD USER / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
+  ShowAddButoon = true;
+  CurrentAction: string = 'Add User'
+  // 
+  selectedMonth: string = '';
+  selectedCategory: string = '';
+  // 
+  searchText: any;
+  totalCount = 0;
+
+  // DATE SELECTION
+  SEARCK_KEY = '';
+  FILTER_TYPE = ''
+  START_DATE = ''
+  END_DATE = ''
+  STATUS = ''
+
+  
+  SHOW_LOADING_SPINNER: boolean = false;
+  DATA_CHANGED: boolean = false;
   admins : Admin [] = [];
 selectedUser : Admin
   displayedColumns: string[] = [
@@ -23,7 +50,6 @@ selectedUser : Admin
     'action'
   ];
     
-  searchText: any;
   dataSource = new MatTableDataSource(this.admins);
   columnsToDisplayWithExpand = [...this.displayedColumns];
   
@@ -40,10 +66,17 @@ selectedUser : Admin
     this.dataSource = new MatTableDataSource(this.admins);
   }
   
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+  // Method to handle the panel closed event
+  CLOSE_PANEL() {
+    this.open_expansion_value = 0;
+    this.panelOpenState = false
   }
-  
+
+  OPEN_PANEL() {
+    this.open_expansion_value = 1;
+    this.panelOpenState = true;
+  }
+
   FETCH_ADMINS(){
     this.admins = adminsArray
       // this.adminService.GET_ALL_ADMINS().subscribe({
@@ -67,18 +100,18 @@ selectedUser : Admin
         data: obj,
       });
       dialogRef.afterClosed().subscribe((result) => {
-        if (result.event === 'Add') {
-          this.ADD_ADMIN(result.data);
-        } else if (result.event === 'Update') {
-          this.UPDATE_ADMIN(result.data);
-        } else if (result.event === 'Delete') {
-          this.DELETE_ADMIN(result.data);
-      }
+      //   if (result.event === 'Add') {
+      //     this.ADD_ADMIN(result.data);
+      //   } else if (result.event === 'Update') {
+      //     this.UPDATE_ADMIN(result.data);
+      //   } else if (result.event === 'Delete') {
+      //     this.DELETE_ADMIN(result.data);
+      // }
     });
   }
   
   // tslint:disable-next-line - Disables all
-  ADD_ADMIN(row_obj: Admin): void {
+  ADD_USER(): void {
       // this.dataSource.data.unshift({
       //   id: this.admins.length + 1,
       //   Name: row_obj.Name,
@@ -94,23 +127,7 @@ selectedUser : Admin
       // this.dialog.open(AppAddEmployeeComponent);
     this.table.renderRows();
   }
-  
-  // tslint:disable-next-line - Disables all
-  UPDATE_ADMIN(row_obj: Admin): boolean | any {
-    this.dataSource.data = this.dataSource.data.filter((value: any) => {
-        // if (value.id === row_obj.id) {
-          // value.Name = row_obj.Name;
-          // value.Position = row_obj.Position;
-          // value.Email = row_obj.Email;
-          // value.Mobile = row_obj.Mobile;
-          // value.DateOfJoining = row_obj.DateOfJoining;
-          // value.Salary = row_obj.Salary;
-          // value.Projects = row_obj.Projects;
-          // value.imagePath = row_obj.imagePath;
-        // }
-    return true;
-  });
-  }
+
   
   expandedElement: Admin | null = null;
   //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
@@ -124,10 +141,35 @@ selectedUser : Admin
           }
   }
 
-  showUpdate: boolean =false;
-  UPDATE_USER(user: any) {
-    this.showUpdate = true;
-    this.selectedUser = user
+
+  UPDATE_USER(){
+
+  }
+
+  
+  //SELECT USER TO UPDATE
+  SELECT_USER(obj: any): void {
+    // HIDE THE ADD BUTTON AND DISPLAY THE UPDATE BTN INSTEAD
+    this.ShowAddButoon = false;
+    this.CurrentAction = 'Update User'
+    // FILL THE OBJ WITH THE SELECTED USER TO UPDATE
+    this.selectedUser = { ...obj };
+    // OPEN THE PANEL
+    this.OPEN_PANEL()
+  }
+
+  // CANCEL UPDATE
+  CANCEL_UPDATE(): void {
+    // CLOSE THE PANEL
+    this.CLOSE_PANEL();
+    // HIDE THE UPDATE BUTTON AND DISPLAY THE ADD BTN INSTEAD
+    this.ShowAddButoon = true;
+    this.CurrentAction = 'Add User'
+    // EMPTY THE SELECTED USER TO UPDATE
+    // this.SELECTED_USER = new USER('', '', '', '', '', '', 0, 0);
+    // 
+    this.DATA_CHANGED = false;
+    this.SHOW_LOADING_SPINNER = false
   }
   
   // tslint:disable-next-line - Disables all

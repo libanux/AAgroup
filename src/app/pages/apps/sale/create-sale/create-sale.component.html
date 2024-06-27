@@ -1,83 +1,80 @@
-<h4 class="mat-headline-6 m-y-24">Create Sale</h4>
-<mat-card class="cardWithShadow theme-card">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-    <mat-tab label="Create sale">
-      <mat-card-content>
-        <div class="row">
-
-        <!-- Customer -->
-<div class="col-md-4 d-flex flex-column">
-  <div class="d-flex align-items-center">
-    <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Customer</mat-label>
-  </div>
-  <mat-form-field appearance="outline" class="w-100">
-    <input matInput 
-           placeholder="Search Supplier....." 
-           aria-label="Product" 
-           [matAutocomplete]="auto1" 
-           [(ngModel)]="searchQuery" 
-           (input)="filterSuppliers()">
-    <mat-icon matPrefix class="op-5">
-      <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/>
-      </svg>
-    </mat-icon>
-    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayFn">
-      <mat-option *ngFor="let product of filteredSuppliers" [value]="product">
-        {{product.name}}
-      </mat-option>
-      <mat-option class="add-new-customer-option" (click)="addNewProduct()">
-        <div class="option-content">
-          <mat-icon matPrefix class="op-5">
-            <i-tabler name="user" class="icon-20 d-flex"></i-tabler>
-          </mat-icon>
-          <span>Add new customer</span>
-        </div>
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
-</div>
-
-
-          <!-- Invoice No. -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Invoice No.</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="11446688" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
-                  width="24px" fill="#5f6368">
-                  <path
-                    d="M160-640h640v-80H160v80Zm-80-80q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v240H160v240h164v80H160q-33 0-56.5-23.5T80-240v-480ZM598-80 428-250l56-56 114 112 226-226 56 58L598-80ZM160-720v480-180 113-413Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
+<mat-card class="cardWithShadow">
+  <mat-expansion-panel [expanded]="open_expansion_value === 1" (opened)="OPEN_PANEL()" (closed)="CLOSE_PANEL()">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="f-w-600 mat-body-1 currentAction">Create Purchase</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <!-- FIRST ROW :  Supplier + Invoice No. + Purchase Date -->
+      <div class="row">
+        <!-- Supplier -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Supplier</mat-label>
           </div>
-
-          <!-- Purchase Date -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16"> Date</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput [matDatepicker]="birthpicker3" placeholder="13-6-2024" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
-                  width="24px" fill="#5f6368">
-                  <path
-                    d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
-                </svg>
-              </mat-icon>
-              <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
-              <mat-datepicker #birthpicker3></mat-datepicker>
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Search Supplier....." aria-label="Product" [matAutocomplete]="auto"
+              [(ngModel)]="searchQuery" (input)="filterSuppliers()">
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                width="24px" fill="#5f6368">
+                <path
+                  d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+              </svg>
+            </mat-icon>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let product of filteredSuppliers" [value]="product">
+                {{product.name}}
+              </mat-option>
+              <mat-option (click)="addNewProduct()">
+                <div class="option-content">
+                  <mat-icon matPrefix class="op-5">
+                    <i-tabler name="user" class="icon-20 d-flex"></i-tabler>
+                  </mat-icon>
+                  <span>Add new Supplier</span>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
         </div>
+        <!-- Invoice No. -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Invoice No.</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="11446688" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                width="24px" fill="#5f6368">
+                <path
+                  d="M160-640h640v-80H160v80Zm-80-80q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v240H160v240h164v80H160q-33 0-56.5-23.5T80-240v-480ZM598-80 428-250l56-56 114 112 226-226 56 58L598-80ZM160-720v480-180 113-413Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- Purchase Date -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Purchase Date</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput [matDatepicker]="birthpicker3" placeholder="13-6-2024" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                width="24px" fill="#5f6368">
+                <path
+                  d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+              </svg>
+            </mat-icon>
+            <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
+            <mat-datepicker #birthpicker3></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
 
-        <div class="row">
-
+      <!-- SECOND ROW :  SEARCH -->
+      <div class="row">
+        
           <!-- INVENTORY STATUS -->
           <div class="col-md-4 d-flex flex-column">
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Inventory status
@@ -103,26 +100,12 @@
             </mat-form-field>
           </div>
 
-          <!-- HIDDEN BALANCE -->
-          <div class="col-md-4 d-flex flex-column" *ngIf="paymentOption === 'partial'">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Partial Amout</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="11446688" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
-                  width="24px" fill="#5f6368">
-                  <path
-                    d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
-        </div>
         <!-- SEARCH -->
+        <div class="col-md-4 d-flex flex-column">
+          <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Product Name</mat-label>
+
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="Search products..." aria-label="Product" [matAutocomplete]="auto"
+          <input matInput placeholder="Search products..." aria-label="Product" [matAutocomplete]="productAuto"
             [(ngModel)]="searchQuery" (input)="filterProducts()">
           <mat-icon matPrefix class="op-5">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
@@ -131,11 +114,11 @@
                 d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
             </svg>
           </mat-icon>
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
             <mat-option *ngFor="let product of filteredProducts" [value]="product">
               {{product.itemName}}
             </mat-option>
-            <mat-option (click)="addNewProduct()">
+            <mat-option class="add-new-product-option" (click)="addNewProduct()">
               <div class="option-content">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
                   width="24px" fill="#5c8305">
@@ -147,15 +130,17 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-
-
-        <div class="m-t-12 text-right">
-          <button mat-flat-button color="primary">Create</button>
-          <button mat-flat-button class="m-l-8 btn">Cancel</button>
         </div>
-      </mat-card-content>
-    </mat-tab>
-  </mat-tab-group>
+
+      </div>
+
+      <div class="Buttons_div">
+        <div>
+          <button mat-flat-button color="primary"> Create Purchase </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-expansion-panel>
 </mat-card>
 
 
