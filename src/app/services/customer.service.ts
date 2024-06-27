@@ -87,7 +87,7 @@ export class CustomerService {
       "company_name": CUSTOMER.company_name,
       "owner_id": '667881ff4488ac3c152b440c',
     };  
-    return this.httpClient.post<any>(this.apiUrl + '/ADD_CUSTOMER', requestBody, { headers });
+    return this.httpClient.post<any>(this.apiUrl + '/CREATE_CUSTOMER', requestBody, { headers });
   }
 
   //DELETE CUSTOMER
