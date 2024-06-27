@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, Inject, Optional, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { Admin } from 'src/app/classes/admin.class';
 import { AdminService } from 'src/app/services/Admins.service';
@@ -47,10 +47,6 @@ export class CustomersComponent {
   CUSTOMERS_ARRAY = new MatTableDataSource();
   CUSTOMMERS_ARRAY_LENGTH = 0
 
-  // START AND END ROW FOR API
-  START_ROW = 0
-  END_ROW = 10;
-
   // OBJECTS
   //CUSTOMER TO EDIT|ADD
   // THESE TWO OBJECTS ARE TO CHECK IF THE SELECTED PRODUCT TO UPDATE HAVE DIFFERENT VALUES THAN THE MAIN ONE SO THAT THE DISBALE BUTTON IS ABLE
@@ -64,6 +60,8 @@ export class CustomersComponent {
 
   // PAGING
   current_page_array_length = 0
+  pageSize = 10;
+  Current_page = 0
 
   //  TABLE COLUMNS
   displayedColumns: string[] = ['firstname', 'lastname', 'email', 'phone', 'companyname', 'actions'];
@@ -82,6 +80,30 @@ export class CustomersComponent {
   // FETCH ALL CUSTOMERS ON START
   ngOnInit(): void {
     this.FETCH_CUSTOMERS()
+  }
+
+  //  PAGING
+  // function when page number changes
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
+
+    // if (this.STATUS != '' || this.FILTER_TYPE != '') {
+    //   this.Current_page = event.pageIndex + 1;
+    //   // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
+    // }
+
+    // else {
+      this.Current_page = event.pageIndex;
+      this.FETCH_CUSTOMERS();
+    // }
+
+  }
+
+  // THIS FUNCTION IS FOR THE PAGING TO GO TO PREVOIUS PAGE
+  goToPreviousPage(): void {
+    if (this.paginator && this.paginator.hasPreviousPage()) {
+      this.paginator.previousPage();
+    }
   }
 
   // Method to handle the panel closed event
@@ -108,33 +130,26 @@ export class CustomersComponent {
 
   }
 
+  // OPEN DELETE DIALOG
   OPEN_DIALOG(action: string, obj: any): void {
     obj.action = action;
-    const dialogRef = this.dialog.open(UserDialogComponent, {
+    const dialogRef = this.dialog.open(CustomersDialogComponent, {
       data: obj,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result.event === 'Add') {
-        // this.ADD_ADMIN(result.data);
-      } else if (result.event === 'Update') {
-        // this.UPDATE_ADMIN(result.data);
-      } else if (result.event === 'Delete') {
-        // this.DELETE_ADMIN(result.data);
-      }
+      this.DELETE_CUSTOMER(result.data);
     });
   }
-
 
   // FETCH ALL + ADD + UPDATE + DELETE + SELECT + SEARCH + FILTER
 
   // GET ALL COSTUMERS
   FETCH_CUSTOMERS() {
     this.show_shimmer = true;
-    this.customerService.GET_ALL_CUSTOMER(this.START_ROW, this.END_ROW).subscribe({
+    this.customerService.GET_ALL_CUSTOMER(this.Current_page, this.pageSize).subscribe({
       next: (response: any) => {
-        console.log(response)
-        // this.current_page_array_length = response.visas.length
-        // this.CUSTOMMERS_ARRAY_LENGTH = response.pagination.totalVisas;
+        this.current_page_array_length = response.rows.length
+        this.CUSTOMMERS_ARRAY_LENGTH = response.count;
         this.CUSTOMERS_ARRAY = new MatTableDataSource(response.rows);
       },
       error: (error) => { },
@@ -142,14 +157,40 @@ export class CustomersComponent {
     });
   }
 
-  // FILTER
-  APPLY_FILTER(filterValue: string): void {
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
+  // ADD NEW CUSTOMER
+  ADD_CUSTOMER() {
+    this.SHOW_LOADING_SPINNER = true;
+    this.customerService.ADD_CUSTOMER(this.ADDED_CUSTOMER).subscribe({
+      next: (response: any) => { },
+      error: (error) => { },
+      complete: () => { this.FETCH_CUSTOMERS(); this.CANCEL_UPDATE(); }
+    });
   }
 
   // UPDATE CUSTOMER
   UPDATE_CUSTOMER() {
+    this.SHOW_LOADING_SPINNER = true;
+    this.customerService.UPDATE_CUSTOMER(this.ADDED_CUSTOMER).subscribe({
+      next: (response: any) => { },
+      error: (error) => { },
+      complete: () => { this.FETCH_CUSTOMERS(); this.CANCEL_UPDATE(); }
+    });
+  }
 
+  // DELETE COSTUMER
+  DELETE_CUSTOMER(ID: any) {
+    this.customerService.DELETE_CUSTOMER(ID).subscribe({
+      next: (response: any) => {
+        // CHECK IF I AM DELETING THE LAST ITEM LEFT IN THE PAGE I AM AT
+        // IF YES --> GO BACK TO THE PREVOUIS PAGE
+        if (this.current_page_array_length == 1) {
+          this.Current_page = this.Current_page - 1
+          this.goToPreviousPage()
+        }
+      },
+      error: (error) => { },
+      complete: () => { this.FETCH_CUSTOMERS(); this.CANCEL_UPDATE(); }
+    });
   }
 
   //SELECT CUSTOMER TO UPDATE
@@ -180,35 +221,43 @@ export class CustomersComponent {
     this.SHOW_LOADING_SPINNER = false
   }
 
-  // ADD NEW CUSTOMER
-  ADD_CUSTOMER() {
-    this.SHOW_LOADING_SPINNER = true;
-    this.customerService.ADD_CUSTOMER(this.ADDED_CUSTOMER).subscribe({
-      next: (response: any) => { },
-      error: (error) => { },
-      complete: () => { this.FETCH_CUSTOMERS(); this.CANCEL_UPDATE(); }
-    });
+  // FILTER
+  APPLY_FILTER(filterValue: string): void {
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+}
 
-  expandedElement: Admin | null = null;
-  //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
-  EXPAND_RAW(event: Event, element: any, column: string): void {
-    if (column === 'action') { this.expandedElement = element; }
-
-    else {
-      this.expandedElement = this.expandedElement === element ? null : element;
-      event.stopPropagation();
-    }
-  }
-
+@Component({
   // tslint:disable-next-line - Disables all
-  DELETE_CUSTOMER(row_obj: Admin): boolean | any {
-    // this.dataSource.data = this.dataSource.data.filter((value: any) => {
-    // return value.id !== row_obj.id;
-    // });
+  selector: 'customer-dialog-content',
+  templateUrl: 'customer-dialog-content.html',
+  styleUrl: '../../../../../assets/scss/apps/_dialog_delete.scss'
+})
+// tslint:disable-next-line - Disables all
+export class CustomersDialogComponent {
+  action: string;
+  // tslint:disable-next-line - Disables all
+  local_data: any;
+  CUSTOMER_ID: any
+  CUSTOMER_NAME: any
+
+  constructor(
+    public dialogRef: MatDialogRef<CustomersDialogComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.local_data = { ...data };
+    this.action = this.local_data.action;
+    this.CUSTOMER_ID = data._id
   }
 
+  doAction(): void {
+    this.dialogRef.close({ event: this.action, data: this.CUSTOMER_ID });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close({ event: 'Cancel' });
+  }
 }
 
 

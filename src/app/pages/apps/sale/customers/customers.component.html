@@ -188,7 +188,19 @@
       </table>
     </div>
   }
-    <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+
+    <!--  LENGTH & PAGE-SIZE: 1-PAGE-SIZE of LENGTH -->
+          <!-- pageSize : Items Per Page -->
+
+    <mat-paginator 
+    [pageSizeOptions]="[10, 20, 30]" 
+    [length]="CUSTOMMERS_ARRAY_LENGTH" 
+    [pageSize]="pageSize"
+    aria-label="Select page" 
+    showFirstLastButtons 
+    (page)="onPageChange($event)">
+  </mat-paginator>
+
 
   </mat-card-content>
 </mat-card>
