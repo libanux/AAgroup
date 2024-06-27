@@ -269,11 +269,11 @@
 
   <mat-card-content>
 
-    <!-- @if(show_shimmer){
+    @if(show_shimmer){
     <app-table-shimmer [headers]="displayedColumns"></app-table-shimmer>
-    } -->
+    }
 
-    <!-- @else{ -->
+    @else{
     <!-- TABLE BODY -->
     <div class="table-responsive">
       <table mat-table [dataSource]="productsArray" multiTemplateDataRows>
@@ -394,7 +394,7 @@
 
       </table>
     </div>
-    <!-- } -->
+    }
 
     <!-- TABLE PAGINATION -->
     <!-- LENGTH : 1-10 of length -->
