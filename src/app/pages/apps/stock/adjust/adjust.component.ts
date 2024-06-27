@@ -2,20 +2,27 @@ import { Component, Inject, OnInit, Optional } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Adjust } from 'src/app/classes/adjust.class';
-import { Category, categories } from 'src/app/classes/category.class';
 import { Product, products } from 'src/app/classes/products.class';
+import { PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-adjust',
   templateUrl: './adjust.component.html',
-  styleUrl: './adjust.component.scss'
+  styleUrls: [
+    './adjust.component.scss',
+    '../../../../../assets/scss/apps/_add_expand.scss'
+  ],
 })
-export class AdjustComponent implements OnInit{
+export class AdjustComponent implements OnInit {
+
+  // These two valus are used for the add expnad row in the top of the page
+  panelOpenState = false;
+  open_expansion_value = 0;
 
   PRODUCTS_ARRAY = products;
   filteredProducts: any[]
   quantity_adjusted = 0;
-  added_Product : Product =  new Product('', '', '', '', 0, 0, 0, 0);
+  added_Product: Product = new Product('', '', '','', '', '', 0, 0);
 
   New_adjust_Array: Product[] = []
   ADJUST_ARRAY = new MatTableDataSource<Product>([]);
@@ -25,9 +32,8 @@ export class AdjustComponent implements OnInit{
   conhide = true;
   alignhide = true;
   step = 0;
-  panelOpenState = false;
 
-  displayedColumns: string [] = [
+  displayedColumns: string[] = [
     'barcode',
     'itemName',
     'category',
@@ -37,38 +43,44 @@ export class AdjustComponent implements OnInit{
     'action'
   ];
 
-// Define your column headers
-columnHeaders = [
-  { key: 'itemName', title: 'Item Name' },
-  { key: 'barcode', title: 'Barcode' },
-  { key: 'description', title: 'Description' },
-  { key: 'category', title: 'Category' },
-  { key: 'quantity_available', title: 'Quantity Available' },
-  { key: 'new_quantity_on_hand', title: 'New Quantity on Hand' },
-  { key: 'quantity_adjusted', title: 'Quantity Adjusted' },
-  { key: 'action', title: 'Action' }
-];
+  // Define your column headers
+  columnHeaders = [
+    { key: 'itemName', title: 'Item Name' },
+    { key: 'barcode', title: 'Barcode' },
+    { key: 'description', title: 'Description' },
+    { key: 'category', title: 'Category' },
+    { key: 'quantity_available', title: 'Quantity Available' },
+    { key: 'new_quantity_on_hand', title: 'New Quantity on Hand' },
+    { key: 'quantity_adjusted', title: 'Quantity Adjusted' },
+    { key: 'action', title: 'Action' }
+  ];
 
-// Extract the keys from columnHeaders for mat-table
-
-
-
+  // Extract the keys from columnHeaders for mat-table
   searchQuery: string;
   editRowIndex: number = -1;
 
-  constructor( public dialog: MatDialog ) {
+  constructor(public dialog: MatDialog) {
   }
 
   ngOnInit(): void {
-    console.log(this.ADJUST_ARRAY);
     this.displayedColumns = this.columnHeaders.map(column => column.key);
   }
-  
 
-  onEdit(element: Element, field: string, event: any, rowIndex: number) {
+  onInputChange(element: Element, field: string, event: any, rowIndex: number) {
     this.editRowIndex = rowIndex;
     // Set the rowIndex to highlight the editing cell
     // Handle your edit logic here
+  }
+
+  // Method to handle the panel closed event
+  CLOSE_PANEL() {
+    this.open_expansion_value = 0;
+    this.panelOpenState = false
+  }
+
+  OPEN_PANEL() {
+    this.open_expansion_value = 1;
+    this.panelOpenState = true;
   }
 
   new_quantity_on_hand = 0
@@ -82,37 +94,41 @@ columnHeaders = [
     // return element.onHandQuantity*quantity_adjusted
   }
 
-  //FETCH productsArray FROM API
+// FETCH ALL + ADD NEW PRODUCT + CREATE ADJUSTMENT + REMOVE PRODUCT + SELECT 
+
+  //FETCH ALL PRODUCTS
   FETCH_ADJUSTS(): void {
     this.ADJUST_ARRAY = new MatTableDataSource(this.New_adjust_Array);
     console.log(this.ADJUST_ARRAY)
   }
 
+  // ADD PRODUCT TO THE TABLE
   ADD_ADUST(object: Product) {
     this.New_adjust_Array.push(object);
     this.FETCH_ADJUSTS();
-    
+
   }
 
-// OPEN UPDATE & DELETE DIALOGS
-OPEN_DIALOG(action: string, product: Product): void {
-  const dialogRef = this.dialog.open(AdjustDialogComponent, {
-    data: { action, product }
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-  // if (result && result.event === 'Delete') {
-  //   this.DELETE_PRODUCT(product.barcode)
-  // }
-});
-}
+  // REMOVE ADDED PRODUCT FROM TABLE
   REMOVE_ADJUST() {
     this.New_adjust_Array.pop()
     this.FETCH_ADJUSTS()
   }
+  // OPEN DIALOG TO ADD NEW PRODUCT
+  OPEN_DIALOG(action: string, product: Product): void {
+    const dialogRef = this.dialog.open(AdjustDialogComponent, {
+      data: { action, product }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      // if (result && result.event === 'Delete') {
+      //   this.DELETE_PRODUCT(product.barcode)
+      // }
+    });
+  }
+
+  // ADD NEW ADJUSTMENT
   CREATE_ADJUSTEMENT() {
-
   }
 
   filterProducts() {
@@ -121,9 +137,6 @@ OPEN_DIALOG(action: string, product: Product): void {
     // this.filteredProducts = this.dataSource.filter(product => product.itemName.toLowerCase().includes(query));
   }
 
-  displayFn(product: { id: number, name: string }): string {
-    return product ? product.name : '';
-  }
 }
 
 
@@ -131,14 +144,14 @@ OPEN_DIALOG(action: string, product: Product): void {
 @Component({
   selector: 'products-dialog-content',
   templateUrl: 'adjust-dialog-content.html',
-  styleUrl: 'adjust-dialog-content.scss'
+  styleUrl: '../../../../../assets/scss/apps/_dialog_delete.scss'
 })
 export class AdjustDialogComponent {
   action: string;
   local_data: any;
   PRODUCT: Product
-  categoryArray = categories
-  
+  categoryArray = PRODUCT_CATEGORY_ARRAY
+
   constructor(
     public dialogRef: MatDialogRef<AdjustDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Product

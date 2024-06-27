@@ -1,114 +1,115 @@
-<!-- Add Supplier form -->
-<h4 class="mat-headline-6 m-y-24">Suppliers</h4>
-<mat-card class="cardWithShadow theme-card">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-    <mat-tab label="Add Supplier">
-      <mat-card-content>
-        <div class="row">
-
-
-          <!-- First Name -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">First Name</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="FIRST NAME" [(ngModel)]="selectedSupplier.firstname"/>
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
+<mat-card class="cardWithShadow">
+  <mat-expansion-panel [expanded]="open_expansion_value === 1" (opened)="OPEN_PANEL()" (closed)="CLOSE_PANEL()">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="f-w-600 mat-body-1 currentAction">{{CurrentAction}}</mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-card-content>
+      <!-- FIRST ROW :  FIRST NAME + LAST NAME +  COMPANY NAME -->
+      <div class="row">
+        <!-- FIRST NAME -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">First Name</mat-label>
           </div>
-
-          <!-- last Name-->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Last Name</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="LAST NAME" [(ngModel)]="selectedSupplier.lastname"/>
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="First Name" [(ngModel)]="selectedSupplier.firstname" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- LAST NAME-->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Last Name</mat-label>
           </div>
-
-
-          <!-- Company name-->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Company name (optional)</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="COMPANY NAME (OPTIONAL)" [(ngModel)]="selectedSupplier.companyname"/>
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Last Name" [(ngModel)]="selectedSupplier.lastname" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- COMPANY NAME -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Company Name (optional)</mat-label>
           </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Company Name (OPTIONAL)" [(ngModel)]="selectedSupplier.companyname" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
 
+      <!-- SECOND ROW :  EMAIL + PHONE + SALE -->
+      <div class="row">
+        <!-- EMAIL-->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email (optional)</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Email (OPTIONAL)" [(ngModel)]="selectedSupplier.email" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <!-- PHONE-->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Phone</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Phone" [(ngModel)]="selectedSupplier.phone" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
 
+      <div class="Buttons_div">
+        <div *ngIf="ShowAddButoon">
+          <button mat-flat-button color="primary" (click)="ADD_ADMIN()"> Add Supplier </button>
         </div>
 
-        <div class="row">
-          <!-- Email-->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email (optional)</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="EMAIL (OPTIONAL)" [(ngModel)]="selectedSupplier.email"/>
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
+        <div class="TwoButtons" *ngIf="!ShowAddButoon">
+          <button (click)="CANCEL_UPDATE()" mat-flat-button color="primary">Cancel</button>
 
-          <!-- Phone-->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Phone</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="PHONE" [(ngModel)]="selectedSupplier.phone"/>
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
-
+          <button mat-flat-button color="primary" (click)="UPDATE_ADMIN()"
+            [disabled]="SHOW_LOADING_SPINNER || !DATA_CHANGED">
+            <span *ngIf="!SHOW_LOADING_SPINNER">Update Supplier</span>
+            <mat-spinner diameter="20" *ngIf="SHOW_LOADING_SPINNER"></mat-spinner>
+          </button>
 
         </div>
-        <div class="m-t-12 text-right" *ngIf="!showUpdate">
-          <button mat-flat-button color="primary">Create</button>
-        </div>
-        <div class="m-t-12 text-right" *ngIf="showUpdate">
-          <button (click)="cancelSelection()" mat-flat-button class="m-l-8 btn">Cancel</button>
-          <button mat-flat-button color="primary">Update</button>
-        </div>
-      </mat-card-content>
-    </mat-tab>
-  </mat-tab-group>
+      </div>
+    </mat-card-content>
+  </mat-expansion-panel>
 </mat-card>
 
 
@@ -157,7 +158,7 @@
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Actions</th>
           <td mat-cell *matCellDef="let admin" class="action-link">
             <a class="m-r-10 cursor-pointer">
-              <i-tabler (click)="UPDATE_SUPPLIER(admin)" name="edit" class="icon-18"></i-tabler>
+              <i-tabler (click)="SELECTED_SUPPLIER(admin)" name="edit" class="icon-18"></i-tabler>
             </a>
             <a (click)="OPEN_DIALOG('Delete', admin)" class="m-r-10 cursor-pointer">
               <i-tabler name="trash" class="icon-18"></i-tabler>

@@ -1,6 +1,7 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
 import { products } from 'src/app/classes/products.class';
+import { Suppliers_ARRAY } from 'src/app/services/general.service';
 interface Supplier {
   id: number;
   name: string;
@@ -8,21 +9,24 @@ interface Supplier {
 @Component({
   selector: 'app-create-sale',
   templateUrl: './create-sale.component.html',
-  styleUrl: './create-sale.component.scss',
+  styleUrls: [
+    './create-sale.component.scss',     
+    '../../../../../assets/scss/apps/_add_expand.scss',
+  ],
  
 })
 export class CreateSaleComponent {
+    // VARIABLES
+  // These two valus are used for the add expnad row in the top of the page
+  panelOpenState = false;
+  open_expansion_value = 0;
+
   dataSource = products;
   filteredProducts: any[]
   filteredSuppliers: any[]
   paymentOption: string = 'full';
-  suppliers: Supplier[] = [
-    { id: 1, name: 'Supplier A' },
-    { id: 2, name: 'Supplier B' },
-    { id: 3, name: 'Supplier C' },
-    { id: 4, name: 'Supplier D' },
-    // Add more suppliers as needed
-  ];
+  suppliers = Suppliers_ARRAY
+
     constructor() {
       this.filteredProducts = products
       this.filteredSuppliers = this.suppliers
@@ -48,8 +52,16 @@ export class CreateSaleComponent {
       this.step--;
     }
   
-    panelOpenState = false;
+  // Method to handle the panel closed event
+  CLOSE_PANEL() {
+    this.open_expansion_value = 0;
+    this.panelOpenState = false
+  }
 
+  OPEN_PANEL() {
+    this.open_expansion_value = 1;
+    this.panelOpenState = true;
+  }
     displayedColumns: string[] = [  
       'barcode',
       'itemName',
@@ -63,8 +75,8 @@ export class CreateSaleComponent {
   
       
       getTotalSale() {
-        console.log("bb",this.dataSource.map(t => t.sale).reduce((acc, value) => acc + value, 0))
-        return this.dataSource.map(t => t.sale).reduce((acc, value) => acc + value, 0);
+        // console.log("bb",this.dataSource.map(t => t.sale).reduce((acc, value) => acc + value, 0))
+        // return this.dataSource.map(t => t.sale).reduce((acc, value) => acc + value, 0);
       }
       searchQuery: string;
     editRowIndex: number = -1;

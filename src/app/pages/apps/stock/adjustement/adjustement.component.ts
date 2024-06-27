@@ -1,17 +1,16 @@
-import { Component, OnInit, Inject, Optional, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Category } from 'src/app/classes/category.class';
-import { GeneralService } from 'src/app/services/general.service';
+import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_ARRAY, STATUS_ARRAY } from 'src/app/services/general.service';
 import { adjustmentsService } from 'src/app/services/adjustment.service';
 import { Adjustment, adjustments } from 'src/app/classes/adjustment.class';
 
 @Component({
   selector: 'app-adjustement',
   templateUrl: './adjustement.component.html',
-  styleUrl: './adjustement.component.scss',
+  styleUrl: '../../../../../assets/scss/apps/general_table.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -26,6 +25,15 @@ import { Adjustment, adjustments } from 'src/app/classes/adjustment.class';
 
 export class AdjustementComponent implements OnInit {
 
+  // ARRAYS 
+  // DOWNLOAD
+  Options: any[] = Download_Options;
+  selectedDownloadOption: string = 'Download as';
+  //PRODUCT CATEGORIES ARRAY
+  categoryArray = PRODUCT_CATEGORY_ARRAY
+  //MONTHS FOR FILTER DROPDOWN
+  months = Month_Filter_Array
+  
   ShowAddButoon = true;
   selectedMonth: string = '';
 
@@ -65,17 +73,12 @@ export class AdjustementComponent implements OnInit {
   Cancelled = 0;
   Inprogress = 0;
   Completed = 0;
-
-
-  //MONTHS FOR FILTER DROPDOWN
-  months: month[] = [
-    { value: 'today', viewValue: 'Today' },
-    { value: 'yesterday', viewValue: 'Yesterday' },
-    { value: 'last Week', viewValue: 'Last Week' },
-    { value: 'Last Month', viewValue: 'Last Month' },
-    { value: 'Last Year', viewValue: 'Last Year' },
-    { value: 'Calendar', viewValue: 'Custom' },
-  ];
+  // DATE SELECTION
+  SEARCK_KEY = '';
+  FILTER_TYPE = ''
+  START_DATE = ''
+  END_DATE = ''
+  STATUS = ''
 
  //MAIN stock ARRAY
  showCalendar: boolean = false;
@@ -116,7 +119,7 @@ FILTER_BY_CATEGORY(value: string){
 }
 
 //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
-expandRow(event: Event, element: any, column: string): void {
+EXPAND_ROW(event: Event, element: any, column: string): void {
     if (column === 'action') {
       this.expandedElement = element;
     }
@@ -124,6 +127,74 @@ expandRow(event: Event, element: any, column: string): void {
       this.expandedElement = this.expandedElement === element ? null : element;
       event.stopPropagation();
     }
+}
+
+// FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
+showDatePicker = false;
+DROPDOWN_FILTERATION(value: string, dropdown: string) {
+
+  // Date filtering
+  if (dropdown == 'month') {
+    if (value === 'Calendar') {
+      this.showDatePicker = true;
+    }
+
+    else {
+      this.START_DATE = '';
+      this.END_DATE = '';
+
+      this.showDatePicker = false;
+
+      this.FILTER_TYPE = value;
+
+      this.FILTER_ARRAY_BY_DATE(value)
+    }
+  }
+
+  // Status filtering
+  else if (dropdown == 'status') {
+    if (value == 'all') {
+      // this.FILTER_ARRAY_BY_STATUS('')
+      this.STATUS = ''
+    }
+    else {
+      // this.FILTER_ARRAY_BY_STATUS(value)
+      this.STATUS = value
+    }
+  }
+
+  else if (dropdown == 'Download') {
+    // this.DOWNLOAD(value);
+    // this.selectedDownloadOption = 'Download as';
+  }
+}
+
+// DATE FILTERATION
+FILTER_ARRAY_BY_DATE(filter_type: any) {
+  // this.FILTER_TYPE = filter_type
+  // this.paginator.firstPage();
+  // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
+}
+
+// Method to handle changes in start date input
+handleStartDateChange(event: any): void {
+  this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+  this.FILTER_ARRAY_BY_DATE('custom')
+}
+
+// Method to handle changes in end date input
+handleEndDateChange(event: any): void {
+  this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+  this.FILTER_ARRAY_BY_DATE('custom')
+}
+
+FORMAT_DATE_YYYYMMDD(date: Date): string {
+  return this.generalService.FORMAT_DATE_YYYYMMDD(date)
+}
+
+// Function to format date
+FORMAT_DATE(dateString: string): string {
+  return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
 }
 
 //FETCH stocksArray FROM API
@@ -175,7 +246,7 @@ ADD_ADJUSTMENT() {
 //TRIGGER THE DROP DOWN FILTER VALUES
 ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
-      this.OPEN_CALENDAR_DIALOG();
+      // this.OPEN_CALENDAR_DIALOG();
     }
     else{
       this.AdjustmentService.FILTER_ADJUSTMENT(value).subscribe({
@@ -193,39 +264,6 @@ ON_CHANGE_DROPDOWN(value: string) {
     }
 }
 
-//OPEN THE CALENDAR DIALOG
-OPEN_CALENDAR_DIALOG(): void {
-    // const dialogRef = this.dialog.open(CalendarDialogComponent, {
-    //   width: '350px',
-    //   data: { selectedDate: this.selectedDate }
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed', result);
-    //   if (result) {
-    //     if (result.startDate && result.endDate) {
-    //       this.selectedMonth = `${result.startDate.toLocaleString('default', { month: 'long' })} - ${result.endDate.toLocaleString('default', { month: 'long' })}`;
-    //       this.AdjustmentService.FILTER_stock("custom").subscribe({
-    //         next: (response: any) => {
-    //           console.log("Response:", response)
-    //           this.stocksArray = response;
-    //           this.dataSource = new MatTableDataSource(this.stocksArray);
-    //           this.totalCount = this.dataSource.data.length;
-    //           this.Inprogress = this.btnCategoryClick('pending');
-    //         },
-    //         error: (error: any) => {
-    //           console.log("Error:", error)
-    //         },
-    //         complete: () => {
-    //         }
-    //       });
-    //     } else {
-    //       this.selectedMonth = 'Custom';
-    //     }
-    //     this.selectedDate = result;
-    //   }
-    // });
-}
-
 //UPDATE ROW VALUES
 EDIT_ADJUSTMENT(obj: any): void {
   this.ShowAddButoon = false
@@ -236,12 +274,12 @@ EDIT_ADJUSTMENT(obj: any): void {
 
 // OPEN UPDATE & DELETE DIALOGS
 OPEN_DIALOG(action: string, delstock: Adjustment): void {
-//     const dialogRef = this.dialog.open(deleteAjustDialogComponent, {
-//       data: { action, delstock }
-//     });
+    const dialogRef = this.dialog.open(deleteAjustmentDialogComponent, {
+      data: { action, delstock }
+    });
 
-//     dialogRef.afterClosed().subscribe(result => {
-//       if (result && result.event === 'Delete') {
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.event === 'Delete') {
 
 // this.AdjustmentService.DELETE_stock(delstock).subscribe({
 //     next: (response: any) => {
@@ -251,8 +289,8 @@ OPEN_DIALOG(action: string, delstock: Adjustment): void {
 //     error: (error: any) => {console.error('Error:', error);},
 //     complete: () => { }
 //       });
-//     }
-//   });
+    }
+  });
 }
 
 //GET THE CATEGORY LENGTH
@@ -281,8 +319,33 @@ getStatusClass(status: string): string {
   }
 }
 
-//MONTHS INTERFACE
-interface month {
-  value: string;
-  viewValue: string;
+
+@Component({
+  // tslint:disable-next-line - Disables all
+  selector: 'products-dialog-content',
+  templateUrl: 'adjustment-dialog-content.html',
+  styleUrl: '../../../../../assets/scss/apps/_dialog_delete.scss'
+})
+// tslint:disable-next-line - Disables all
+export class deleteAjustmentDialogComponent {
+  action: string;
+  // tslint:disable-next-line - Disables all
+  local_data: any;
+  // PRODUCT: Product
+
+  constructor(
+    public dialogRef: MatDialogRef<deleteAjustmentDialogComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.local_data = { ...data };
+    this.action = this.local_data.action;
+  }
+
+  doAction(): void {
+    this.dialogRef.close({ event: this.action, data: this.local_data });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close({ event: 'Cancel' });
+  }
 }

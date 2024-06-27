@@ -1,50 +1,54 @@
-<mat-card class="cardWithShadow theme-card">
-    <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-        <mat-tab label="Adjust Product">
+<mat-card class="cardWithShadow">
+    <mat-expansion-panel [expanded]="open_expansion_value === 1" (opened)="OPEN_PANEL()" (closed)="CLOSE_PANEL()">
+        <mat-expansion-panel-header>
+            <mat-panel-title class="f-w-600 mat-body-1 currentAction">Adjust</mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-card-content>
 
-            <mat-card-content>
-
-                <div class="row">
-                    <!-- Discription -->
-                    <div class="col-md-6 d-flex flex-column">
-                        <div class="d-flex align-items-center">
-                            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Discription</mat-label>
-                        </div>
-                        <mat-form-field appearance="outline" class="w-100">
-                            <input matInput placeholder="Discription" />
-                            <mat-icon matPrefix class="op-5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px"
-                                    viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                                    <path
-                                        d="M160-640h640v-80H160v80Zm-80-80q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v240H160v240h164v80H160q-33 0-56.5-23.5T80-240v-480ZM598-80 428-250l56-56 114 112 226-226 56 58L598-80ZM160-720v480-180 113-413Z" />
-                                </svg>
-                            </mat-icon>
-                        </mat-form-field>
+            <!-- FIRST ROW : DESCRIPTION + -->
+            <div class="row">
+                <!-- DESCRIPTION -->
+                <div class="col-md-6 d-flex flex-column">
+                    <div class="d-flex align-items-center">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Description</mat-label>
                     </div>
-
-                    <!-- Date -->
-                    <div class="col-md-6 d-flex flex-column">
-                        <div class="d-flex align-items-center">
-                            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Date</mat-label>
-                        </div>
-                        <mat-form-field appearance="outline" class="w-100">
-                            <input matInput [matDatepicker]="birthpicker3" placeholder="13-6-2024" />
-                            <mat-icon matPrefix class="op-5">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px"
-                                    viewBox="0 -960 960 960" width="24px" fill="#5f6368">
-                                    <path
-                                        d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
-                                </svg>
-                            </mat-icon>
-                            <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
-                            <mat-datepicker #birthpicker3></mat-datepicker>
-                        </mat-form-field>
-                    </div>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput placeholder="Discription" />
+                        <mat-icon matPrefix class="op-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                                <path
+                                    d="M160-640h640v-80H160v80Zm-80-80q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v240H160v240h164v80H160q-33 0-56.5-23.5T80-240v-480ZM598-80 428-250l56-56 114 112 226-226 56 58L598-80ZM160-720v480-180 113-413Z" />
+                            </svg>
+                        </mat-icon>
+                    </mat-form-field>
                 </div>
 
+                <!-- Date -->
+                <div class="col-md-6 d-flex flex-column">
+                    <div class="d-flex align-items-center">
+                        <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Date</mat-label>
+                    </div>
+                    <mat-form-field appearance="outline" class="w-100">
+                        <input matInput [matDatepicker]="birthpicker3" placeholder="13-6-2024" />
+                        <mat-icon matPrefix class="op-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px"
+                                viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                                <path
+                                    d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+                            </svg>
+                        </mat-icon>
+                        <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
+                        <mat-datepicker #birthpicker3></mat-datepicker>
+                    </mat-form-field>
+                </div>
 
+            </div>
+
+            <!-- SECOND ROW :  CATEGORY + COST + SALE -->
+            <div class="row">
                 <!-- SEARCH -->
-                <mat-form-field appearance="outline" class="w-100">
+                <mat-form-field appearance="outline" class="w-100 col-md-12 d-flex flex-column">
                     <input matInput placeholder="Search products..." aria-label="Product" [matAutocomplete]="auto"
                         [(ngModel)]="searchQuery" (input)="filterProducts()">
                     <mat-icon matPrefix class="op-5">
@@ -73,25 +77,42 @@
                         </mat-option>
                     </mat-autocomplete>
                 </mat-form-field>
+            </div>
+            <!--   
+        <div class="Buttons_div">
+          <div *ngIf="ShowAddButoon">
+            <button mat-flat-button color="primary" (click)="ADD_PRODUCT()"> Add Product </button>
+          </div>
+  
+          <div class="TwoButtons" *ngIf="!ShowAddButoon">
+            <button (click)="CANCEL_UPDATE()" mat-flat-button color="primary">Cancel</button>
+  
+            <button mat-flat-button color="primary" (click)="UPDATE_PRODUCT()"
+              [disabled]="SHOW_LOADING_SPINNER || !DATA_CHANGED">
+              <span *ngIf="!SHOW_LOADING_SPINNER">Update Product</span>
+              <mat-spinner diameter="20" *ngIf="SHOW_LOADING_SPINNER"></mat-spinner>
+            </button>
+  
+          </div>
+        </div> -->
 
+            <div class="m-t-12 text-right">
+                <!-- <button mat-flat-button class="m-l-8 btn">Cancel</button> -->
+                <button mat-flat-button color="primary" (click)="CREATE_ADJUSTEMENT()">Create Adjustment</button>
+            </div>
 
-                <div class="m-t-12 text-right">
-                    <!-- <button mat-flat-button class="m-l-8 btn">Cancel</button> -->
-                    <button mat-flat-button color="primary" (click)="CREATE_ADJUSTEMENT()">Create Adjustment</button>
-                </div>
-
-            </mat-card-content>
-        </mat-tab>
-    </mat-tab-group>
+        </mat-card-content>
+    </mat-expansion-panel>
 </mat-card>
+
 
 
 <!-- MAIN TABLE -->
 <div class="table-card">
 
     <div class="w-100 table-responsive">
-        
-    @if(ADJUST_ARRAY.filteredData.length > 0){
+
+        @if(ADJUST_ARRAY.filteredData.length > 0){
         <table mat-table [dataSource]="ADJUST_ARRAY" class="mat-table">
             <!-- Item Name Column -->
             <ng-container matColumnDef="itemName">
@@ -99,7 +120,7 @@
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
                     <input class="input-text" matInput [(ngModel)]="element.itemName"
-                        (ngModelChange)="onEdit(element, 'itemName', $event, rowIndex)" />
+                        (ngModelChange)="onInputChange(element, 'itemName', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -109,7 +130,7 @@
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
                     <input class="input-text" matInput [(ngModel)]="element.barcode"
-                        (ngModelChange)="onEdit(element, 'barcode', $event, rowIndex)" />
+                        (ngModelChange)="onInputChange(element, 'barcode', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -119,7 +140,7 @@
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
                     <input class="input-text" matInput [(ngModel)]="element.description"
-                        (ngModelChange)="onEdit(element, 'description', $event, rowIndex)" />
+                        (ngModelChange)="onInputChange(element, 'description', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -129,7 +150,7 @@
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
                     <input class="input-text" matInput [(ngModel)]="element.category"
-                        (ngModelChange)="onEdit(element, 'category', $event, rowIndex)" />
+                        (ngModelChange)="onInputChange(element, 'category', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -139,7 +160,7 @@
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
                     <input class="input-text" matInput type="number" [(ngModel)]="element.onHandQuantity"
-                        (ngModelChange)="onEdit(element, 'quantity_available', $event, rowIndex)" />
+                        (ngModelChange)="onInputChange(element, 'quantity_available', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -149,7 +170,7 @@
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
                     <input class="input-text" matInput type="number" [(ngModel)]="new_quantity_on_hand"
-                        (ngModelChange)="onEdit(element, 'new_quantity_on_hand', $event, rowIndex)" />
+                        (ngModelChange)="onInputChange(element, 'new_quantity_on_hand', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -181,26 +202,42 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-    }
+        }
 
-    @else {
-<table mat-table class="mat-table">
-    <ng-container matColumnDef="itemName"><th mat-header-cell *matHeaderCellDef> Item Name </th></ng-container>
-    <ng-container matColumnDef="barcode"><th mat-header-cell *matHeaderCellDef> Barcode </th></ng-container>
-    <ng-container matColumnDef="description"><th mat-header-cell *matHeaderCellDef> Description </th></ng-container>
-    <ng-container matColumnDef="category"><th mat-header-cell *matHeaderCellDef> Category </th></ng-container>
-    <ng-container matColumnDef="quantity_available"><th mat-header-cell *matHeaderCellDef> Quantity Available </th></ng-container>
-    <ng-container matColumnDef="new_quantity_on_hand"><th mat-header-cell *matHeaderCellDef> Quantity On Hand </th></ng-container>
-    <ng-container matColumnDef="quantity_adjusted"><th mat-header-cell *matHeaderCellDef> Quantity Adjusted </th></ng-container>
-    <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef> Action </th></ng-container>
+        @else {
+        <table mat-table class="mat-table">
+            <ng-container matColumnDef="itemName">
+                <th mat-header-cell *matHeaderCellDef> Item Name </th>
+            </ng-container>
+            <ng-container matColumnDef="barcode">
+                <th mat-header-cell *matHeaderCellDef> Barcode </th>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Description </th>
+            </ng-container>
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef> Category </th>
+            </ng-container>
+            <ng-container matColumnDef="quantity_available">
+                <th mat-header-cell *matHeaderCellDef> Quantity Available </th>
+            </ng-container>
+            <ng-container matColumnDef="new_quantity_on_hand">
+                <th mat-header-cell *matHeaderCellDef> Quantity On Hand </th>
+            </ng-container>
+            <ng-container matColumnDef="quantity_adjusted">
+                <th mat-header-cell *matHeaderCellDef> Quantity Adjusted </th>
+            </ng-container>
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+            </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
-</table>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
+        </table>
 
-<div class="no-items-found">No Products found</div>
-}
-    
+        <div class="no-items-found">No Products found</div>
+        }
+
 
     </div>
 

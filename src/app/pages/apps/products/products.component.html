@@ -1,167 +1,176 @@
 <mat-card class="cardWithShadow">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0ms">
-    <mat-tab label="{{CurrentAction}}">
-      <mat-card-content>
+  <mat-expansion-panel [expanded]="open_expansion_value === 1" (opened)="OPEN_PANEL()" (closed)="CLOSE_PANEL()">
+    <mat-expansion-panel-header>
+      <mat-panel-title class="f-w-600 mat-body-1 currentAction">{{CurrentAction}}</mat-panel-title>
+    </mat-expansion-panel-header>
+  <mat-card-content>
+      <!-- FIRST ROW :  PRODUCT NAME + BARCODE + DESCRIPTION -->
+      <div class="row">
+        <!-- PRODUCT NAME -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Product Name</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Product Name" [(ngModel)]="ADDED_PRODUCT.itemName" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M200-80q-33 0-56.5-23.5T120-160v-451q-18-11-29-28.5T80-680v-120q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v120q0 23-11 40.5T840-611v451q0 33-23.5 56.5T760-80H200Zm0-520v440h560v-440H200Zm-40-80h640v-120H160v120Zm200 280h240v-80H360v80Zm120 20Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
 
-        <!-- FIRST ROW :  product name + description + barcode -->
-        <div class="row">
-
-          <!-- PRODUCT NAME -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Product Name</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="PRODUCT NAME" [(ngModel)]="ADDED_PRODUCT.itemName" />
-              <mat-icon matPrefix class="op-5">
+        <!-- BARCODE-->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Barcode</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <div class="d-flex position-relative">
+              <mat-icon matPrefix class="op-5 barcode_svg">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                   fill="#5f6368">
                   <path
-                    d="M200-80q-33 0-56.5-23.5T120-160v-451q-18-11-29-28.5T80-680v-120q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v120q0 23-11 40.5T840-611v451q0 33-23.5 56.5T760-80H200Zm0-520v440h560v-440H200Zm-40-80h640v-120H160v120Zm200 280h240v-80H360v80Zm120 20Z" />
+                    d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" />
                 </svg>
               </mat-icon>
-            </mat-form-field>
-          </div>
-
-          <!-- BARCODE-->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Barcode</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <div class="d-flex position-relative">
-                <mat-icon matPrefix class="op-5 barcode_svg">
-                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" /></svg>
+              <input matInput placeholder="Barcode" [(ngModel)]="ADDED_PRODUCT.barcode" readonly="" />
+              <div class="d-flex align-items-center">
+                <mat-icon matPrefix class="generate_code_button" (click)="GENERATE_BARCODE()">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#045b33">
+                    <path
+                      d="M204-318q-22-38-33-78t-11-82q0-134 93-228t227-94h7l-64-64 56-56 160 160-160 160-56-56 64-64h-7q-100 0-170 70.5T240-478q0 26 6 51t18 49l-60 60ZM481-40 321-200l160-160 56 56-64 64h7q100 0 170-70.5T720-482q0-26-6-51t-18-49l60-60q22 38 33 78t11 82q0 134-93 228t-227 94h-7l64 64-56 56Z" />
+                  </svg>
                 </mat-icon>
-                <input matInput placeholder="BARCODE" [(ngModel)]="ADDED_PRODUCT.barcode" readonly=""/>
-                <div class="d-flex align-items-center">
-                  <mat-icon matPrefix class="generate_code_button" (click)="GENERATE_BARCODE()">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#045b33"><path d="M204-318q-22-38-33-78t-11-82q0-134 93-228t227-94h7l-64-64 56-56 160 160-160 160-56-56 64-64h-7q-100 0-170 70.5T240-478q0 26 6 51t18 49l-60 60ZM481-40 321-200l160-160 56 56-64 64h7q100 0 170-70.5T720-482q0-26-6-51t-18-49l60-60q22 38 33 78t11 82q0 134-93 228t-227 94h-7l64 64-56 56Z"/></svg>
-                  </mat-icon>
-                </div>
               </div>
-            </mat-form-field>
-          </div>
-
-          <!-- DESCRIPTION-->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Description</mat-label></div>
-
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="DESCRIPTION" [(ngModel)]="ADDED_PRODUCT.description" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
+            </div>
+          </mat-form-field>
         </div>
 
-        <!-- SECOND ROW :  Category + Cost + Sale -->
-        <div class="row">
-
-          <!-- SEARCH -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Category</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="Search Categories..." aria-label="Product" [matAutocomplete]="auto"
-                [(ngModel)]="ADDED_PRODUCT.category">
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
-                  width="24px" fill="#5f6368">
-                  <path
-                    d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
-                </svg>
-              </mat-icon>
-
-              <mat-autocomplete #auto="matAutocomplete">
-                @for(category of categoryArray; track category){
-                <mat-option [value]="category.CategoryName">{{ category.CategoryName }}</mat-option>
-                }
-
-                <mat-option (click)="OPEN_DIALOG('Add Category', ADDED_PRODUCT)">
-                  <div class="option-content d-flex flex-row gap-10">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px"
-                      viewBox="0 -960 960 960" width="24px" fill="#5c8305">
-                      <path
-                        d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z" />
-                    </svg>
-                    <span>Add new product</span>
-                  </div>
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
+        <!-- DESCRIPTION-->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Description</mat-label>
           </div>
 
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Description" [(ngModel)]="ADDED_PRODUCT.description" />
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
 
-
-
-          <!-- Cost -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Cost</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="COST" [(ngModel)]="ADDED_PRODUCT.cost" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
+      <!-- SECOND ROW :  CATEGORY + COST + SALE -->
+      <div class="row">
+        <!-- CATEGORY -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Category</mat-label>
           </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Search Categories..." aria-label="Category" [matAutocomplete]="auto"
+              [(ngModel)]="ADDED_PRODUCT.category">
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                width="24px" fill="#5f6368">
+                <path
+                  d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+              </svg>
+            </mat-icon>
 
-          <!-- Sale -->
-          <div class="col-md-4 d-flex flex-column">
-            <div class="d-flex align-items-center">
-              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Sale</mat-label>
-            </div>
-            <mat-form-field appearance="outline" class="w-100">
-              <input matInput placeholder="SALE" [(ngModel)]="ADDED_PRODUCT.sale" />
-              <mat-icon matPrefix class="op-5">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M760-400v-260L560-800 360-660v60h-80v-100l280-200 280 200v300h-80ZM560-800Zm20 160h40v-40h-40v40Zm-80 0h40v-40h-40v40Zm80 80h40v-40h-40v40Zm-80 0h40v-40h-40v40ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Z" />
-                </svg>
-              </mat-icon>
-            </mat-form-field>
-          </div>
+            <mat-autocomplete #auto="matAutocomplete">
+              @for(category of categoryArray; track category){
+              <mat-option [value]="category.CategoryName">{{ category.CategoryName }}</mat-option>
+              }
+
+              <mat-option (click)="OPEN_DIALOG('Add Category', ADDED_PRODUCT)">
+                <div class="option-content d-flex flex-row gap-10">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                    width="24px" fill="#5c8305">
+                    <path
+                      d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z" />
+                  </svg>
+                  <span>Add new product</span>
+                </div>
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
         </div>
 
-        <div class="Buttons_div">
-          <div *ngIf="ShowAddButoon">
-            <button mat-flat-button color="primary" (click)="ADD_PRODUCT(ADDED_PRODUCT)"> Add Product </button>
+        <!-- COST -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Cost</mat-label>
           </div>
-
-          <div class="TwoButtons" *ngIf="!ShowAddButoon">
-            <button (click)="CANCEL_UPDATE()" mat-flat-button color="primary">Cancel</button>
-            <button mat-flat-button color="primary" (click)="UPDATE_PRODUCT(ADDED_PRODUCT)">Update Product</button>
-          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Cost" [(ngModel)]="ADDED_PRODUCT.cost" type="number" min="0"/>
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
         </div>
-      </mat-card-content>
-    </mat-tab>
-  </mat-tab-group>
+
+        <!-- SALE -->
+        <div class="col-md-4 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Sale</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="Sale" [(ngModel)]="ADDED_PRODUCT.sale" type="number" min="0"/>
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M760-400v-260L560-800 360-660v60h-80v-100l280-200 280 200v300h-80ZM560-800Zm20 160h40v-40h-40v40Zm-80 0h40v-40h-40v40Zm80 80h40v-40h-40v40Zm-80 0h40v-40h-40v40ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="Buttons_div">
+        <div *ngIf="ShowAddButoon">
+          <button mat-flat-button color="primary" (click)="ADD_PRODUCT()"> Add Product </button>
+        </div>
+
+        <div class="TwoButtons" *ngIf="!ShowAddButoon">
+          <button (click)="CANCEL_UPDATE()" mat-flat-button color="primary">Cancel</button>
+
+          <button mat-flat-button color="primary" (click)="UPDATE_PRODUCT()"
+            [disabled]="SHOW_LOADING_SPINNER || !DATA_CHANGED">
+            <span *ngIf="!SHOW_LOADING_SPINNER">Update Product</span>
+            <mat-spinner diameter="20" *ngIf="SHOW_LOADING_SPINNER"></mat-spinner>
+          </button>
+
+        </div>
+      </div>
+  </mat-card-content>
+  </mat-expansion-panel>
 </mat-card>
-
 
 <!-- WHOLE TABLE -->
 <mat-card class="cardWithShadow">
-
   <!-- TABLE HEADER -->
   <header>
-    <!-- SEARCH -->
-    <div class="col-md-4 d-flex flex-column">
+
+    <div class="searchbar p-20">
       <mat-form-field appearance="outline" class="w-100">
-        <input matInput placeholder="Search Categories..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+        <input matInput placeholder="Search Product..." aria-label="Product"
+          (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
         <mat-icon matPrefix class="op-5">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
             width="24px" fill="#5f6368">
@@ -169,83 +178,149 @@
               d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
           </svg>
         </mat-icon>
-
       </mat-form-field>
     </div>
 
-    <!-- DROPDOWN -->
-    <div class="filter-div">
+    <div class="filter-date p-20">
 
-      <div class="btns-div">
-        <button class="invoice-btn">Export Pdf</button>
-        <button class="invoice-btn">Export Excel</button>
-        <button class="invoice-btn">Print</button>
-      </div>
+      <section>
+        @if(showDatePicker) {
+        <mat-form-field appearance="outline" class="date_picker">
 
-      <div>
-        <mat-form-field class="theme-select" appearance="outline">
-          <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
-            placeholder="Today">
-            <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
+          <mat-date-range-input [rangePicker]="custompicker">
+            <input matStartDate placeholder="Start date" [(ngModel)]="START_DATE"
+              (ngModelChange)="handleStartDateChange($event)" />
+            <input matEndDate placeholder="End date" [(ngModel)]="END_DATE"
+              (ngModelChange)="handleEndDateChange($event)" />
+          </mat-date-range-input>
+
+          <mat-datepicker-toggle matIconSuffix [for]="custompicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #custompicker></mat-date-range-picker>
+
+        </mat-form-field>
+        }
+
+        <!-- DATE -->
+        <div class="dropdown">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select p placeholder="Today" [(ngModel)]="selectedMonth"
+              (selectionChange)="DROPDOWN_FILTERATION($event.value, 'month')">
+              @for(month of months; track month) {
+              <mat-option value={{month.value}}>{{month.viewValue}}</mat-option>
+              }
+
+            </mat-select>
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </section>
+
+      <!-- STATUS -->
+      <div class="dropdown">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select p placeholder="All" [(ngModel)]="selectedStatusFilteraTION"
+            (selectionChange)="DROPDOWN_FILTERATION($event.value, 'status')">
+            @for(element of Status_Array_Filter; track element) {
+            <mat-option value={{element.value}}>{{element.viewValue}}</mat-option>
+            }
+
           </mat-select>
+          <mat-icon matPrefix class="op-5">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path d="M440-280h80v-240h-80v240Zm40-320q17 0 28.5-11.5T520-640q0-17-11.5-28.5T480-680q-17
+                          0-28.5 11.5T440-640q0 17 11.5 28.5T480-600Zm0 520q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83
+                          31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5
+                          156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93
+                          227q0 134 93 227t227 93Zm0-320Z" />
+            </svg>
+          </mat-icon>
         </mat-form-field>
       </div>
 
-      <div>
-        <mat-form-field class="theme-select" appearance="outline">
-          <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
-            placeholder="All">
-            <mat-option [value]="'All'">All</mat-option>
-            <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
-              }}</mat-option>
+
+      <!-- Download As -->
+      <div class="dropdown">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select placeholder={{selectedDownloadOption}} [ngModel]="selectedDownloadOption"
+            (selectionChange)="DROPDOWN_FILTERATION($event.value, 'Download')">
+            @for(option of Options; track option) {
+            <mat-option value={{option.value}}>{{option.viewValue}}</mat-option>
+            }
           </mat-select>
+          <mat-icon matPrefix class="op-5">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+            </svg>
+          </mat-icon>
         </mat-form-field>
       </div>
+
 
     </div>
 
-    
   </header>
 
   <mat-card-content>
 
+    <!-- @if(show_shimmer){
+    <app-table-shimmer [headers]="displayedColumns"></app-table-shimmer>
+    } -->
+
+    <!-- @else{ -->
     <!-- TABLE BODY -->
     <div class="table-responsive">
       <table mat-table [dataSource]="productsArray" multiTemplateDataRows>
 
         <!-- Iterate over displayedColumns using ngFor -->
-        <ng-container *ngFor="let column of displayedColumns;">
+        @for( column of displayedColumns; track column) {
+        <ng-container>
 
           <ng-container matColumnDef="{{ column }}">
+            <!-- if column is sale or cost -> add the sort icon -->
+            @if( column == 'sale'){
+            <th mat-header-cell *matHeaderCellDef class="icon_th f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0"
+              (click)="SORT('sale')">
+              {{ column | titlecase }}
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                fill="#000000">
+                <path
+                  d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+              </svg>
+            </th>
+            }
+            @else if(column == 'cost'){
+            <th mat-header-cell *matHeaderCellDef class="icon_th f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0"
+              (click)="SORT('cost')">
+              {{ column | titlecase }}
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
+                fill="#000000">
+                <path
+                  d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
+              </svg>
+            </th>
+            }
+            @else{
+            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">
+              {{ TableHeaders[displayedColumns.indexOf(column)] | titlecase }}</th>
+            }
 
-@if( column == 'sale'){
-<th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT('sale')">
-{{ column | titlecase }}
-<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#000000"><path d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" /></svg>
-</th>
-}
-
-@else if(column == 'cost'){
-  <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT('cost')">
-  {{ column | titlecase }}
-  <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#000000"><path d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" /></svg>
-  </th>
-}
-
-  
-@else{
-<th mat-header-cell *matHeaderCellDef>{{ TableHeaders[displayedColumns.indexOf(column)] }}</th>
-}
-
-<td mat-cell *matCellDef="let element" (click)="expandRow($event, element, column)">
+            <td mat-cell *matCellDef="let element" class="p-x-24 f-s-14 p-l-0"
+              (click)="EXPAND_ROW($event, element, column)">
 
               <!-- Check if the column is 'status' -->
               <ng-container *ngIf="column !== 'action'; else actionColumn">
                 <ng-container *ngIf="column !== 'barcode'; else barcodeColumn">
                   <ng-container *ngIf="column !== 'description'; else descriptionColumn">
-                      <ng-container *ngIf="column !== 'cost'; else costColumn">
-                        {{ element[column] }}
-                      </ng-container>
+                    <ng-container *ngIf="column !== 'cost'; else costColumn">
+                      {{ element[column] }}
+                    </ng-container>
                   </ng-container>
                 </ng-container>
               </ng-container>
@@ -255,10 +330,13 @@
               <ng-template #costColumn>$ {{ element[column] }}</ng-template>
               <ng-template #descriptionColumn>{{ TRUNCATE_TEXT(element[column], 20) }}</ng-template>
 
+              <!-- SHOW ACTION TEMPLATE -->
               <ng-template #actionColumn>
                 <div class="action-link">
-                  <a (click)="EDIT_PRODUCT(element)"><i-tabler name="edit" class="icon-18"></i-tabler></a>
-                  <a (click)="OPEN_DIALOG('Delete',element)"><i-tabler name="trash" class="icon-18"></i-tabler></a>
+                  <a (click)="SELECTED_PRODUCT(element)" class="m-r-10 cursor-pointer"><i-tabler name="edit"
+                      class="icon-18"></i-tabler></a>
+                  <a (click)="OPEN_DIALOG('Delete', element)" class="m-r-10 cursor-pointer"><i-tabler name="trash"
+                      class="icon-18"></i-tabler></a>
                 </div>
               </ng-template>
 
@@ -267,12 +345,13 @@
           </ng-container>
 
         </ng-container>
-
+        }
         <!-- EXPANDED ROW DETAILS -->
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
             <div [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'">
               <div class="details-container p-3 rounded border mb-3 mx-2">
+
                 <div class="detail-body mt-3">
                   <div class="col-md-4">
                     <div class="detail-field"><strong>category:</strong> {{ element.category }}</div>
@@ -296,35 +375,14 @@
                   </div>
                 </div>
 
-                <div class="btns-div">
-                  <button class="invoice-btn">Print invoice</button>
-
-                  <button class="invoice-btn">
-                    <svg width="2" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <title>pdf-document</title>
-                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <g id="add" fill="#000000" transform="translate(85.333333, 42.666667)">
-                            <path
-                              d="M75.9466667,285.653333 C63.8764997,278.292415 49.6246897,275.351565 35.6266667,277.333333 L1.42108547e-14,277.333333 L1.42108547e-14,405.333333 L28.3733333,405.333333 L28.3733333,356.48 L40.5333333,356.48 C53.1304778,357.774244 65.7885986,354.68506 76.3733333,347.733333 C85.3576891,340.027178 90.3112817,328.626053 89.8133333,316.8 C90.4784904,304.790173 85.3164923,293.195531 75.9466667,285.653333 L75.9466667,285.653333 Z M53.12,332.373333 C47.7608867,334.732281 41.8687051,335.616108 36.0533333,334.933333 L27.7333333,334.933333 L27.7333333,298.666667 L36.0533333,298.666667 C42.094796,298.02451 48.1897668,299.213772 53.5466667,302.08 C58.5355805,305.554646 61.3626692,311.370371 61.0133333,317.44 C61.6596233,323.558965 58.5400493,329.460862 53.12,332.373333 L53.12,332.373333 Z M150.826667,277.333333 L115.413333,277.333333 L115.413333,405.333333 L149.333333,405.333333 C166.620091,407.02483 184.027709,403.691457 199.466667,395.733333 C216.454713,383.072462 225.530463,362.408923 223.36,341.333333 C224.631644,323.277677 218.198313,305.527884 205.653333,292.48 C190.157107,280.265923 170.395302,274.806436 150.826667,277.333333 L150.826667,277.333333 Z M178.986667,376.32 C170.098963,381.315719 159.922142,383.54422 149.76,382.72 L144.213333,382.72 L144.213333,299.946667 L149.333333,299.946667 C167.253333,299.946667 174.293333,301.653333 181.333333,308.053333 C189.877212,316.948755 194.28973,329.025119 193.493333,341.333333 C194.590843,354.653818 189.18793,367.684372 178.986667,376.32 L178.986667,376.32 Z M254.506667,405.333333 L283.306667,405.333333 L283.306667,351.786667 L341.333333,351.786667 L341.333333,329.173333 L283.306667,329.173333 L283.306667,299.946667 L341.333333,299.946667 L341.333333,277.333333 L254.506667,277.333333 L254.506667,405.333333 L254.506667,405.333333 Z M234.666667,7.10542736e-15 L9.52127266e-13,7.10542736e-15 L9.52127266e-13,234.666667 L42.6666667,234.666667 L42.6666667,192 L42.6666667,169.6 L42.6666667,42.6666667 L216.96,42.6666667 L298.666667,124.373333 L298.666667,169.6 L298.666667,192 L298.666667,234.666667 L341.333333,234.666667 L341.333333,106.666667 L234.666667,7.10542736e-15 L234.666667,7.10542736e-15 Z"
-                              id="document-pdf"> </path>
-                          </g>
-                        </g>
-                      </g>
-                    </svg>
-                    Print PDF
-                  </button>
-
-                  <button class="invoice-btn">Print Excel</button>
-                </div>
+            <div class="invoice-btn-div">
+              <button class="invoice-btn">Print invoice</button>
+            </div>
+            
               </div>
             </div>
           </td>
         </ng-container>
-
 
         <!-- HEADER AND ROW DEFINITIONS -->
         <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
@@ -336,10 +394,20 @@
 
       </table>
     </div>
+    <!-- } -->
 
     <!-- TABLE PAGINATION -->
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
-    </mat-paginator>
+    <!-- LENGTH : 1-10 of length -->
+    <!-- pageSize : Items Per Page -->
+    <mat-paginator
+    [pageSizeOptions]="[10, 20, 30]" 
+    [length]="totalCount" 
+    [pageSize]="pageSize"
+    aria-label="Select page"
+    showFirstLastButtons 
+    (page)="onPageChange($event)">
+   </mat-paginator>
+
   </mat-card-content>
 
 </mat-card>

@@ -11,9 +11,36 @@ import { Supplier, suppliersArray } from 'src/app/classes/suppliers.class';
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
-  styleUrl: './suppliers.component.scss'
+  styleUrls: [
+    '../../../../../assets/scss/apps/_add_expand.scss',
+    '../../../../../assets/scss/apps/general_table.scss',
+  ],
 })
 export class SuppliersComponent {
+
+  
+  // VARIABLES
+  // These two valus are used for the add expnad row in the top of the page
+  panelOpenState = false;
+  open_expansion_value = 0;
+  // SHOW ADD BUTTON FOR ADD PRODUCT / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
+  ShowAddButoon = true;
+  CurrentAction: string = 'Add Supplier'
+  // 
+  selectedMonth: string = '';
+  selectedCategory: string = '';
+  // 
+  searchText: any;
+  totalCount = 0;
+
+  // DATE SELECTION
+  SEARCK_KEY = '';
+  FILTER_TYPE = ''
+  START_DATE = ''
+  END_DATE = ''
+  STATUS = ''
+  SHOW_LOADING_SPINNER: boolean = false;
+  DATA_CHANGED: boolean = false;
 
   suppliers: Supplier[] = [];
 showUpdate: boolean = false;
@@ -41,12 +68,17 @@ showUpdate: boolean = false;
     this.dataSource = new MatTableDataSource(this.suppliers);
     this.selectedSupplier = new Supplier('','','','','','', '');
   }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-  }
-
-
+    // Method to handle the panel closed event
+    CLOSE_PANEL() {
+      this.open_expansion_value = 0;
+      this.panelOpenState = false
+    }
+  
+    OPEN_PANEL() {
+      this.open_expansion_value = 1;
+      this.panelOpenState = true;
+    }
+  
 
   FETCH_ADMINS() {
     this.suppliers = suppliersArray
@@ -72,26 +104,17 @@ showUpdate: boolean = false;
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result.event === 'Add') {
-        this.ADD_ADMIN(result.data);
+        // this.ADD_ADMIN(result.data);
       } else if (result.event === 'Update') {
-        this.UPDATE_ADMIN(result.data);
+        // this.UPDATE_ADMIN(result.data);
       } else if (result.event === 'Delete') {
         this.DELETE_ADMIN(result.data);
       }
     });
   }
 
-  UPDATE_SUPPLIER(supplier: any) {
-    this.showUpdate = true;
-    this.selectedSupplier = supplier
-  }
-
-  cancelSelection() {
-    this.showUpdate = false;
- }
-
   // tslint:disable-next-line - Disables all
-  ADD_ADMIN(row_obj: Admin): void {
+  ADD_ADMIN(): void {
     // this.dataSource.data.unshift({
     //   id: this.admins.length + 1,
     //   Name: row_obj.Name,
@@ -109,7 +132,7 @@ showUpdate: boolean = false;
   }
 
   // tslint:disable-next-line - Disables all
-  UPDATE_ADMIN(row_obj: Admin): boolean | any {
+  UPDATE_ADMIN(): boolean | any {
     this.dataSource.data = this.dataSource.data.filter((value: any) => {
       // if (value.id === row_obj.id) {
       // value.Name = row_obj.Name;
@@ -142,6 +165,31 @@ showUpdate: boolean = false;
       // return value.id !== row_obj.id;
     });
   }
+
+    //SELECT PRODUCT TO UPDATE
+    SELECTED_SUPPLIER(obj: any): void {
+      // HIDE THE ADD BUTTON AND DISPLAY THE UPDATE BTN INSTEAD
+      this.ShowAddButoon = false;
+      this.CurrentAction = 'Update Supplier'
+      // FILL THE OBJ WITH THE SELECTED PRODUCT TO UPDATE
+      this.selectedSupplier = { ...obj };
+      // OPEN THE PANEL
+      this.OPEN_PANEL()
+    }
+  
+    // CANCEL UPDATE
+    CANCEL_UPDATE(): void {
+      // CLOSE THE PANEL
+      this.CLOSE_PANEL();
+      // HIDE THE UPDATE BUTTON AND DISPLAY THE ADD BTN INSTEAD
+      this.ShowAddButoon = true;
+      this.CurrentAction = 'Add Supplier'
+      // EMPTY THE SELECTED PRODUCT TO UPDATE
+      this.selectedSupplier = new Supplier('', '', '', '', '', '', '');
+      // 
+      this.DATA_CHANGED = false;
+      this.SHOW_LOADING_SPINNER = false
+    }
 
 }
 

@@ -1,0 +1,229 @@
+
+.cardWithShadow {
+    header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        // padding: 10px 5px;
+
+        .filter-date {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            // align-items: center;
+            column-gap: 10px;
+            section {
+                display: flex;
+                width: 100%;
+                flex-direction: row;
+                column-gap: 10px;
+                justify-content: center;
+                align-items: center;
+                .date_picker {
+                    max-width: 250px;
+                }
+            }
+      
+    
+            .dropdown {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            // .buttons_reports {
+            //     display: flex;
+            //     flex-direction: row;
+            //     column-gap: 10px;
+            //     justify-content: center;
+
+            //     .w50 {
+            //         height: 55px;
+            //         min-width: 120px;
+            //         font-size: 14px;
+            //         background: #f5ba18;
+            //         border-radius: 8px;
+            //         border-style: none;
+            //         border-color: #f5ba18;
+            //         color: white;
+            //     }
+            //     .w50:hover {
+            //         background: #f5ba18cd;
+            //         cursor: pointer;
+            //     }
+            // }
+        }
+ 
+        .filter-date-report {
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            justify-content: space-between;
+            section {
+                display: flex;
+                flex-direction: row;
+                column-gap: 10px;
+                justify-content: center;
+                align-items: center;
+                .date_picker {
+                    max-width: 250px;
+                }
+            }
+        }
+ 
+    }
+
+    .table-responsive {
+    table {
+
+        th, td {
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .details-container {
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            align-items: flex-start;
+            justify-content: flex-start;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+
+            .detail-body {
+                display: flex;
+                width: 100%;
+                align-items: center;
+                justify-content: space-between;
+        
+                .col-md-4 {
+                    .detail-field {
+                        margin-bottom: 0.5rem;
+                    }
+                    .QR {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                    }
+                }
+            }
+        
+            .invoice-btn-div {
+                display: flex;
+                width: 100%;
+                justify-content: flex-end;
+                .invoice-btn {
+                    background-color: #045b33;
+                    border-style: none;
+                    padding: 10px;
+                    border-radius: 10px;
+                    color: white;
+                }
+        
+                .invoice-btn:hover {
+                    cursor: pointer;
+                    background-color: #045b32c4;
+                    color: rgb(255, 255, 255);
+                }
+            }
+        }
+    
+    }
+    }
+}
+
+
+tr.example-detail-row {
+    height: 0;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+@media (max-width: 1450px) {
+    .cardWithShadow {
+        header {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 100%;
+            .searchbar {
+                // margin: 10px 20px 0 20px;
+                display: flex;
+                justify-content: flex-start;
+                width: 100%;
+                    .w-100 {
+                        max-width: 250px;
+                    }
+            }
+
+            .filter-date {
+                width: 100%;
+                display: flex;
+                justify-content: flex-end;
+                // align-items: center;
+                section {
+                    display: flex;
+                    width: 100%;
+                    flex-direction: row;
+                    column-gap: 10px;
+                    justify-content: flex-end;
+                }
+            }
+        }
+    }
+}
+
+
+@media (max-width: 850px) {
+    .cardWithShadow {
+        header {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            width: 100%;
+            .searchbar {
+                // margin: 10px 20px 0 20px;
+                display: flex;
+                justify-content: flex-start;
+                width: 100%;
+                    .w-100 {
+                        max-width: 250px;
+                    }
+            }
+
+            .filter-date {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: flex-end;
+
+                section {
+                    display: flex;
+                    flex-direction: row;
+                }
+            }
+
+            .filter-date-report {
+                display: flex;
+                flex-direction: column;
+                section {
+                    display: flex;
+                    flex-direction: row;
+                    column-gap: 10px;
+                    justify-content: center;
+                    align-items: center;
+                    .date_picker {
+                        max-width: 250px;
+                    }
+                }
+            }
+     
+        }
+    }
+}

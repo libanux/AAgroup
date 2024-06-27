@@ -5,8 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { stocksService } from 'src/app/services/stock.service';
 import { Product, products } from 'src/app/classes/products.class';
-import { Category, categories } from 'src/app/classes/category.class';
-import { GeneralService } from 'src/app/services/general.service';
+import { GeneralService, PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-reports',
@@ -59,7 +58,7 @@ export class ReportsComponent implements OnInit {
   Inprogress = 0;
   Completed = 0;
 
-  categoryArray = categories
+  categoryArray = PRODUCT_CATEGORY_ARRAY
   Inventories: any = [
 
   ] 
@@ -116,11 +115,11 @@ InventoryArray = new MatTableDataSource<any>(
 
   //stock ON EDIT
   viewstock: Product
-  stockExample =  new Product('', '', '','', 0, 0, 0, 0);
-  editedstock=  new Product('', '', '','', 0, 0, 0, 0);
+  stockExample =  new Product('', '', '','', '', '', 0, 0);
+  editedstock=  new Product('', '', '','', '', '', 0, 0);
 
 constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
-  this.viewstock =  new Product('', '', '','', 0, 0, 0, 0);
+  this.viewstock = new Product('', '', '','', '', '', 0, 0);
 }
 
 ngOnInit(): void {
@@ -187,7 +186,7 @@ SORT(){
 // CANCEL UPDATE
 CANCEL_UPDATE(): void {
   this.ShowAddButoon = true;
-  this.editedstock =  new Product('', '', '','', 0, 0, 0, 0);
+  this.editedstock =  new Product('', '', '','', '', '', 0, 0);
 }
 
 APPLY_SEARCH_FILTER(filterValue: string): void {
@@ -208,7 +207,7 @@ ADD_STOCK() {
 //TRIGGER THE DROP DOWN FILTER VALUES
 ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
-      this.OPEN_CALENDAR_DIALOG();
+      // this.OPEN_CALENDAR_DIALOG();
     }
     else{
       this.stocksService.FILTER_stock(value).subscribe({
@@ -224,39 +223,6 @@ ON_CHANGE_DROPDOWN(value: string) {
         }
       });
     }
-}
-
-//OPEN THE CALENDAR DIALOG
-OPEN_CALENDAR_DIALOG(): void {
-    // const dialogRef = this.dialog.open(CalendarDialogComponent, {
-    //   width: '350px',
-    //   data: { selectedDate: this.selectedDate }
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed', result);
-    //   if (result) {
-    //     if (result.startDate && result.endDate) {
-    //       this.selectedMonth = `${result.startDate.toLocaleString('default', { month: 'long' })} - ${result.endDate.toLocaleString('default', { month: 'long' })}`;
-    //       this.stocksService.FILTER_stock("custom").subscribe({
-    //         next: (response: any) => {
-    //           console.log("Response:", response)
-    //           this.stocksArray = response;
-    //           this.dataSource = new MatTableDataSource(this.stocksArray);
-    //           this.totalCount = this.dataSource.data.length;
-    //           this.Inprogress = this.btnCategoryClick('pending');
-    //         },
-    //         error: (error: any) => {
-    //           console.log("Error:", error)
-    //         },
-    //         complete: () => {
-    //         }
-    //       });
-    //     } else {
-    //       this.selectedMonth = 'Custom';
-    //     }
-    //     this.selectedDate = result;
-    //   }
-    // });
 }
 
 //UPDATE ROW VALUES

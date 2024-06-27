@@ -4,10 +4,10 @@
   <!-- TABLE HEADER -->
   <header>
     <!-- SEARCH -->
-
-    <div class="col-md-4 d-flex flex-column">
+    <div class="searchbar p-20">
       <mat-form-field appearance="outline" class="w-100">
-        <input matInput placeholder="Search Categories..." aria-label="Product"  (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
+        <input matInput placeholder="Search Product..." aria-label="Product"
+          (keyup)="APPLY_SEARCH_FILTER($any($event.target).value)">
         <mat-icon matPrefix class="op-5">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
             width="24px" fill="#5f6368">
@@ -15,36 +15,67 @@
               d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
           </svg>
         </mat-icon>
-
       </mat-form-field>
     </div>
     
     <!-- DROPDOWN -->
-    <div class="filter-div">
-      <div class="btns-div">
-        <button class="invoice-btn">Export Pdf</button>
-        <button class="invoice-btn">Export Excel</button>
-        <button class="invoice-btn">Print</button>
-      </div>
-      <div>
-        <mat-form-field class="theme-select" appearance="outline">
-          <mat-select [(ngModel)]="selectedMonth" (selectionChange)="ON_CHANGE_DROPDOWN($event.value)"
-            placeholder="Today">
-            <mat-option *ngFor="let month of months" [value]="month.value">{{ month.viewValue }}</mat-option>
+    <div class="filter-date p-20">
+      <section>
+        @if(showDatePicker) {
+        <mat-form-field appearance="outline" class="date_picker">
+
+          <mat-date-range-input [rangePicker]="custompicker">
+            <input matStartDate placeholder="Start date" [(ngModel)]="START_DATE"
+              (ngModelChange)="handleStartDateChange($event)" />
+            <input matEndDate placeholder="End date" [(ngModel)]="END_DATE"
+              (ngModelChange)="handleEndDateChange($event)" />
+          </mat-date-range-input>
+
+          <mat-datepicker-toggle matIconSuffix [for]="custompicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #custompicker></mat-date-range-picker>
+
+        </mat-form-field>
+        }
+
+        <!-- DATE -->
+        <div class="dropdown">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-select p placeholder="Today" [(ngModel)]="selectedMonth"
+              (selectionChange)="DROPDOWN_FILTERATION($event.value, 'month')">
+              @for(month of months; track month) {
+              <mat-option value={{month.value}}>{{month.viewValue}}</mat-option>
+              }
+
+            </mat-select>
+            <mat-icon matPrefix class="op-5">
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                fill="#5f6368">
+                <path
+                  d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+              </svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+      </section>
+
+      <!-- Download As -->
+      <div class="dropdown">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-select placeholder={{selectedDownloadOption}} [ngModel]="selectedDownloadOption"
+            (selectionChange)="DROPDOWN_FILTERATION($event.value, 'Download')">
+            @for(option of Options; track option) {
+            <mat-option value={{option.value}}>{{option.viewValue}}</mat-option>
+            }
           </mat-select>
+          <mat-icon matPrefix class="op-5">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+            </svg>
+          </mat-icon>
         </mat-form-field>
       </div>
 
-      <div>
-        <mat-form-field class="theme-select" appearance="outline">
-          <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
-            placeholder="All">
-            <mat-option [value]="'All'">All</mat-option>
-            <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
-              }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
 
     </div>
 
@@ -52,42 +83,26 @@
 
   <mat-card-content>
 
+      <!-- @if(show_shimmer){
+    <app-table-shimmer [headers]="displayedColumns"></app-table-shimmer>
+    } -->
+
+    <!-- @else{ -->
     <!-- TABLE BODY -->
     <div class="table-responsive">
       <table mat-table [dataSource]="stocksArray" multiTemplateDataRows>
 
         <!-- Iterate over displayedColumns using ngFor -->
-        <ng-container *ngFor="let column of displayedColumns;">
+        @for( column of displayedColumns; track column) {
+        <ng-container>
 
           <ng-container matColumnDef="{{ column }}">
 
-            @if(column == 'cost' || column == 'sale'){
-            <th mat-header-cell *matHeaderCellDef class="icon_th" (click)="SORT()">
+            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">
               {{ column | titlecase }}
-              <!-- @if(column == 'cost'){ -->
-              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                fill="#000000">
-                <path
-                  d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
-              </svg>
-              <!-- } -->
             </th>
-            }
-
-            @else{
-            <th mat-header-cell *matHeaderCellDef>
-              {{ column | titlecase }}
-              @if(column == 'cost'){
-              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px"
-                fill="#000000">
-                <path
-                  d="M324-432v-294L219-621l-51-51 192-192 192 192-51 51-105-105v294h-72ZM600-96 408-288l51-51 105 105v-294h72v294l105-105 51 51L600-96Z" />
-              </svg>
-              }
-            </th>
-            }
-
-            <td mat-cell *matCellDef="let element" (click)="expandRow($event, element, column)">
+            
+            <td mat-cell *matCellDef="let element" class="p-x-24 f-s-14 p-l-0" (click)="EXPAND_ROW($event, element, column)">
 
               <!-- Check if the column is 'status' -->
               <ng-container *ngIf="column !== 'action'; else actionColumn">
@@ -114,7 +129,7 @@
           </ng-container>
 
         </ng-container>
-
+      }
         <!-- EXPANDED ROW DETAILS -->
         <ng-container matColumnDef="expandedDetail">
           <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
@@ -142,30 +157,8 @@
                     </div>
                   </div>
                 </div>
-
-                <div class="btns-div">
+                <div class="invoice-btn-div">
                   <button class="invoice-btn">Print invoice</button>
-
-                  <button class="invoice-btn">
-                    <svg width="2" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                      xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000">
-                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                      <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                      <g id="SVGRepo_iconCarrier">
-                        <title>pdf-document</title>
-                        <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                          <g id="add" fill="#000000" transform="translate(85.333333, 42.666667)">
-                            <path
-                              d="M75.9466667,285.653333 C63.8764997,278.292415 49.6246897,275.351565 35.6266667,277.333333 L1.42108547e-14,277.333333 L1.42108547e-14,405.333333 L28.3733333,405.333333 L28.3733333,356.48 L40.5333333,356.48 C53.1304778,357.774244 65.7885986,354.68506 76.3733333,347.733333 C85.3576891,340.027178 90.3112817,328.626053 89.8133333,316.8 C90.4784904,304.790173 85.3164923,293.195531 75.9466667,285.653333 L75.9466667,285.653333 Z M53.12,332.373333 C47.7608867,334.732281 41.8687051,335.616108 36.0533333,334.933333 L27.7333333,334.933333 L27.7333333,298.666667 L36.0533333,298.666667 C42.094796,298.02451 48.1897668,299.213772 53.5466667,302.08 C58.5355805,305.554646 61.3626692,311.370371 61.0133333,317.44 C61.6596233,323.558965 58.5400493,329.460862 53.12,332.373333 L53.12,332.373333 Z M150.826667,277.333333 L115.413333,277.333333 L115.413333,405.333333 L149.333333,405.333333 C166.620091,407.02483 184.027709,403.691457 199.466667,395.733333 C216.454713,383.072462 225.530463,362.408923 223.36,341.333333 C224.631644,323.277677 218.198313,305.527884 205.653333,292.48 C190.157107,280.265923 170.395302,274.806436 150.826667,277.333333 L150.826667,277.333333 Z M178.986667,376.32 C170.098963,381.315719 159.922142,383.54422 149.76,382.72 L144.213333,382.72 L144.213333,299.946667 L149.333333,299.946667 C167.253333,299.946667 174.293333,301.653333 181.333333,308.053333 C189.877212,316.948755 194.28973,329.025119 193.493333,341.333333 C194.590843,354.653818 189.18793,367.684372 178.986667,376.32 L178.986667,376.32 Z M254.506667,405.333333 L283.306667,405.333333 L283.306667,351.786667 L341.333333,351.786667 L341.333333,329.173333 L283.306667,329.173333 L283.306667,299.946667 L341.333333,299.946667 L341.333333,277.333333 L254.506667,277.333333 L254.506667,405.333333 L254.506667,405.333333 Z M234.666667,7.10542736e-15 L9.52127266e-13,7.10542736e-15 L9.52127266e-13,234.666667 L42.6666667,234.666667 L42.6666667,192 L42.6666667,169.6 L42.6666667,42.6666667 L216.96,42.6666667 L298.666667,124.373333 L298.666667,169.6 L298.666667,192 L298.666667,234.666667 L341.333333,234.666667 L341.333333,106.666667 L234.666667,7.10542736e-15 L234.666667,7.10542736e-15 Z"
-                              id="document-pdf"> </path>
-                          </g>
-                        </g>
-                      </g>
-                    </svg>
-                    Print PDF
-                  </button>
-
-                  <button class="invoice-btn">Print Excel</button>
                 </div>
               </div>
             </div>
@@ -183,10 +176,18 @@
 
       </table>
     </div>
-
+    <!-- } -->
     <!-- TABLE PAGINATION -->
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
-    </mat-paginator>
+    <!-- LENGTH : 1-10 of length -->
+    <!-- pageSize : Items Per Page -->
+    <mat-paginator
+    [pageSizeOptions]="[10, 20, 30]" 
+    [length]="totalCount" 
+    [pageSize]="pageSize"
+    aria-label="Select page"
+    showFirstLastButtons 
+    (page)="onPageChange($event)">
+   </mat-paginator>
   </mat-card-content>
 
 </mat-card>
