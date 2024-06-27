@@ -12,7 +12,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">First Name</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="First Name" [(ngModel)]="SELECTED_CUSTOMER.firstname" />
+            <input matInput placeholder="First Name" [(ngModel)]="ADDED_CUSTOMER.first_name" (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -28,7 +28,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Last Name</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Last Name" [(ngModel)]="SELECTED_CUSTOMER.lastname" />
+            <input matInput placeholder="Last Name" [(ngModel)]="ADDED_CUSTOMER.last_name" (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -44,7 +44,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Company Name (optional)</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Company Name (OPTIONAL)" [(ngModel)]="SELECTED_CUSTOMER.companyname" />
+            <input matInput placeholder="Company Name (OPTIONAL)" [(ngModel)]="ADDED_CUSTOMER.company_name" (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -64,7 +64,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email (optional)</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Email (OPTIONAL)" [(ngModel)]="SELECTED_CUSTOMER.email" />
+            <input matInput placeholder="Email (OPTIONAL)" [(ngModel)]="ADDED_CUSTOMER.email" (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -80,7 +80,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Phone</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Phone" [(ngModel)]="SELECTED_CUSTOMER.phone" />
+            <input matInput placeholder="Phone" [(ngModel)]="ADDED_CUSTOMER.number" (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -116,52 +116,52 @@
 
 <mat-card class="cardWithShadow">
   <mat-card-content class="p-24">
+
+    @if(show_shimmer){
+      <app-table-shimmer [headers]="displayedColumns"></app-table-shimmer>
+      }
+  
+      @else{
     <div class="table-responsive">
-      <table mat-table [dataSource]="customers" class="w-100">
+      <table mat-table [dataSource]="CUSTOMERS_ARRAY" class="w-100">
         <!-- First Name Column -->
         <ng-container matColumnDef="firstname">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">First Name</th>
-          <td mat-cell *matCellDef="let admin" class="f-s-14">{{ admin.firstname }}</td>
+          <td mat-cell *matCellDef="let customer" class="f-s-14">{{ customer.first_name }}</td>
         </ng-container>
 
         <!-- Last Name Column -->
         <ng-container matColumnDef="lastname">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Last Name</th>
-          <td mat-cell *matCellDef="let admin" class="f-s-14">{{ admin.lastname }}</td>
+          <td mat-cell *matCellDef="let customer" class="f-s-14">{{ customer.last_name }}</td>
         </ng-container>
 
         <!-- First Name Column -->
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Email</th>
-          <td mat-cell *matCellDef="let admin" class="f-s-14">{{ admin.email }}</td>
+          <td mat-cell *matCellDef="let customer" class="f-s-14">{{ customer.email }}</td>
         </ng-container>
 
         <!-- Phone Column -->
         <ng-container matColumnDef="phone">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Phone</th>
-          <td mat-cell *matCellDef="let admin" class="f-s-14">{{ admin.phone }}</td>
+          <td mat-cell *matCellDef="let customer" class="f-s-14">{{ customer.number }}</td>
         </ng-container>
 
         <!-- Company name Column -->
         <ng-container matColumnDef="companyname">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Company Name</th>
-          <td mat-cell *matCellDef="let admin" class="f-s-14">{{ admin.companyname }}</td>
-        </ng-container>
-
-        <!-- Balance Column -->
-        <ng-container matColumnDef="balance">
-          <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Balance</th>
-          <td mat-cell *matCellDef="let admin" class="f-s-14">{{ admin.balance }}</td>
+          <td mat-cell *matCellDef="let customer" class="f-s-14">{{ customer.company_name }}</td>
         </ng-container>
 
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="f-s-16 f-w-600">Actions</th>
-          <td mat-cell *matCellDef="let admin" class="action-link">
+          <td mat-cell *matCellDef="let customer" class="action-link">
             <a class="m-r-10 cursor-pointer">
-              <i-tabler (click)="SELECT_CUSTOMER(admin)" name="edit" class="icon-18"></i-tabler>
+              <i-tabler (click)="SELECT_CUSTOMER(customer)" name="edit" class="icon-18"></i-tabler>
             </a>
-            <a (click)="OPEN_DIALOG('Delete', admin)" class="m-r-10 cursor-pointer">
+            <a (click)="OPEN_DIALOG('Delete', customer)" class="m-r-10 cursor-pointer">
               <i-tabler name="trash" class="icon-18"></i-tabler>
             </a>
           </td>
@@ -171,7 +171,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </div>
-
+  }
     <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
 
   </mat-card-content>

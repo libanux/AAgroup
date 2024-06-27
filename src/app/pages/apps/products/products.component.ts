@@ -66,6 +66,8 @@ export class ProductsComponent implements OnInit {
   END_DATE = ''
   STATUS = ''
 
+  show_shimmer = false;
+
   ASC: boolean = true;
   DES: boolean = false;
 
@@ -83,8 +85,11 @@ export class ProductsComponent implements OnInit {
 
   // OBJECTS
   //PRODUCT TO EDIT|ADD
+  // THESE TWO OBJECTS ARE TO CHECK IF THE SELECTED PRODUCT TO UPDATE HAVE DIFFERENT VALUES THAN THE MAIN ONE SO THAT THE DISBALE BUTTON IS ABLE
+  // ADDED PRODUCT IS THE PRODUCT SELECTED BUT WITH CHANGED VALUE
   ADDED_PRODUCT = new Product('', '', '', '', '', '', 0, 0);
-
+  // MAIN PRODUCT IS THE PRODUCT SELECTED BUT WITHOUT CHANGED VALUE
+  MAIN_SELECTED_PRODUCT_DATA =  new Product('', '', '', '', '', '', 0, 0);
   constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) { }
 
   ngOnInit(): void {
@@ -136,6 +141,20 @@ export class ProductsComponent implements OnInit {
     this.open_expansion_value = 1;
     this.panelOpenState = true;
   }
+
+  // Function to log input changes
+  onInputChange() {
+    // When inputs changes -> i check if they are the same as the main one
+    // if they are the same keep the update button disabled
+    if (JSON.stringify(this.MAIN_SELECTED_PRODUCT_DATA) !== JSON.stringify(this.ADDED_PRODUCT)) {
+      this.DATA_CHANGED = true;
+    }
+    else {
+      this.DATA_CHANGED = false;
+    }
+
+  }
+
 
   //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
   EXPAND_ROW(event: Event, element: any, column: string): void {
@@ -347,6 +366,7 @@ export class ProductsComponent implements OnInit {
     this.CurrentAction = 'Update Product'
     // FILL THE OBJ WITH THE SELECTED PRODUCT TO UPDATE
     this.ADDED_PRODUCT = { ...obj };
+    this.MAIN_SELECTED_PRODUCT_DATA = obj;
     // OPEN THE PANEL
     this.OPEN_PANEL()
   }
@@ -359,6 +379,7 @@ export class ProductsComponent implements OnInit {
     this.ShowAddButoon = true;
     this.CurrentAction = 'Add Product'
     // EMPTY THE SELECTED PRODUCT TO UPDATE
+    this.MAIN_SELECTED_PRODUCT_DATA = new Product('', '', '', '', '', '', 0, 0);
     this.ADDED_PRODUCT = new Product('', '', '', '', '', '', 0, 0);
     // 
     this.DATA_CHANGED = false;
