@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/enviroment/enviroment';
 import { GeneralService } from './general.service';
-import { CustomerClass } from '../classes/customers.class';
+import { UserClass } from '../classes/users.class';
+import { User } from 'angular-feather/icons';
 
 @Injectable({
     providedIn: 'root'
 })
-export class CustomerService {
+export class UserService {
 
     private apiUrl = '';
 
@@ -35,8 +36,8 @@ export class CustomerService {
         // return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjY3YzkyNDdlY2YxOWRjOWQ5ZTgzYjhmIiwib3duZXJfaWQiOiI2NjdjOTI0N2VjZjE5ZGM5ZDllODNiODkiLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MTk0ODM5OTYsImV4cCI6MTcxOTU3MDM5Nn0.n2nO4YT7Rxmw9pPIcgtBs-BJcyIHPbxu32Ygmbhz4IA'
     }
 
-    //GET ALL CUSTOMER
-    GET_ALL_CUSTOMER(Current_page: number, PageSize: number): Observable<any> {
+    //GET ALL USER
+    GET_ALL_USER(Current_page: number, PageSize: number): Observable<any> {
         let startRow = Current_page * PageSize
         let endRow = PageSize + (Current_page * PageSize)
 
@@ -49,51 +50,69 @@ export class CustomerService {
             "end_row": endRow,
             "sort_field": "id",
             "sort_order": "ASC",
-            "owner_id": "667881ff4488ac3c152b440c"
+            "owner_id": "667c9247ecf19dc9d9e83b89"
         }
-        return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_CUSTOMERS_BY_OWNER_ID', requestBody, { headers });
+        return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_USERS_BY_OWNER_ID', requestBody, { headers });
     }
 
-    //UPDATE CUSTOMER
-    UPDATE_CUSTOMER(CUSTOMER: CustomerClass): Observable<any> {
+    //GET USER BY USER ID 
+    GET_USER_BY_USER_ID(USER: UserClass): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${this.getToken()}`,
             'Content-Type': 'application/json'
         });
         const requestBody = {
-            "_id": CUSTOMER._id,
-            "first_name": CUSTOMER.first_name,
-            "last_name": CUSTOMER.last_name,
-            "email": CUSTOMER.email,
-            "number": CUSTOMER.number,
-            "country_code": CUSTOMER.country_code,
-            "company_name": CUSTOMER.company_name,
-            "owner_id": '667881ff4488ac3c152b440c',
+            "id": USER._id,
+            "owner_id": "667c9247ecf19dc9d9e83b89"
         };
 
-        return this.httpClient.post<any>(this.apiUrl + '/UPDATE_CUSTOMER_BY_ID', requestBody, { headers });
+        return this.httpClient.post<any>(this.apiUrl + '/UPDATE_USER_BY_ID', requestBody, { headers });
     }
 
-    //ADD CUSTOMER
-    ADD_CUSTOMER(CUSTOMER: CustomerClass): Observable<any> {
+
+
+
+
+    //UPDATE USER
+    UPDATE_USER(USER: UserClass): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${this.getToken()}`,
             'Content-Type': 'application/json'
         });
         const requestBody = {
-            "first_name": CUSTOMER.first_name,
-            "last_name": CUSTOMER.last_name,
-            "email": CUSTOMER.email,
-            "number": CUSTOMER.number,
-            "country_code": CUSTOMER.country_code,
-            "company_name": CUSTOMER.company_name,
-            "owner_id": '667881ff4488ac3c152b440c',
+            // "_id": USER._id,
+            // "first_name": USER.first_name,
+            // "last_name": USER.last_name,
+            // "email": USER.email,
+            // "number": USER.number,
+            // "country_code": USER.country_code,
+            // "company_name": USER.company_name,
+            // "owner_id": '667881ff4488ac3c152b440c',
         };
-        return this.httpClient.post<any>(this.apiUrl + '/CREATE_CUSTOMER', requestBody, { headers });
+
+        return this.httpClient.post<any>(this.apiUrl + '/UPDATE_USER_BY_ID', requestBody, { headers });
     }
 
-    //DELETE CUSTOMER
-    DELETE_CUSTOMER(ID: string): Observable<any> {
+    //ADD USER
+    ADD_USER(USER: UserClass): Observable<any> {
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${this.getToken()}`,
+            'Content-Type': 'application/json'
+        });
+        const requestBody = {
+            // "first_name": USER.first_name,
+            // "last_name": USER.last_name,
+            // "email": USER.email,
+            // "number": USER.number,
+            // "country_code": USER.country_code,
+            // "company_name": USER.company_name,
+            // "owner_id": '667881ff4488ac3c152b440c',
+        };
+        return this.httpClient.post<any>(this.apiUrl + '/CREATE_USER', requestBody, { headers });
+    }
+
+    //DELETE USER
+    DELETE_USER(ID: string): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${this.getToken()}`,
             'Content-Type': 'application/json'
@@ -102,11 +121,11 @@ export class CustomerService {
             "id": ID,
             "owner_id": "667881ff4488ac3c152b440c"
         };
-        return this.httpClient.post<any>(this.apiUrl + '/DELETE_CUSTOMER_BY_ID', requestBody, { headers });
+        return this.httpClient.post<any>(this.apiUrl + '/DELETE_USER_BY_ID', requestBody, { headers });
     }
 
     // FILTER FUNCTION BY : SEARCH KEY , STATUS AND DATE
-    // FILTER_AND_SEARCH_CUSTOMERS(SEARCK_KEY: string, FILTER_TYPE: string, START_DATE: string, END_DATE: string, STATUS: string, CURRENT_PAGE: number, PAGE_SIZE: number) {
+    // FILTER_AND_SEARCH_USERS(SEARCK_KEY: string, FILTER_TYPE: string, START_DATE: string, END_DATE: string, STATUS: string, CURRENT_PAGE: number, PAGE_SIZE: number) {
     //     const headers = new HttpHeaders({
     //         'Authorization': `Bearer ${this.getToken()}`,
     //         'Content-Type': 'application/json'
@@ -120,7 +139,7 @@ export class CustomerService {
     //         "page": CURRENT_PAGE,
     //         "pageSize": PAGE_SIZE
     //     };
-    //     return this.httpClient.post<any>(this.apiUrl + '/SEARCH_AND_FILTER_CUSTOMERS', requestBody, { headers });
+    //     return this.httpClient.post<any>(this.apiUrl + '/SEARCH_AND_FILTER_USERS', requestBody, { headers });
     // }
 
 }

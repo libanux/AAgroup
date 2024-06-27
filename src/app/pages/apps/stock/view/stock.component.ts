@@ -112,9 +112,6 @@ if (this.paginator && this.paginator.hasPreviousPage()) {
 }
 }
 
-onDateSelect(date: Date) {
-  console.log('Selected Date:', date);
-}
 
 // cancelSelection() {
 //     this.showCalendar = false;
@@ -155,9 +152,7 @@ FETCH_STOCKS(): void {
     //     // this.Completed = this.btnCategoryClick('complete');
     //     // this.Cancelled = this.btnCategoryClick('cancelled');
     //   },
-    //   error: (error: any) => {
-    //     console.log("Error:", error)
-    //   },
+    //   error: (error: any) => { },
     //   complete: () => {
     //   }
     // });
@@ -228,7 +223,6 @@ OPEN_DIALOG(action: string, delstock: Product): void {
 
 this.stocksService.DELETE_stock(delstock).subscribe({
     next: (response: any) => {
-        console.log('Response:', response);
          this.FETCH_STOCKS()
     },
     error: (error: any) => {console.error('Error:', error);},

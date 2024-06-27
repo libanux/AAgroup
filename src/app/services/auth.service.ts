@@ -40,7 +40,7 @@ export class AuthService {
 
   LOGOUT(){
     localStorage.setItem('TICKET',''),
-    localStorage.setItem('userId', '')
+    localStorage.setItem('admin_id', '')
   }
 }
 
