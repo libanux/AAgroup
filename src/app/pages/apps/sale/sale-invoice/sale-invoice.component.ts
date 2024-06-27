@@ -5,7 +5,6 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Product } from 'src/app/classes/products.class';
 import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invoices.class';
 import { ProductsService } from 'src/app/services/products.service';
-import { CalendarDialogComponent } from '../../products/calendar-card/calendar-dialog.component';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
@@ -143,7 +142,7 @@ ADD_PRODUCT() {
 //TRIGGER THE DROP DOWN FILTER VALUES
 ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
-      this.OPEN_CALENDAR_DIALOG();
+      // this.OPEN_CALENDAR_DIALOG();
     }
     else{
       this.productsService.FILTER_PRODUCT(value).subscribe({
@@ -161,39 +160,6 @@ ON_CHANGE_DROPDOWN(value: string) {
         }
       });
     }
-}
-
-//OPEN THE CALENDAR DIALOG
-OPEN_CALENDAR_DIALOG(): void {
-    const dialogRef = this.dialog.open(CalendarDialogComponent, {
-      width: '350px',
-      data: { selectedDate: this.selectedDate }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
-      if (result) {
-        if (result.startDate && result.endDate) {
-          this.selectedMonth = `${result.startDate.toLocaleString('default', { month: 'long' })} - ${result.endDate.toLocaleString('default', { month: 'long' })}`;
-          this.productsService.FILTER_PRODUCT("custom").subscribe({
-            next: (response: any) => {
-              console.log("Response:", response)
-              this.purchaseInvoicesArray = response;
-              this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
-              this.totalCount = this.dataSource.data.length;
-              this.Inprogress = this.btnCategoryClick('pending');
-            },
-            error: (error: any) => {
-              console.log("Error:", error)
-            },
-            complete: () => {
-            }
-          });
-        } else {
-          this.selectedMonth = 'Custom';
-        }
-        this.selectedDate = result;
-      }
-    });
 }
 
 //UPDATE ROW VALUES

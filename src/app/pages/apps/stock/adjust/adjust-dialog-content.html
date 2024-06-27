@@ -4,52 +4,67 @@
 <mat-dialog-content style="max-width: 500px" class="mat-typography m-t-24">
   <form #userForm="ngForm">
     <div class="row">
-
+      <!-- PRODUCT NAME -->
       <div class="col-sm-6 col-lg-12">
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="PRODUCT NAME" [(ngModel)]="local_data.itemName" />
+          <input matInput placeholder="Product Name" [(ngModel)]="local_data.itemName" />
           <mat-icon matPrefix class="op-5">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"fill="#5f6368"><path d="M200-80q-33 0-56.5-23.5T120-160v-451q-18-11-29-28.5T80-680v-120q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v120q0 23-11 40.5T840-611v451q0 33-23.5 56.5T760-80H200Zm0-520v440h560v-440H200Zm-40-80h640v-120H160v120Zm200 280h240v-80H360v80Zm120 20Z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M200-80q-33 0-56.5-23.5T120-160v-451q-18-11-29-28.5T80-680v-120q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v120q0 23-11 40.5T840-611v451q0 33-23.5 56.5T760-80H200Zm0-520v440h560v-440H200Zm-40-80h640v-120H160v120Zm200 280h240v-80H360v80Zm120 20Z" />
+            </svg>
           </mat-icon>
         </mat-form-field>
       </div>
-
+      <!-- BARCODE -->
       <div class="col-sm-6 col-lg-12">
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="BARCODE" [(ngModel)]="local_data.barcode" />
+          <input matInput placeholder="Barcode" [(ngModel)]="local_data.barcode" />
           <mat-icon matPrefix class="op-5">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" />
+            </svg>
           </mat-icon>
         </mat-form-field>
       </div>
-
+      <!-- DESCRIPTION -->
       <div class="col-sm-6 col-lg-12">
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="DESCRIPTION" [(ngModel)]="local_data.description" />
+          <input matInput placeholder="Description" [(ngModel)]="local_data.description" />
           <mat-icon matPrefix class="op-5">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"fill="#5f6368"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
+            </svg>
           </mat-icon>
         </mat-form-field>
       </div>
-
+      <!-- COST -->
       <div class="col-sm-6 col-lg-12">
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="COST" [(ngModel)]="local_data.cost" />
+          <input matInput placeholder="Cost" [(ngModel)]="local_data.cost" />
           <mat-icon matPrefix class="op-5">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z" />
+            </svg>
           </mat-icon>
         </mat-form-field>
       </div>
-
+      <!-- SALE -->
       <div class="col-sm-6 col-lg-12">
         <mat-form-field appearance="outline" class="w-100">
-          <input matInput placeholder="SALE" [(ngModel)]="local_data.sale" />
+          <input matInput placeholder="Sale" [(ngModel)]="local_data.sale" />
           <mat-icon matPrefix class="op-5">
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"fill="#5f6368"><path d="M760-400v-260L560-800 360-660v60h-80v-100l280-200 280 200v300h-80ZM560-800Zm20 160h40v-40h-40v40Zm-80 0h40v-40h-40v40Zm80 80h40v-40h-40v40Zm-80 0h40v-40h-40v40ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Z" /></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+              <path
+                d="M760-400v-260L560-800 360-660v60h-80v-100l280-200 280 200v300h-80ZM560-800Zm20 160h40v-40h-40v40Zm-80 0h40v-40h-40v40Zm80 80h40v-40h-40v40Zm-80 0h40v-40h-40v40ZM280-220l278 76 238-74q-5-9-14.5-15.5T760-240H558q-27 0-43-2t-33-8l-93-31 22-78 81 27q17 5 40 8t68 4q0-11-6.5-21T578-354l-234-86h-64v220ZM40-80v-440h304q7 0 14 1.5t13 3.5l235 87q33 12 53.5 42t20.5 66h80q50 0 85 33t35 87v40L560-60l-280-78v58H40Zm80-80h80v-280h-80v280Z" />
+            </svg>
           </mat-icon>
         </mat-form-field>
       </div>
-
+      <!-- CATEGORIES -->
       <div class="col-sm-6 col-lg-12">
         <mat-form-field appearance="outline" class="w-100">
           <input matInput placeholder="Search Categories..." aria-label="Product" [matAutocomplete]="auto">
@@ -74,9 +89,7 @@
 </mat-dialog-content>
 }
 
-
-
-@if(action === 'Delete')  {
+@if(action === 'Delete') {
 <div class="p-x-24 p-b-24">
   Sure to delete <span class="f-w-600">{{local_data.title}}</span>?
 </div>

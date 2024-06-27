@@ -5,13 +5,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Product, products } from 'src/app/classes/products.class';
 import { ProductsService } from 'src/app/services/products.service';
-import { CalendarDialogComponent } from '../../products/calendar-card/calendar-dialog.component';
 import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invoices.class';
+import { Download_Options, GeneralService, Month_Filter_Array } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-purchase-invoices',
   templateUrl: './purchase-invoices.component.html',
-  styleUrl: './purchase-invoices.component.scss',
+  styleUrl: '../../../../../assets/scss/apps/general_table.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -24,8 +24,10 @@ import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invo
   ],
 })
 export class PurchaseInvoicesComponent {
-  ShowAddButoon = true;
-  selectedMonth: string = '';
+
+  // DOWNLOAD
+  Options: any[] = Download_Options;
+  selectedDownloadOption: string = 'Download as';
 
   //TABLE COLUMNS
   displayedColumns: string[] = [
@@ -36,6 +38,13 @@ export class PurchaseInvoicesComponent {
     'balance',
     'action'
   ];
+  
+  // 
+  selectedMonth: string = '';
+  selectedCategory: string = '';
+  
+  //MONTHS FOR FILTER DROPDOWN
+  months = Month_Filter_Array
 
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: PurchaseInvoice | null = null;
@@ -43,6 +52,12 @@ export class PurchaseInvoicesComponent {
   @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
 
+    // DATE SELECTION
+    SEARCK_KEY = '';
+    FILTER_TYPE = ''
+    START_DATE = ''
+    END_DATE = ''
+    STATUS = ''
   // 
   searchText: any;
   totalCount = 0;
@@ -50,15 +65,6 @@ export class PurchaseInvoicesComponent {
   Inprogress = 0;
   Completed = 0;
 
-  //MONTHS FOR FILTER DROPDOWN
-  months: month[] = [
-    { value: 'today', viewValue: 'Today' },
-    { value: 'yesterday', viewValue: 'Yesterday' },
-    { value: 'last Week', viewValue: 'Last Week' },
-    { value: 'Last Month', viewValue: 'Last Month' },
-    { value: 'Last Year', viewValue: 'Last Year' },
-    { value: 'Calendar', viewValue: 'Custom' },
-  ];
 
  //MAIN PRODUCT ARRAY
  purchaseInvoicesArray: any[] = []
@@ -72,26 +78,12 @@ dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
  purchaseInvoiceExample = new PurchaseInvoice('', '', 0, 0 ,0, "");
   editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 
-constructor(public dialog: MatDialog, private productsService: ProductsService) {
+constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
   this.viewInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 }
 
 ngOnInit(): void {
   this.FETCH_PRODUCTS();
-}
-
-onDateSelect(date: Date) {
-  console.log('Selected Date:', date);
-}
-
-// cancelSelection() {
-//     this.showCalendar = false;
-//     this.selectedMonth = '';
-//     this.selectedDate = null;
-// }
-
-ngAfterViewInit(): void {
-  this.dataSource.paginator = this.paginator;
 }
 
 //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
@@ -140,10 +132,16 @@ ADD_PRODUCT() {
     // });
 }
 
+  // SEARCH
+  APPLY_SEARCH_FILTER(filterValue: string): void {
+    // this.purchaseInvoicesArray.filter = filterValue.trim().toLowerCase();
+  }
+
+
 //TRIGGER THE DROP DOWN FILTER VALUES
 ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
-      this.OPEN_CALENDAR_DIALOG();
+      // this.OPEN_CALENDAR_DIALOG();
     }
     else{
       this.productsService.FILTER_PRODUCT(value).subscribe({
@@ -152,7 +150,6 @@ ON_CHANGE_DROPDOWN(value: string) {
           this.purchaseInvoicesArray = response;
           this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
           this.totalCount = this.dataSource.data.length;
-          this.Inprogress = this.btnCategoryClick('pending');
         },
         error: (error: any) => {
           console.log("Error:", error)
@@ -163,48 +160,81 @@ ON_CHANGE_DROPDOWN(value: string) {
     }
 }
 
-//OPEN THE CALENDAR DIALOG
-OPEN_CALENDAR_DIALOG(): void {
-    const dialogRef = this.dialog.open(CalendarDialogComponent, {
-      width: '350px',
-      data: { selectedDate: this.selectedDate }
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
-      if (result) {
-        if (result.startDate && result.endDate) {
-          this.selectedMonth = `${result.startDate.toLocaleString('default', { month: 'long' })} - ${result.endDate.toLocaleString('default', { month: 'long' })}`;
-          this.productsService.FILTER_PRODUCT("custom").subscribe({
-            next: (response: any) => {
-              console.log("Response:", response)
-              this.purchaseInvoicesArray = response;
-              this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
-              this.totalCount = this.dataSource.data.length;
-              this.Inprogress = this.btnCategoryClick('pending');
-            },
-            error: (error: any) => {
-              console.log("Error:", error)
-            },
-            complete: () => {
-            }
-          });
-        } else {
-          this.selectedMonth = 'Custom';
-        }
-        this.selectedDate = result;
-      }
-    });
-}
+ // FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
+ showDatePicker = false;
+ DROPDOWN_FILTERATION(value: string, dropdown: string) {
+
+   // Date filtering
+   if (dropdown == 'month') {
+     if (value === 'Calendar') {
+       this.showDatePicker = true;
+     }
+
+     else {
+       this.START_DATE = '';
+       this.END_DATE = '';
+
+       this.showDatePicker = false;
+
+       this.FILTER_TYPE = value;
+
+       this.FILTER_ARRAY_BY_DATE(value)
+     }
+   }
+
+   // Status filtering
+   else if (dropdown == 'status') {
+     if (value == 'all') {
+       // this.FILTER_ARRAY_BY_STATUS('')
+       this.STATUS = ''
+     }
+     else {
+       // this.FILTER_ARRAY_BY_STATUS(value)
+       this.STATUS = value
+     }
+   }
+
+   else if (dropdown == 'Download') {
+     // this.DOWNLOAD(value);
+     // this.selectedDownloadOption = 'Download as';
+   }
+ }
+
+ // DATE FILTERATION
+ FILTER_ARRAY_BY_DATE(filter_type: any) {
+   // this.FILTER_TYPE = filter_type
+   // this.paginator.firstPage();
+   // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
+ }
+
+ // Method to handle changes in start date input
+ handleStartDateChange(event: any): void {
+   this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+   this.FILTER_ARRAY_BY_DATE('custom')
+ }
+
+ // Method to handle changes in end date input
+ handleEndDateChange(event: any): void {
+   this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+   this.FILTER_ARRAY_BY_DATE('custom')
+ }
+
+ FORMAT_DATE_YYYYMMDD(date: Date): string {
+   return this.generalService.FORMAT_DATE_YYYYMMDD(date)
+ }
+
+ // Function to format date
+ FORMAT_DATE(dateString: string): string {
+   return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
+ }
 
 //UPDATE ROW VALUES
 EDIT_PRODUCT(obj: any): void {
-  this.ShowAddButoon = false
   this.viewInvoice = obj;
   this.editedInvoice = obj;
 }
 
 CANCEL(){
-  this.ShowAddButoon = true;
   this.editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 }
 
@@ -229,11 +259,6 @@ OPEN_DIALOG(action: string, delPRODUCT: Product): void {
 //   });
 }
 
-//GET THE CATEGORY LENGTH
-btnCategoryClick(val: string): number {
-  this.dataSource.filter = val.trim().toLowerCase();
-  return this.dataSource.filteredData.length;
-}
 
 //TRUNCATE THE TEXT INTO 20 CHARS
 truncateText(text: string, limit: number): string {

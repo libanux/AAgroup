@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { products } from 'src/app/classes/products.class';
+import { Suppliers_ARRAY } from 'src/app/services/general.service';
 
 interface Supplier {
   id: number;
@@ -9,20 +10,25 @@ interface Supplier {
 @Component({
   selector: 'app-purchase-add',
   templateUrl: './purchase-add.component.html',
-  styleUrl: './purchase-add.component.scss'
+  styleUrls: [
+    '../../../../../assets/scss/apps/_add_expand.scss',
+    './purchase-add.component.scss',
+  ],
 })
 export class PurchaseAddComponent {
+
+  // VARIABLES
+  // These two valus are used for the add expnad row in the top of the page
+  panelOpenState = false;
+  open_expansion_value = 0;
+
   dataSource = products;
+
   filteredProducts: any[]
   filteredSuppliers: any[]
 
-  suppliers: Supplier[] = [
-    { id: 1, name: 'Supplier A' },
-    { id: 2, name: 'Supplier B' },
-    { id: 3, name: 'Supplier C' },
-    { id: 4, name: 'Supplier D' },
-    // Add more suppliers as needed
-  ];
+  suppliers = Suppliers_ARRAY
+
     constructor() {
       this.filteredProducts = this.dataSource
       this.filteredSuppliers = this.suppliers
@@ -39,6 +45,17 @@ export class PurchaseAddComponent {
     setStep(index: number) {
       this.step = index;
     }
+
+      // Method to handle the panel closed event
+  CLOSE_PANEL() {
+    this.open_expansion_value = 0;
+    this.panelOpenState = false
+  }
+
+  OPEN_PANEL() {
+    this.open_expansion_value = 1;
+    this.panelOpenState = true;
+  }
   
     nextStep() {
       this.step++;
@@ -48,8 +65,6 @@ export class PurchaseAddComponent {
       this.step--;
     }
   
-    panelOpenState = false;
-
     displayedColumns: string[] = [  
       'barcode',
       'itemName',

@@ -1,0 +1,12 @@
+<h2 mat-dialog-title>{{action}}</h2>
+
+@if(action === 'Delete')  {
+<div class="p-x-24 p-b-24">
+  Sure to delete <span class="f-w-600">{{local_data.title}}</span>?
+</div>
+}
+
+<div mat-dialog-actions class="two_buttons_div">
+  <button mat-stroked-button (click)="closeDialog()">Cancel</button>
+  <button mat-flat-button (click)="doAction()" color="primary">{{action}}</button>
+</div>

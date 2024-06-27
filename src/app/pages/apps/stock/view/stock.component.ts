@@ -1,17 +1,16 @@
 import { Component, OnInit, Inject, Optional, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { stocksService } from 'src/app/services/stock.service';
 import { Product, products } from 'src/app/classes/products.class';
-import { Category, categories } from 'src/app/classes/category.class';
-import { GeneralService } from 'src/app/services/general.service';
+import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
-  styleUrl: './stock.component.scss',
+  styleUrl: '../../../../../assets/scss/apps/general_table.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -25,7 +24,10 @@ import { GeneralService } from 'src/app/services/general.service';
 })
 
 export class StockComponent implements OnInit {
-
+// ARRAYS 
+  // DOWNLOAD
+  Options: any[] = Download_Options;
+  selectedDownloadOption: string = 'Download as';
   ShowAddButoon = true;
   selectedMonth: string = '';
 
@@ -53,17 +55,18 @@ export class StockComponent implements OnInit {
   Inprogress = 0;
   Completed = 0;
 
-  categoryArray = categories
+  categoryArray = PRODUCT_CATEGORY_ARRAY
 
   //MONTHS FOR FILTER DROPDOWN
-  months: month[] = [
-    { value: 'today', viewValue: 'Today' },
-    { value: 'yesterday', viewValue: 'Yesterday' },
-    { value: 'last Week', viewValue: 'Last Week' },
-    { value: 'Last Month', viewValue: 'Last Month' },
-    { value: 'Last Year', viewValue: 'Last Year' },
-    { value: 'Calendar', viewValue: 'Custom' },
-  ];
+  months = Month_Filter_Array
+
+
+    // DATE SELECTION
+    SEARCK_KEY = '';
+    FILTER_TYPE = ''
+    START_DATE = ''
+    END_DATE = ''
+    STATUS = ''
 
  //MAIN stock ARRAY
  showCalendar: boolean = false;
@@ -73,15 +76,40 @@ stocksArray = new MatTableDataSource<Product>([]);
 
   //stock ON EDIT
   viewstock: Product
-  stockExample =  new Product('', '', '','', 0, 0, 0, 0);
-  editedstock=  new Product('', '', '','', 0, 0, 0, 0);
+  stockExample =  new Product('', '', '','', '', '', 0, 0);
+  editedstock=  new Product('', '', '','', '', '', 0, 0);
 
 constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
-  this.viewstock =  new Product('', '', '','', 0, 0, 0, 0);
+  this.viewstock = new Product('', '', '','', '', '', 0, 0);
 }
 
 ngOnInit(): void {
   this.FETCH_STOCKS();
+}
+
+// PAGING
+pageSize = 10;
+Current_page = 1
+// function when page number changes
+onPageChange(event: PageEvent): void {
+this.pageSize = event.pageSize;
+
+if (this.STATUS != '' || this.FILTER_TYPE != '') {
+  this.Current_page = event.pageIndex + 1;
+  // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
+}
+
+else {
+  this.Current_page = event.pageIndex + 1;
+  // this.FETCH_VISA();
+}
+
+}
+// THIS FUNCTION IS FOR THE PAGING TO GO TO PREVOIUS PAGE
+goToPreviousPage(): void {
+if (this.paginator && this.paginator.hasPreviousPage()) {
+  this.paginator.previousPage();
+}
 }
 
 onDateSelect(date: Date) {
@@ -104,7 +132,7 @@ FILTER_BY_CATEGORY(value: string){
 }
 
 //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
-expandRow(event: Event, element: any, column: string): void {
+EXPAND_ROW(event: Event, element: any, column: string): void {
     if (column === 'action') {
       this.expandedElement = element;
     }
@@ -142,7 +170,7 @@ SORT(){
 // CANCEL UPDATE
 CANCEL_UPDATE(): void {
   this.ShowAddButoon = true;
-  this.editedstock =  new Product('', '', '','', 0, 0, 0, 0);
+  this.editedstock =  new Product('', '', '','', '', '', 0, 0);
 }
 
 APPLY_SEARCH_FILTER(filterValue: string): void {
@@ -163,7 +191,7 @@ ADD_STOCK() {
 //TRIGGER THE DROP DOWN FILTER VALUES
 ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
-      this.OPEN_CALENDAR_DIALOG();
+      // this.OPEN_CALENDAR_DIALOG();
     }
     else{
       this.stocksService.FILTER_stock(value).subscribe({
@@ -179,39 +207,6 @@ ON_CHANGE_DROPDOWN(value: string) {
         }
       });
     }
-}
-
-//OPEN THE CALENDAR DIALOG
-OPEN_CALENDAR_DIALOG(): void {
-    // const dialogRef = this.dialog.open(CalendarDialogComponent, {
-    //   width: '350px',
-    //   data: { selectedDate: this.selectedDate }
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed', result);
-    //   if (result) {
-    //     if (result.startDate && result.endDate) {
-    //       this.selectedMonth = `${result.startDate.toLocaleString('default', { month: 'long' })} - ${result.endDate.toLocaleString('default', { month: 'long' })}`;
-    //       this.stocksService.FILTER_stock("custom").subscribe({
-    //         next: (response: any) => {
-    //           console.log("Response:", response)
-    //           this.stocksArray = response;
-    //           this.dataSource = new MatTableDataSource(this.stocksArray);
-    //           this.totalCount = this.dataSource.data.length;
-    //           this.Inprogress = this.btnCategoryClick('pending');
-    //         },
-    //         error: (error: any) => {
-    //           console.log("Error:", error)
-    //         },
-    //         complete: () => {
-    //         }
-    //       });
-    //     } else {
-    //       this.selectedMonth = 'Custom';
-    //     }
-    //     this.selectedDate = result;
-    //   }
-    // });
 }
 
 //UPDATE ROW VALUES
@@ -242,6 +237,76 @@ this.stocksService.DELETE_stock(delstock).subscribe({
     }
   });
 }
+
+
+// FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
+showDatePicker = false;
+DROPDOWN_FILTERATION(value: string, dropdown: string) {
+
+  // Date filtering
+  if (dropdown == 'month') {
+    if (value === 'Calendar') {
+      this.showDatePicker = true;
+    }
+
+    else {
+      this.START_DATE = '';
+      this.END_DATE = '';
+
+      this.showDatePicker = false;
+
+      this.FILTER_TYPE = value;
+
+      this.FILTER_ARRAY_BY_DATE(value)
+    }
+  }
+
+  // Status filtering
+  else if (dropdown == 'status') {
+    if (value == 'all') {
+      // this.FILTER_ARRAY_BY_STATUS('')
+      this.STATUS = ''
+    }
+    else {
+      // this.FILTER_ARRAY_BY_STATUS(value)
+      this.STATUS = value
+    }
+  }
+
+  else if (dropdown == 'Download') {
+    // this.DOWNLOAD(value);
+    // this.selectedDownloadOption = 'Download as';
+  }
+}
+
+// DATE FILTERATION
+FILTER_ARRAY_BY_DATE(filter_type: any) {
+  // this.FILTER_TYPE = filter_type
+  // this.paginator.firstPage();
+  // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
+}
+
+// Method to handle changes in start date input
+handleStartDateChange(event: any): void {
+  this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+  this.FILTER_ARRAY_BY_DATE('custom')
+}
+
+// Method to handle changes in end date input
+handleEndDateChange(event: any): void {
+  this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+  this.FILTER_ARRAY_BY_DATE('custom')
+}
+
+FORMAT_DATE_YYYYMMDD(date: Date): string {
+  return this.generalService.FORMAT_DATE_YYYYMMDD(date)
+}
+
+// Function to format date
+FORMAT_DATE(dateString: string): string {
+  return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
+}
+
 
 //GET THE CATEGORY LENGTH
 // btnCategoryClick(val: string): number {
@@ -279,14 +344,14 @@ interface month {
 @Component({
   selector: 'products-dialog-content',
   templateUrl: 'delete-dialog-content.html',
-  styleUrl: 'delete-dialog-content.scss'
+  styleUrl: '../../../../../assets/scss/apps/_dialog_delete.scss'
 })
 export class deleteAjustDialogComponent {
   action: string;
   local_data: any;
   PRODUCT: Product
-  categoryArray = categories
-  
+  categoryArray = PRODUCT_CATEGORY_ARRAY
+
   constructor(
     public dialogRef: MatDialogRef<deleteAjustDialogComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) public data: Product
