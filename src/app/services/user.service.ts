@@ -52,6 +52,7 @@ export class UserService {
             "sort_order": "ASC",
             "owner_id": "667c9247ecf19dc9d9e83b89"
         }
+        console.log(requestBody)
         return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_USERS_BY_OWNER_ID', requestBody, { headers });
     }
 
@@ -66,12 +67,8 @@ export class UserService {
             "owner_id": "667c9247ecf19dc9d9e83b89"
         };
 
-        return this.httpClient.post<any>(this.apiUrl + '/UPDATE_USER_BY_ID', requestBody, { headers });
+        return this.httpClient.post<any>(this.apiUrl + '/GET_USER_BY_ID', requestBody, { headers });
     }
-
-
-
-
 
     //UPDATE USER
     UPDATE_USER(USER: UserClass): Observable<any> {
@@ -80,16 +77,12 @@ export class UserService {
             'Content-Type': 'application/json'
         });
         const requestBody = {
-            // "_id": USER._id,
-            // "first_name": USER.first_name,
-            // "last_name": USER.last_name,
-            // "email": USER.email,
-            // "number": USER.number,
-            // "country_code": USER.country_code,
-            // "company_name": USER.company_name,
-            // "owner_id": '667881ff4488ac3c152b440c',
+            "_id": USER._id,
+            "first_name": USER.first_name,
+            "last_name": USER.last_name,
+            "email": USER.email,
+            "role": USER.role,
         };
-
         return this.httpClient.post<any>(this.apiUrl + '/UPDATE_USER_BY_ID', requestBody, { headers });
     }
 
@@ -100,15 +93,14 @@ export class UserService {
             'Content-Type': 'application/json'
         });
         const requestBody = {
-            // "first_name": USER.first_name,
-            // "last_name": USER.last_name,
-            // "email": USER.email,
-            // "number": USER.number,
-            // "country_code": USER.country_code,
-            // "company_name": USER.company_name,
-            // "owner_id": '667881ff4488ac3c152b440c',
+            "first_name": USER.first_name,
+            "last_name": USER.last_name,
+            "email": USER.email,
+            "password": USER.password,
+            "role": USER.role,
+            "owner_id": '667c9247ecf19dc9d9e83b89',
         };
-        return this.httpClient.post<any>(this.apiUrl + '/CREATE_USER', requestBody, { headers });
+        return this.httpClient.post<any>(this.apiUrl + '/SIGN_UP', requestBody, { headers });
     }
 
     //DELETE USER

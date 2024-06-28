@@ -252,8 +252,10 @@ export class CustomersDialogComponent {
   }
 
   doAction(): void {
+    if(this.action == 'Delete'){
     this.dialogRef.close({ event: this.action, data: this.CUSTOMER_ID });
   }
+}
 
   closeDialog(): void {
     this.dialogRef.close({ event: 'Cancel' });
