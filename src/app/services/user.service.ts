@@ -52,18 +52,17 @@ export class UserService {
             "sort_order": "ASC",
             "owner_id": environment.owner_id
         }
-        console.log(requestBody)
         return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_USERS_BY_OWNER_ID', requestBody, { headers });
     }
 
     //GET USER BY USER ID 
-    GET_USER_BY_USER_ID(USER: UserClass): Observable<any> {
+    GET_USER_BY_USER_ID(USER_ID: string): Observable<any> {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${this.getToken()}`,
             'Content-Type': 'application/json'
         });
         const requestBody = {
-            "id": USER._id,
+            "id": USER_ID,
             "owner_id": environment.owner_id
         };
 

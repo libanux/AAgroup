@@ -1,24 +1,19 @@
-
- <section>
-    <div class="shimmer-table">
-        <div class="row">
-
-            <thead class="table_head">
-                @for(head of headers; track head){
-                    <th>{{head}}</th>
-                }
-            </thead>
-
-        </div>
-<!-- <hr style="color: grey;"> -->
-
-        <table class="table">
-            <tbody>
-                <tr *ngFor="let row of ROWS_COUNT" class="placeholder-row">
-                    <td class="placeholder"></td>
-                </tr>
-            </tbody>
-        </table>
+<section>
+  <div class="shimmer-table">
+    <div class="row">
+      <thead class="table_head">
+        @for(head of headers; track head){
+        <th>{{head}}</th>
+        }
+      </thead>
     </div>
-    </section>   
 
+    <table class="table">
+      <tbody>
+        <tr *ngFor="let index of getRows(); let i = index" class="placeholder-row">
+          <td class="placeholder"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

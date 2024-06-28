@@ -39,7 +39,6 @@ export class AppLoginComponent {
   
         this.authserivece.SIGN_IN(authenticationParams).subscribe({
           next: (response: any) => {
-            console.log(response)
             if(response.user.owner_id == environment.owner_id)
               {
               localStorage.setItem('TICKET', response.token),

@@ -14,6 +14,7 @@
     margin-right: 8px; /* Adjust spacing between icon and text */
   }
 
+
   .table-card {
     width: 100%;
     display: flex;
@@ -21,7 +22,10 @@
     justify-content: center;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    background-color: #bed6cca8;
   }
+  
   .table-responsive {
     width: 100%;
     overflow-x: auto;
@@ -30,9 +34,24 @@
     width: 100%;
     overflow: hidden;
     box-shadow: none;
-    font-family: inherit;
   }
   
+  
+.table-card {
+  .w-100{
+    .no-items-found{
+      background-color: white;
+      border-radius: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      width: 100%;
+
+    }
+  }
+}
   .mat-table th,
   .mat-table td {
     // border: none;

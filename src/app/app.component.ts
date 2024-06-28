@@ -16,14 +16,13 @@ export class AppComponent implements OnInit {
   
     if (localStorage.getItem('TICKET') != '') {
       this.isLoggedIn = true;
-      console.log("true")
       this.router.navigate(['/apps/products']).then(() => {
         window.scrollTo(0, 0);
       })
     }
      else if (localStorage.getItem('TICKET') == ''){
       this.isLoggedIn = false;   
-        console.log("false")
+
         this.router.navigate(['/login']).then(() => {
           window.scrollTo(0, 0);
         })

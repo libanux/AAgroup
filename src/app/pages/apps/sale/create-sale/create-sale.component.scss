@@ -22,6 +22,16 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 
+  .mat-table .Edited_Input:focus {
+    border: 1px solid #618a06;
+    outline-color: #618a06;
+  }
+
+  .mat-table .UnEdited_Input:focus {
+    border-style: so;
+    outline-color: #ffffff;
+  }
+                                                                                                                                                                                                                                                                                                                                                                          
   .table-responsive {
     width: 100%;
     overflow-x: auto;

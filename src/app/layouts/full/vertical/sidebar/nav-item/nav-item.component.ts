@@ -84,4 +84,21 @@ export class AppNavItemComponent implements OnChanges {
       }
     }
   }
+
+  isRouteActive(item: any): boolean {
+    const currentUrl = this.router.url;
+    // console.log(item.route)
+    if (item.route) {
+
+      if (currentUrl.includes('app/stock')) {
+        return item.route.includes('app/stock');
+      }
+      
+      else if (currentUrl.includes('wholesaler')) {
+        return item.route.includes('wholesaler');
+      }
+      return this.router.isActive(item.route, true);
+    }
+    return false;
+  }
 }
