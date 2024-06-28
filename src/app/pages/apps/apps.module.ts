@@ -63,9 +63,7 @@ import { AdjustementComponent, deleteAjustmentDialogComponent } from './stock/ad
 import { SaleModule } from './sale/sale.module';
 import { CreateSaleComponent } from './sale/create-sale/create-sale.component';
 import { SaleInvoiceComponent } from './sale/sale-invoice/sale-invoice.component';
-import { UsersModule } from './users/users.module';
 import { MatFormField } from "@angular/material/form-field";
-import { AddUserComponent } from './users/add-admin/add.component';
 import { CustomersComponent, CustomersDialogComponent } from './sale/customers/customers.component';
 import { SuppliersComponent } from './purchase/suppliers/suppliers.component';
 import { TableShimmerComponent } from './table-shimmer/table-shimmer.component';
@@ -106,12 +104,12 @@ import { TableShimmerComponent } from './table-shimmer/table-shimmer.component';
         AdjustDialogComponent,
         deleteAjustDialogComponent,
         UserDialogComponent,
-        AddUserComponent,
         CustomersComponent,
         SuppliersComponent,
         deleteAjustmentDialogComponent,
         TableShimmerComponent,
-        CustomersDialogComponent
+        CustomersDialogComponent,
+        UsersComponent
     ],
     providers: [DatePipe],
     imports: [
@@ -135,7 +133,6 @@ import { TableShimmerComponent } from './table-shimmer/table-shimmer.component';
         NgScrollbarModule,
         PurchaseModule,
         SaleModule,
-        UsersModule,
         MatFormField
     ]
 })

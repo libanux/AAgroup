@@ -57,7 +57,7 @@ export class UsersComponent {
   //CUSTOMER TO EDIT|ADD
   // THESE TWO OBJECTS ARE TO CHECK IF THE SELECTED PRODUCT TO UPDATE HAVE DIFFERENT VALUES THAN THE MAIN ONE SO THAT THE DISBALE BUTTON IS ABLE
   // ADDED CUSTOMER IS THE CUSTOMER SELECTED BUT WITH CHANGED VALUE
-  ADDED_UER: UserClass = new UserClass()
+  ADDED_USER: UserClass = new UserClass()
   // MAIN CUSTOMER IS THE CUSTOMER SELECTED BUT WITHOUT CHANGED VALUE
   MAIN_SELECTED_UER_DATA: UserClass = new UserClass()
 
@@ -72,7 +72,7 @@ export class UsersComponent {
     public dialog: MatDialog,
     public datePipe: DatePipe,
     private userService: UserService) {
-    this.ADDED_UER = new UserClass('', '', '', '', '', '');
+    this.ADDED_USER = new UserClass('', '', '', '', '', '');
   }
 
   ngOnInit(): void {
@@ -118,7 +118,7 @@ export class UsersComponent {
   onInputChange() {
     // When inputs changes -> i check if they are the same as the main one
     // if they are the same keep the update button disabled
-    if (JSON.stringify(this.MAIN_SELECTED_UER_DATA) !== JSON.stringify(this.ADDED_UER)) {
+    if (JSON.stringify(this.MAIN_SELECTED_UER_DATA) !== JSON.stringify(this.ADDED_USER)) {
       this.DATA_CHANGED = true;
     }
     else {
@@ -126,7 +126,6 @@ export class UsersComponent {
     }
 
   }
-
 
   APPLY_FILTER(filterValue: string): void {
     // this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -139,7 +138,7 @@ export class UsersComponent {
       data: obj,
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.DELETE_ADMIN(result.data);
+      this.DELETE_USER(result.data);
     });
   }
 
@@ -150,6 +149,7 @@ export class UsersComponent {
     this.show_shimmer = true;
     this.userService.GET_ALL_USER(this.Current_page, this.pageSize).subscribe({
       next: (response: any) => {
+        console.log(response)
         this.current_page_array_length = response.rows.length
         this.USERS_ARRAY_LENGTH = response.count;
         this.USERS_ARRAY = new MatTableDataSource(response.rows);
@@ -159,26 +159,39 @@ export class UsersComponent {
     });
   }
 
-  // tslint:disable-next-line - Disables all
-  ADD_USER(): void {
-    // this.dataSource.data.unshift({
-    //   id: this.admins.length + 1,
-    //   Name: row_obj.Name,
-    //   Position: row_obj.Position,
-    //   Email: row_obj.Email,
-    //   Mobile: row_obj.Mobile,
+  // ADD USER
+  ADD_USER() {
+    this.SHOW_LOADING_SPINNER = true;
+    this.userService.ADD_USER(this.ADDED_USER).subscribe({
+      next: (response: any) => { },
+      error: (error) => { },
+      complete: () => { this.FETCH_USERS(); this.CANCEL_UPDATE(); }
+    });
+  }
 
-    //   DateOfJoining: new Date(),
-    //   Salary: row_obj.Salary,
-    //   Projects: row_obj.Projects,
-    //   imagePath: row_obj.imagePath,
-    // });
-    // this.dialog.open(AppAddEmployeeComponent);
-    this.table.renderRows();
+//  DELETE USER BY USER ID
+  DELETE_USER(ID: any) {
+    this.userService.DELETE_USER(ID).subscribe({
+      next: (response: any) => {
+        // CHECK IF I AM DELETING THE LAST ITEM LEFT IN THE PAGE I AM AT
+        // IF YES --> GO BACK TO THE PREVOUIS PAGE
+        if (this.current_page_array_length == 1) {
+          this.Current_page = this.Current_page - 1
+          this.goToPreviousPage()
+        }
+      },
+      error: (error) => { },
+      complete: () => { this.FETCH_USERS(); this.CANCEL_UPDATE(); }
+    });
   }
 
   UPDATE_USER() {
-
+    this.SHOW_LOADING_SPINNER = true;
+    this.userService.UPDATE_USER(this.ADDED_USER).subscribe({
+      next: (response: any) => { },
+      error: (error) => { },
+      complete: () => { this.FETCH_USERS(); this.CANCEL_UPDATE(); }
+    });
   }
 
   //SELECT USER TO UPDATE
@@ -187,7 +200,7 @@ export class UsersComponent {
     this.ShowAddButoon = false;
     this.CurrentAction = 'Update User'
     // FILL THE OBJ WITH THE SELECTED USER TO UPDATE
-    this.ADDED_UER = { ...obj };
+    this.ADDED_USER = { ...obj };
     this.MAIN_SELECTED_UER_DATA = obj;
 
     // OPEN THE PANEL
@@ -202,17 +215,14 @@ export class UsersComponent {
     this.ShowAddButoon = true;
     this.CurrentAction = 'Add User'
     // EMPTY THE SELECTED USER TO UPDATE
-    this.ADDED_UER = new UserClass('', '', '', '', '', '');
+    this.ADDED_USER = new UserClass('', '', '', '', '', '');
     this.MAIN_SELECTED_UER_DATA = new UserClass('', '', '', '', '', '');
 
     this.DATA_CHANGED = false;
     this.SHOW_LOADING_SPINNER = false
   }
 
-  // tslint:disable-next-line - Disables all
-  DELETE_ADMIN(row_obj: any) {
 
-  }
 
 }
 
@@ -220,15 +230,15 @@ export class UsersComponent {
   // tslint:disable-next-line: component-selector
   selector: 'app-dialog-content',
   templateUrl: './users-dialog.component.html',
-  styleUrl: './users-dialog.component.scss'
+  styleUrl: '../../../../assets/scss/apps/_dialog_delete.scss'
 })
 // tslint:disable-next-line: component-class-suffix
 export class UserDialogComponent {
   action: string;
   // tslint:disable-next-line - Disables all
   local_data: any;
-  selectedImage: any = '';
-  joiningDate: any = '';
+
+  USER_ID: any
 
   constructor(
     public datePipe: DatePipe,
@@ -238,59 +248,21 @@ export class UserDialogComponent {
   ) {
     this.local_data = { ...data };
     this.action = this.local_data.action;
-    if (this.local_data.DateOfJoining !== undefined) {
-      this.joiningDate = this.datePipe.transform(
-        new Date(this.local_data.DateOfJoining),
-        'yyyy-MM-dd',
-      );
-    }
-    if (this.local_data.imagePath === undefined) {
-      this.local_data.imagePath = 'assets/images/profile/user-1.jpg';
-    }
+    this.USER_ID = data._id
+
   }
 
 
-  typeOptions = [
-    { value: 'office', viewValue: 'Office' },
-    { value: 'admin', viewValue: 'Admin' },
 
-  ];
   doAction(): void {
-    this.dialogRef.close({ event: this.action, data: this.local_data });
+    if(this.action == 'Delete'){
+      this.dialogRef.close({ event: this.action, data: this.USER_ID });
+    }
   }
 
   closeDialog(): void {
     this.dialogRef.close({ event: 'Cancel' });
   }
 
-  selectFile(event: any): void {
-    if (!event.target.files[0] || event.target.files[0].length === 0) {
-      // this.msg = 'You must select an image';
-      return;
-    }
-    const mimeType = event.target.files[0].type;
-    if (mimeType.match(/image\/*/) == null) {
-      // this.msg = "Only images are supported";
-      return;
-    }
-    // tslint:disable-next-line - Disables all
-    const reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    // tslint:disable-next-line - Disables all
-    reader.onload = (_event) => {
-      // tslint:disable-next-line - Disables all
-      this.local_data.imagePath = reader.result;
-    };
-  }
-
-  selectedPermission: string = ''; // Track the selected permission
-
-  toggleSubPermissions(permission: string) {
-    if (this.selectedPermission === permission) {
-      this.selectedPermission = ''; // If the same permission is clicked again, close it
-    } else {
-      this.selectedPermission = permission; // Otherwise, set the selected permission
-    }
-  }
 }
 
