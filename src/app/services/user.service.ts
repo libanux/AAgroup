@@ -50,7 +50,7 @@ export class UserService {
             "end_row": endRow,
             "sort_field": "id",
             "sort_order": "ASC",
-            "owner_id": "667c9247ecf19dc9d9e83b89"
+            "owner_id": environment.owner_id
         }
         console.log(requestBody)
         return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_USERS_BY_OWNER_ID', requestBody, { headers });
@@ -64,7 +64,7 @@ export class UserService {
         });
         const requestBody = {
             "id": USER._id,
-            "owner_id": "667c9247ecf19dc9d9e83b89"
+            "owner_id": environment.owner_id
         };
 
         return this.httpClient.post<any>(this.apiUrl + '/GET_USER_BY_ID', requestBody, { headers });
@@ -98,7 +98,7 @@ export class UserService {
             "email": USER.email,
             "password": USER.password,
             "role": USER.role,
-            "owner_id": '667c9247ecf19dc9d9e83b89',
+            "owner_id": environment.owner_id
         };
         return this.httpClient.post<any>(this.apiUrl + '/SIGN_UP', requestBody, { headers });
     }
@@ -111,7 +111,7 @@ export class UserService {
         });
         const requestBody = {
             "id": ID,
-            "owner_id": "667881ff4488ac3c152b440c"
+            "owner_id": environment.owner_id
         };
         return this.httpClient.post<any>(this.apiUrl + '/DELETE_USER_BY_ID', requestBody, { headers });
     }

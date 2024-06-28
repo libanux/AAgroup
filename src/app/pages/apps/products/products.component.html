@@ -12,7 +12,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Product Name</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Product Name" [(ngModel)]="ADDED_PRODUCT.itemName" />
+            <input matInput placeholder="Product Name" [(ngModel)]="ADDED_PRODUCT.name"  (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -23,7 +23,7 @@
           </mat-form-field>
         </div>
 
-        <!-- BARCODE-->
+           <!-- BARCODE-->
         <div class="col-md-4 d-flex flex-column">
           <div class="d-flex align-items-center">
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Barcode</mat-label>
@@ -37,7 +37,8 @@
                     d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" />
                 </svg>
               </mat-icon>
-              <input matInput placeholder="Barcode" [(ngModel)]="ADDED_PRODUCT.barcode" readonly="" />
+              <input matInput placeholder="Barcode" [(ngModel)]="ADDED_PRODUCT.barcode" readonly=""  (ngModelChange)="onInputChange()"/>
+              @if(CurrentAction == 'Add Product'){
               <div class="d-flex align-items-center">
                 <mat-icon matPrefix class="generate_code_button" (click)="GENERATE_BARCODE()">
                   <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -47,6 +48,7 @@
                   </svg>
                 </mat-icon>
               </div>
+            }
             </div>
           </mat-form-field>
         </div>
@@ -58,7 +60,7 @@
           </div>
 
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Description" [(ngModel)]="ADDED_PRODUCT.description" />
+            <input matInput placeholder="Description" [(ngModel)]="ADDED_PRODUCT.description"  (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -79,7 +81,7 @@
           </div>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Search Categories..." aria-label="Category" [matAutocomplete]="auto"
-              [(ngModel)]="ADDED_PRODUCT.category">
+              [(ngModel)]="ADDED_PRODUCT.category"  (ngModelChange)="onInputChange()">
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
                 width="24px" fill="#5f6368">
@@ -113,7 +115,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Cost</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Cost" [(ngModel)]="ADDED_PRODUCT.cost" type="number" min="0"/>
+            <input matInput placeholder="Cost" [(ngModel)]="ADDED_PRODUCT.cost" type="number" min="0"  (ngModelChange)="onInputChange()"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -130,7 +132,7 @@
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Sale</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Sale" [(ngModel)]="ADDED_PRODUCT.sale" type="number" min="0"/>
+            <input matInput placeholder="Sale"  (ngModelChange)="onInputChange()" [(ngModel)]="ADDED_PRODUCT.sale" type="number" min="0"/>
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -166,7 +168,7 @@
 <mat-card class="cardWithShadow">
   <!-- TABLE HEADER -->
   <header>
-
+<!-- SEARCH -->
     <div class="searchbar p-20">
       <mat-form-field appearance="outline" class="w-100">
         <input matInput placeholder="Search Product..." aria-label="Product"
@@ -180,7 +182,8 @@
         </mat-icon>
       </mat-form-field>
     </div>
-
+    
+<!-- DROPDOWN -->
     <div class="filter-date p-20">
 
       <section>
@@ -276,7 +279,7 @@
     @else{
     <!-- TABLE BODY -->
     <div class="table-responsive">
-      <table mat-table [dataSource]="productsArray" multiTemplateDataRows>
+      <table mat-table [dataSource]="PRODUCTS_ARRAY" multiTemplateDataRows>
 
         <!-- Iterate over displayedColumns using ngFor -->
         @for( column of displayedColumns; track column) {
@@ -400,8 +403,8 @@
     <!-- LENGTH : 1-10 of length -->
     <!-- pageSize : Items Per Page -->
     <mat-paginator
-    [pageSizeOptions]="[10, 20, 30]" 
-    [length]="totalCount" 
+    [pageSizeOptions]="[30, 50, 100]" 
+    [length]="PRODUCTS_ARRAY_LENGTH" 
     [pageSize]="pageSize"
     aria-label="Select page"
     showFirstLastButtons 

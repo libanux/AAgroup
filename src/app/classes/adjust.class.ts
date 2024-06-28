@@ -1,7 +1,7 @@
 
 export class Adjust {
     barcode: string;
-    itemName: string;
+    name: string;
     description: string;
     category: any;
     cost: number;
@@ -10,9 +10,9 @@ export class Adjust {
     quantity_available: number; // New field for previous quantity
     quantity_adjusted: number ;
   
-    constructor(barcode: string, itemName: string, description: string, category: any, cost: number, sale: number, new_quantity_on_hand: number, quantity_available: number, quantity_adjusted: number) {
+    constructor(barcode: string, name: string, description: string, category: any, cost: number, sale: number, new_quantity_on_hand: number, quantity_available: number, quantity_adjusted: number) {
       this.barcode = barcode;
-      this.itemName = itemName;
+      this.name = name;
       this.description = description;
       this.category = category;
       this.cost = cost;

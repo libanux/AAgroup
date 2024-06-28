@@ -67,6 +67,7 @@ import { MatFormField } from "@angular/material/form-field";
 import { CustomersComponent, CustomersDialogComponent } from './sale/customers/customers.component';
 import { SuppliersComponent } from './purchase/suppliers/suppliers.component';
 import { TableShimmerComponent } from './table-shimmer/table-shimmer.component';
+import { EditPurchaseComponent } from './purchase/edit-purchase/edit-purchase.component';
 
 @NgModule({
     exports: [TablerIconsModule],
@@ -109,7 +110,8 @@ import { TableShimmerComponent } from './table-shimmer/table-shimmer.component';
         deleteAjustmentDialogComponent,
         TableShimmerComponent,
         CustomersDialogComponent,
-        UsersComponent
+        UsersComponent,
+        EditPurchaseComponent
     ],
     providers: [DatePipe],
     imports: [

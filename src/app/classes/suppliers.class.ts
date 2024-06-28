@@ -5,6 +5,7 @@ export class Supplier {
     email: string = '';
     phone:string='';
     companyname: string = '';
+    contactname: string = '';
     balance: string = '';
 
     constructor(

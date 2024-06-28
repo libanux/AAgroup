@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } 
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';import { FeatherModule } from "angular-feather"
 import { AuthService, Params_Authenticate } from 'src/app/services/auth.service';
+import { environment } from 'src/enviroment/enviroment';
 
 @Component({
   selector: 'app-login',
@@ -38,11 +39,14 @@ export class AppLoginComponent {
   
         this.authserivece.SIGN_IN(authenticationParams).subscribe({
           next: (response: any) => {
-            this.router.navigate(['/apps/products']).then(() => {
-              window.scrollTo(0, 0);
-              }),
-                localStorage.setItem('TICKET', response.token),
-                localStorage.setItem('admin_id', response.user._id)
+            console.log(response)
+            if(response.user.owner_id == environment.owner_id)
+              {
+              localStorage.setItem('TICKET', response.token),
+              localStorage.setItem('admin_id', response.user._id)
+              this.router.navigate(['/apps/products']).then(() => {
+                window.scrollTo(0, 0);})
+            }
           },
           error: (error: any) => {this.loading = false;}
         });

@@ -5,7 +5,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { stocksService } from 'src/app/services/stock.service';
 import { Product, products } from 'src/app/classes/products.class';
-import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
+import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_ARRAY, STOCK_Array_Filter } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-stock',
@@ -25,6 +25,10 @@ import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_
 
 export class StockComponent implements OnInit {
 // ARRAYS 
+
+  // STOCK FILTER
+  STOCK_Filter_array: any[] = STOCK_Array_Filter
+  selectedFilteraTION: string = '';
   // DOWNLOAD
   Options: any[] = Download_Options;
   selectedDownloadOption: string = 'Download as';
@@ -34,12 +38,13 @@ export class StockComponent implements OnInit {
   //TABLE COLUMNS
   displayedColumns: string[] = [
     'barcode',
-    'itemName',
+    'name',
     'category',
-    'previousQuantity',
     'onHandQuantity',
     'action'
   ];
+
+  show_shimmer = false;
 
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: Product | null = null;

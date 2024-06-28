@@ -1,0 +1,191 @@
+<mat-card class="cardWithShadow">
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title class="f-w-600 mat-body-1 currentAction">Create Purchase</mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+        <!-- FIRST ROW :  Supplier + Invoice No. + Purchase Date -->
+        <div class="row">
+          <!-- Supplier -->
+          <div class="col-md-4 d-flex flex-column">
+            <div class="d-flex align-items-center">
+              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Supplier</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Search Supplier....." aria-label="Product" [matAutocomplete]="auto"
+                [(ngModel)]="searchQuery" (input)="filterSuppliers()">
+              <mat-icon matPrefix class="op-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                  width="24px" fill="#5f6368">
+                  <path
+                    d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                </svg>
+              </mat-icon>
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let product of filteredSuppliers" [value]="product">
+                  {{product.name}}
+                </mat-option>
+                <mat-option (click)="addNewProduct()">
+                  <div class="option-content">
+                    <mat-icon matPrefix class="op-5">
+                      <i-tabler name="user" class="icon-20 d-flex"></i-tabler>
+                    </mat-icon>
+                    <span>Add new Supplier</span>
+                  </div>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <!-- Invoice No. -->
+          <div class="col-md-4 d-flex flex-column">
+            <div class="d-flex align-items-center">
+              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Invoice No.</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="11446688" />
+              <mat-icon matPrefix class="op-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                  width="24px" fill="#5f6368">
+                  <path
+                    d="M160-640h640v-80H160v80Zm-80-80q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v240H160v240h164v80H160q-33 0-56.5-23.5T80-240v-480ZM598-80 428-250l56-56 114 112 226-226 56 58L598-80ZM160-720v480-180 113-413Z" />
+                </svg>
+              </mat-icon>
+            </mat-form-field>
+          </div>
+          <!-- Purchase Date -->
+          <div class="col-md-4 d-flex flex-column">
+            <div class="d-flex align-items-center">
+              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Purchase Date</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput [matDatepicker]="birthpicker3" placeholder="13-6-2024" />
+              <mat-icon matPrefix class="op-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                  width="24px" fill="#5f6368">
+                  <path
+                    d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z" />
+                </svg>
+              </mat-icon>
+              <mat-datepicker-toggle matIconSuffix [for]="birthpicker3"></mat-datepicker-toggle>
+              <mat-datepicker #birthpicker3></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <!-- SECOND ROW :  SEARCH -->
+        <div class="row">
+          <!-- SEARCH -->
+          <div class="col-md-12 d-flex flex-column">
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Search products..." aria-label="Product" [matAutocomplete]="productAuto"
+                [(ngModel)]="searchQuery" (input)="filterProducts()">
+              <mat-icon matPrefix class="op-5">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                  width="24px" fill="#5f6368">
+                  <path
+                    d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
+                </svg>
+              </mat-icon>
+              <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
+                <mat-option *ngFor="let product of filteredProducts" [value]="product">
+                  {{product.name}}
+                </mat-option>
+                <mat-option class="add-new-product-option" (click)="addNewProduct()">
+                  <div class="option-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
+                      width="24px" fill="#5c8305">
+                      <path
+                        d="M720-400v-120H600v-80h120v-120h80v120h120v80H800v120h-80Zm-360-80q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm80-80h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0-80Zm0 400Z" />
+                    </svg>
+                    <span>Add new product</span>
+                  </div>
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+  
+        </div>
+  
+        <div class="Buttons_div">
+          <div>
+            <button mat-flat-button color="primary"> Create Purchase </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-expansion-panel>
+  </mat-card>
+  
+  <!-- MAIN TABLE -->
+  <div class="table-card ">
+    <!-- <div class="w-100"> -->
+    <table class="table table-responsive" mat-table [dataSource]="dataSource" class="mat-table">
+      <!-- Item Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Item Name </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.name" [readonly]="true" />
+        </td>
+      </ng-container>
+  
+      <!-- Barcode Column -->
+      <ng-container matColumnDef="barcode">
+        <th mat-header-cell *matHeaderCellDef> Barcode </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.barcode" [readonly]="true" />
+        </td>
+      </ng-container>
+  
+      <!-- Cost Column -->
+      <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef> Cost </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <input class="input-text Edited_Input" matInput type="number" [(ngModel)]="element.cost"
+            (ngModelChange)="onEdit(element, 'cost', $event, rowIndex)" />
+        </td>
+      </ng-container>
+  
+      <!-- Sale Column -->
+      <ng-container matColumnDef="sale">
+        <th mat-header-cell *matHeaderCellDef> Sale </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <input class="input-text Edited_Input" matInput type="number" [(ngModel)]="element.sale"
+            (ngModelChange)="onEdit(element, 'sale', $event, rowIndex)" />
+        </td>
+      </ng-container>
+  
+      <!-- Quantity Column -->
+      <ng-container matColumnDef="Quantity">
+        <th mat-header-cell *matHeaderCellDef> Quantity </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category.CategoryName"
+            [readonly]="true" />
+        </td>
+      </ng-container>
+  
+      <!-- Total Column -->
+      <ng-container matColumnDef="Total">
+        <th mat-header-cell *matHeaderCellDef> Total </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category.CategoryName"
+            [readonly]="true" />
+        </td>
+      </ng-container>
+  
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
+          <div class="action-link">
+            <a><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368">
+                <path
+                  d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg></a>
+          </div>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <!-- </div> -->
+  </div>

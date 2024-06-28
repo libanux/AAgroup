@@ -49,7 +49,7 @@ export class CustomerService {
             "end_row": endRow,
             "sort_field": "id",
             "sort_order": "ASC",
-            "owner_id": "667881ff4488ac3c152b440c"
+            "owner_id": environment.owner_id
         }
         return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_CUSTOMERS_BY_OWNER_ID', requestBody, { headers });
     }
@@ -68,7 +68,7 @@ export class CustomerService {
             "number": CUSTOMER.number,
             "country_code": CUSTOMER.country_code,
             "company_name": CUSTOMER.company_name,
-            "owner_id": '667881ff4488ac3c152b440c',
+            "owner_id": environment.owner_id
         };
 
         return this.httpClient.post<any>(this.apiUrl + '/UPDATE_CUSTOMER_BY_ID', requestBody, { headers });
@@ -87,7 +87,7 @@ export class CustomerService {
             "number": CUSTOMER.number,
             "country_code": CUSTOMER.country_code,
             "company_name": CUSTOMER.company_name,
-            "owner_id": '667881ff4488ac3c152b440c',
+            "owner_id": environment.owner_id
         };
         return this.httpClient.post<any>(this.apiUrl + '/CREATE_CUSTOMER', requestBody, { headers });
     }
@@ -100,7 +100,7 @@ export class CustomerService {
         });
         const requestBody = {
             "id": ID,
-            "owner_id": "667881ff4488ac3c152b440c"
+            "owner_id": environment.owner_id
         };
         return this.httpClient.post<any>(this.apiUrl + '/DELETE_CUSTOMER_BY_ID', requestBody, { headers });
     }

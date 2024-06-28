@@ -61,7 +61,7 @@
                     <mat-autocomplete #auto="matAutocomplete">
 
                         @for(product of PRODUCTS_ARRAY; track product){
-                        <mat-option [value]="product.itemName" (click)="ADD_ADUST(product)">{{ product.itemName
+                        <mat-option [value]="product.name" (click)="ADD_ADUST(product)">{{ product.name
                             }}</mat-option>
                         }
 
@@ -115,12 +115,12 @@
         @if(ADJUST_ARRAY.filteredData.length > 0){
         <table mat-table [dataSource]="ADJUST_ARRAY" class="mat-table">
             <!-- Item Name Column -->
-            <ng-container matColumnDef="itemName">
+            <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Item Name </th>
                 <td mat-cell *matCellDef="let element; let rowIndex = index;"
                     [class.editing]="editRowIndex === rowIndex">
-                    <input class="input-text" matInput [(ngModel)]="element.itemName"
-                        (ngModelChange)="onInputChange(element, 'itemName', $event, rowIndex)" />
+                    <input class="input-text" matInput [(ngModel)]="element.name"
+                        (ngModelChange)="onInputChange(element, 'name', $event, rowIndex)" />
                 </td>
             </ng-container>
 
@@ -206,7 +206,7 @@
 
         @else {
         <table mat-table class="mat-table">
-            <ng-container matColumnDef="itemName">
+            <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Item Name </th>
             </ng-container>
             <ng-container matColumnDef="barcode">

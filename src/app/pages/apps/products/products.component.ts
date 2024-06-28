@@ -40,24 +40,20 @@ export class ProductsComponent implements OnInit {
   //MONTHS FOR FILTER DROPDOWN
   months = Month_Filter_Array
   //PRODUCTS ARRAY
-  productsArray = new MatTableDataSource<Product>([]);
-  New_product_Array: Product[] = []
+  PRODUCTS_ARRAY = new MatTableDataSource<Product>([]);
+  PRODUCTS_ARRAY_LENGTH = 0;
+  // New_product_Array: Product[] = []
 
-
-
-  // VARIABLES
-  // These two valus are used for the add expnad row in the top of the page
+  //  PANEL : OPEN AND CLOSE
   panelOpenState = false;
   open_expansion_value = 0;
+
   // SHOW ADD BUTTON FOR ADD PRODUCT / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
   ShowAddButoon = true;
   CurrentAction: string = 'Add Product'
-  // 
+
+  // FILTER VALUES
   selectedMonth: string = '';
-  selectedCategory: string = '';
-  // 
-  searchText: any;
-  totalCount = 0;
 
   // DATE SELECTION
   SEARCK_KEY = '';
@@ -68,15 +64,20 @@ export class ProductsComponent implements OnInit {
 
   show_shimmer = false;
 
-  ASC: boolean = true;
-  DES: boolean = false;
 
+  SORT_FIELD: string = 'id';
+  SORT_ORDER: string = 'ASC';
+
+  ASC: boolean = true;
+  DESC: boolean = false;
+  // LOADIN SPINNER FOR BUTTONS
   SHOW_LOADING_SPINNER: boolean = false;
+    // CHECK IF DAAT CHANGED TO REMOVE THE DISABLED BUTTON
   DATA_CHANGED: boolean = false;
 
   //TABLE COLUMNS
-  displayedColumns: string[] = ['barcode', 'itemName', 'description', 'category', 'cost', 'sale', 'action'];
-  TableHeaders: string[] = ['Barcode', 'Item Name', 'Description', 'Category', 'Cost', 'Sale', 'Action'];
+  displayedColumns: string[] = ['barcode', 'name', 'category', 'cost', 'sale', 'action'];
+  TableHeaders: string[] = ['Barcode', 'Item Name', 'Category', 'Cost', 'Sale', 'Action'];
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: Product | null = null;
 
@@ -89,30 +90,34 @@ export class ProductsComponent implements OnInit {
   // ADDED PRODUCT IS THE PRODUCT SELECTED BUT WITH CHANGED VALUE
   ADDED_PRODUCT = new Product('', '', '', '', '', '', 0, 0);
   // MAIN PRODUCT IS THE PRODUCT SELECTED BUT WITHOUT CHANGED VALUE
-  MAIN_SELECTED_PRODUCT_DATA =  new Product('', '', '', '', '', '', 0, 0);
+  MAIN_SELECTED_PRODUCT_DATA = new Product('', '', '', '', '', '', 0, 0);
+
+  // PAGING
+  current_page_array_length = 0
+  pageSize = 30;
+  Current_page = 0
+
+
   constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) { }
 
   ngOnInit(): void {
-    this.New_product_Array = products
-    this.FETCH_PRODUCTS();
+    this.show_shimmer = true;
+    this.FETCH_PRODUCTS(this.SORT_FIELD, this.SORT_ORDER);
   }
 
-// PAGING
-    pageSize = 10;
-    Current_page = 1
   // function when page number changes
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
 
-    if (this.STATUS != '' || this.FILTER_TYPE != '') {
-      this.Current_page = event.pageIndex + 1;
-      // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
-    }
+    // if (this.STATUS != '' || this.FILTER_TYPE != '') {
+    //   this.Current_page = event.pageIndex + 1;
+    //   // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
+    // }
 
-    else {
-      this.Current_page = event.pageIndex + 1;
-      // this.FETCH_VISA();
-    }
+    // else {
+    this.Current_page = event.pageIndex;
+    this.FETCH_PRODUCTS(this.SORT_FIELD, this.SORT_ORDER);
+    // }
 
   }
   // THIS FUNCTION IS FOR THE PAGING TO GO TO PREVOIUS PAGE
@@ -121,7 +126,7 @@ export class ProductsComponent implements OnInit {
       this.paginator.previousPage();
     }
   }
-  
+
   GENERATE_BARCODE() {
     let result = '';
     for (let i = 0; i < 12; i++) {
@@ -155,7 +160,6 @@ export class ProductsComponent implements OnInit {
 
   }
 
-
   //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
   EXPAND_ROW(event: Event, element: any, column: string): void {
     if (column === 'action') {
@@ -167,39 +171,43 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  SORT(value: string) {
-    if (value === 'cost') {
+  SORT(SORT_FIELD: string) {
+
+    if (SORT_FIELD === 'cost') {
       if (this.ASC) {
-        this.New_product_Array.sort((a, b) => {
-          return parseFloat(a.cost) - parseFloat(b.cost);
-        });
+        this.FETCH_PRODUCTS(SORT_FIELD, 'DESC');
         this.ASC = false;
-        this.DES = true;
-      } else {
-        this.New_product_Array.sort((a, b) => {
-          return parseFloat(b.cost) - parseFloat(a.cost);
-        });
+        this.DESC = true;
+        this.SORT_FIELD = SORT_FIELD;
+        this.SORT_ORDER = 'Desc'
+      } 
+      else {
+        this.FETCH_PRODUCTS(SORT_FIELD, 'ASC');
         this.ASC = true;
-        this.DES = false;
+        this.DESC = false;
+        this.SORT_FIELD = SORT_FIELD;
+        this.SORT_ORDER = 'ASC'
       }
-    } else {
+    } 
+    
+    else {
       if (this.ASC) {
-        this.New_product_Array.sort((a, b) => {
-          return parseFloat(a.sale) - parseFloat(b.sale);
-        });
+        this.FETCH_PRODUCTS(SORT_FIELD, 'DESC');
         this.ASC = false;
-        this.DES = true;
-      } else {
-        this.New_product_Array.sort((a, b) => {
-          return parseFloat(b.sale) - parseFloat(a.sale);
-        });
+        this.DESC = true;
+        this.SORT_FIELD = SORT_FIELD;
+        this.SORT_ORDER = 'DESC'
+      } 
+      else {
+        this.FETCH_PRODUCTS(SORT_FIELD, 'ASC');
         this.ASC = true;
-        this.DES = false;
+        this.DESC = false;
+        this.SORT_FIELD = SORT_FIELD;
+        this.SORT_ORDER = 'ASC'
       }
     }
-    this.FETCH_PRODUCTS();
+ 
   }
-  
 
   // FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
   showDatePicker = false;
@@ -277,7 +285,7 @@ export class ProductsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.event === 'Delete') {
-        this.DELETE_PRODUCT(product.barcode)
+        this.DELETE_PRODUCT(result.data.product._id)
       }
     });
   }
@@ -301,62 +309,65 @@ export class ProductsComponent implements OnInit {
     }
   }
 
+  // SEARCH
+  APPLY_SEARCH_FILTER(filterValue: string): void {
+    this.PRODUCTS_ARRAY.filter = filterValue.trim().toLowerCase();
+  }
 
-// FETCH ALL + ADD + UPDATE + DELETE + SELECT + SEARCH + FILTER
+  // FETCH ALL + ADD + UPDATE + DELETE + SELECT + SEARCH + FILTER
 
-  //FETCH productsArray FROM API
-  FETCH_PRODUCTS(): void {
-    this.productsArray = new MatTableDataSource(this.New_product_Array);
-    this.totalCount = products.length;
-    // this.productsService.GET_productsArray().subscribe({
-    //   next: (response: any) => {
-    //     this.productsArray = response;
-    //     this.productsArray = new MatTableDataSource(this.productsArray);
-    //     this.totalCount = this.productsArray.data.length;
-    //   },
-    //   error: (error: any) => {
-    //     console.log("Error:", error)
-    //   },
-    //   complete: () => {
-    //   }
-    // });
+  //FETCH PRODUCTS_ARRAY FROM API
+  FETCH_PRODUCTS(SORT_FIELD: string, SORT_ORDER: string): void {
+    this.productsService.GET_ALL_PRODUCT(this.Current_page, this.pageSize, SORT_FIELD, SORT_ORDER).subscribe({
+      next: (response: any) => {
+        this.current_page_array_length = response.products.rows.length
+        this.PRODUCTS_ARRAY_LENGTH = response.products.count;
+        this.PRODUCTS_ARRAY = new MatTableDataSource(response.products.rows);
+      },
+      error: (error) => {},
+      complete: () => { this.show_shimmer = false; }
+    });
   }
 
   //ADD PRODUCT
   ADD_PRODUCT() {
-    this.New_product_Array.push(this.ADDED_PRODUCT);
-    this.FETCH_PRODUCTS();
-    this.ADDED_PRODUCT = new Product('', '', '', '', '', '', 0, 0);
+    this.show_shimmer = true;
+    this.SHOW_LOADING_SPINNER = true;
+    this.productsService.ADD_PRODUCT(this.ADDED_PRODUCT).subscribe({
+      next: (response: any) => {},
+      error: (error) => { },
+      complete: () => { this.FETCH_PRODUCTS(this.SORT_FIELD, this.SORT_ORDER); this.CANCEL_UPDATE(); }
+    });
+  }
 
-    // this.productsService.ADD_PRODUCT(obj).subscribe({
-    //   next: (response: any) => { },
-    //   error: (error) => { },
-    //   complete: () => {
-    //     this.CANCEL_UPDATE();
-    //     this.FETCH_PRODUCTS();
-    //   }
-    // });
+  // DELETE PRODUCT BY PRODUCT ID
+  DELETE_PRODUCT(ID: any): void {
+    this.show_shimmer = true;
+    this.productsService.DELETE_PRODUCT(ID).subscribe({
+      next: (response: any) => {
+        // CHECK IF I AM DELETING THE LAST ITEM LEFT IN THE PAGE I AM AT
+        // IF YES --> GO BACK TO THE PREVOUIS PAGE
+        if (this.current_page_array_length == 1) {
+          this.Current_page = this.Current_page - 1
+          this.goToPreviousPage()
+        }
+      },
+      error: (error) => { },
+      complete: () => { this.FETCH_PRODUCTS(this.SORT_FIELD, this.SORT_ORDER); this.CANCEL_UPDATE() }
+    });
   }
 
   // UPDATE
   UPDATE_PRODUCT(): void {
-    // this.productsService.UPDATE_PRODUCT(this.ADDED_PRODUCT).subscribe({
-    //   next: (response: any) => { },
-    //   error: (error) => { },
-    //   complete: () => {
-    //     this.CANCEL_UPDATE();
-    //     this.FETCH_PRODUCTS();
-    //   }
-    // });
-  }
-
-  // DELETE 
-  DELETE_PRODUCT(ID: any): void {
-    // this.productsService.DELETE_PRODUCT(ID).subscribe({
-    //   next: (response: any) => { },
-    //   error: (error) => { },
-    //   complete: () => { this.FETCH_PRODUCTS(); }
-    // });
+    this.show_shimmer = true;
+    this.SHOW_LOADING_SPINNER = true;
+    this.productsService.UPDATE_PRODUCT(this.ADDED_PRODUCT).subscribe({
+      next: (response: any) => { },
+      error: (error) => { },
+      complete: () => {
+        this.CANCEL_UPDATE(); this.FETCH_PRODUCTS(this.SORT_FIELD, this.SORT_ORDER);
+      }
+    });
   }
 
   //SELECT PRODUCT TO UPDATE
@@ -384,11 +395,6 @@ export class ProductsComponent implements OnInit {
     // 
     this.DATA_CHANGED = false;
     this.SHOW_LOADING_SPINNER = false
-  }
-
-  // SEARCH
-  APPLY_SEARCH_FILTER(filterValue: string): void {
-    this.productsArray.filter = filterValue.trim().toLowerCase();
   }
 
 }
