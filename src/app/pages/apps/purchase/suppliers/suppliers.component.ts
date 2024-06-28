@@ -50,6 +50,7 @@ showUpdate: boolean = false;
     'email',
     'phone',
     'companyname',
+    'contactname',
     'balance',
     'actions'
   ];
@@ -164,6 +165,10 @@ showUpdate: boolean = false;
     this.dataSource.data = this.dataSource.data.filter((value: any) => {
       // return value.id !== row_obj.id;
     });
+  }
+
+  SORT(value : string){
+
   }
 
     //SELECT PRODUCT TO UPDATE

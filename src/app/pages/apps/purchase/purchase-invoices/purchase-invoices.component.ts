@@ -7,6 +7,7 @@ import { Product, products } from 'src/app/classes/products.class';
 import { ProductsService } from 'src/app/services/products.service';
 import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invoices.class';
 import { Download_Options, GeneralService, Month_Filter_Array } from 'src/app/services/general.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-purchase-invoices',
@@ -78,7 +79,7 @@ dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
  purchaseInvoiceExample = new PurchaseInvoice('', '', 0, 0 ,0, "");
   editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 
-constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
+constructor(private router: Router, public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
   this.viewInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
 }
 
@@ -232,6 +233,10 @@ ON_CHANGE_DROPDOWN(value: string) {
 EDIT_PRODUCT(obj: any): void {
   this.viewInvoice = obj;
   this.editedInvoice = obj;
+
+  this.router.navigate(['/apps/purchase/edit']).then(() => {
+    window.scrollTo(0, 0);
+  });
 }
 
 CANCEL(){

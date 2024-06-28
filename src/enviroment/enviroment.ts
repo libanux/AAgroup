@@ -4,7 +4,8 @@
 export const environment = {
     // apiLocalBaseUrl: "https://libanux.xyz/DaherTravel/api",
     apiLocalBaseUrl: "https://api.aagroupsarl.net/aagroup/api",
-    ws_url: "http://localhost:5000"
+    ws_url: "http://localhost:5000",
+    owner_id : '667c9247ecf19dc9d9e83b89'
   };
   /*
    * For easier debugging in development mode, you can import the following file

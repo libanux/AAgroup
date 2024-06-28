@@ -1,6 +1,7 @@
 export class Product {
-    barcode: string;
-    itemName: string;
+  _id: string;
+  barcode: string;
+    name: string;
     description: string;
     category: string;
     cost: string;
@@ -9,9 +10,9 @@ export class Product {
     previousQuantity: number; // New field for previous quantity
     
   
-    constructor(barcode: string, itemName: string, description: string, category: string, cost: string, sale: string, onHandQuantity: number, previousQuantity: number) {
+    constructor(barcode: string, name: string, description: string, category: string, cost: string, sale: string, onHandQuantity: number, previousQuantity: number) {
       this.barcode = barcode;
-      this.itemName = itemName;
+      this.name = name;
       this.description = description;
       this.category = category;
       this.cost = cost;

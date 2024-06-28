@@ -28,7 +28,8 @@ export class UsersComponent {
   // FILTER VALUES
   selectedMonth: string = '';
   selectedCategory: string = '';
-
+  
+  // DATE SELECTION
   SEARCK_KEY = '';
   FILTER_TYPE = ''
   START_DATE = ''
@@ -221,8 +222,6 @@ export class UsersComponent {
     this.DATA_CHANGED = false;
     this.SHOW_LOADING_SPINNER = false
   }
-
-
 
 }
 

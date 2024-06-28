@@ -35,7 +35,7 @@ export class AdjustComponent implements OnInit {
 
   displayedColumns: string[] = [
     'barcode',
-    'itemName',
+    'name',
     'category',
     'new_quantity_on_hand',
     'quantity_available',
@@ -45,7 +45,7 @@ export class AdjustComponent implements OnInit {
 
   // Define your column headers
   columnHeaders = [
-    { key: 'itemName', title: 'Item Name' },
+    { key: 'name', title: 'Item Name' },
     { key: 'barcode', title: 'Barcode' },
     { key: 'description', title: 'Description' },
     { key: 'category', title: 'Category' },
@@ -134,7 +134,7 @@ export class AdjustComponent implements OnInit {
   filterProducts() {
     // this.filteredProducts = this.dataSource
     const query = this.searchQuery.toLowerCase();
-    // this.filteredProducts = this.dataSource.filter(product => product.itemName.toLowerCase().includes(query));
+    // this.filteredProducts = this.dataSource.filter(product => product.name.toLowerCase().includes(query));
   }
 
 }

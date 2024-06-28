@@ -64,7 +64,7 @@ export class CreateSaleComponent {
   }
     displayedColumns: string[] = [  
       'barcode',
-      'itemName',
+      'name',
       'description',
       'category',
       'cost',
@@ -92,7 +92,7 @@ export class CreateSaleComponent {
       // this.filteredProducts = this.dataSource
       console.log("filtered prod",this.filteredProducts)
       const query = this.searchQuery.toLowerCase();
-      this.filteredProducts = this.dataSource.filter(product => product.itemName.toLowerCase().includes(query));
+      this.filteredProducts = this.dataSource.filter(product => product.name.toLowerCase().includes(query));
     }
 
     filterSuppliers() {

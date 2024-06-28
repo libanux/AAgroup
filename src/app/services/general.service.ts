@@ -9,7 +9,8 @@ export class GeneralService  {
   PageSizing = 20;
   storedToken: string = '';  // Initialize with an empty string
   userId: any = 0
-
+  owner_id = ''
+  
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.platformId = platformId;
     if (isPlatformBrowser(platformId)) {
@@ -102,3 +103,9 @@ export const Categories: any[] =
     { id: 4, name: 'Supplier D' },
     // Add more suppliers as needed
   ];
+
+  export const STOCK_Array_Filter : any[] = [
+    { value: 1, name: 'All' },
+    { value: 2, name: 'Available' },
+    { value: 3, name: 'Out Of Stock' }
+  ]
