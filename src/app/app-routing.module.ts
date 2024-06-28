@@ -9,24 +9,9 @@ const routes: Routes = [
     component: FullComponent,
     children: [
       {
-        path: 'ui-components',
-        loadChildren: () =>
-        import('./pages/ui-components/ui-components.module').then((m) => m.UicomponentsModule),
-      },
-      {
-        path: 'charts',
-        loadChildren: () =>
-        import('./pages/charts/charts.module').then((m) => m.ChartsModule),
-      },
-      {
         path: 'apps',
         loadChildren: () =>
         import('./pages/apps/apps.module').then((m) => m.AppsModule),
-      },
-      {
-        path: 'widgets',
-        loadChildren: () =>
-        import('./pages/widgets/widgets.module').then((m) => m.WidgetsModule),
       },
     ],
   },

@@ -42,7 +42,7 @@ selectedDownloadOption: string = 'Download as';
   // VARIABLES
   // These two valus are used for the add expnad row in the top of the page
   panelOpenState = false;
-  open_expansion_value = 0;
+  open_expansion_value = 1;
   // SHOW ADD BUTTON FOR ADD PRODUCT / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
   ShowAddButoon = true;
   CurrentAction: string = 'Add Product'

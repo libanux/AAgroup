@@ -3,16 +3,17 @@
     <mat-expansion-panel-header>
       <mat-panel-title class="f-w-600 mat-body-1 currentAction">{{CurrentAction}}</mat-panel-title>
     </mat-expansion-panel-header>
-  <mat-card-content>
-      <!-- FIRST ROW :  PRODUCT NAME + BARCODE + DESCRIPTION -->
+    <mat-card-content>
+      <!-- FIRST ROW : NAME + BARCODE + DESCRIPTION -->
       <div class="row">
-        <!-- PRODUCT NAME -->
+        <!-- NAME -->
         <div class="col-md-4 d-flex flex-column">
           <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Product Name</mat-label>
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Name</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Product Name" [(ngModel)]="ADDED_PRODUCT.name"  (ngModelChange)="onInputChange()"/>
+            <input matInput placeholder="Product Name" [(ngModel)]="ADDED_PRODUCT.name"
+              (ngModelChange)="onInputChange()" />
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -23,21 +24,22 @@
           </mat-form-field>
         </div>
 
-           <!-- BARCODE-->
+        <!-- BARCODE-->
         <div class="col-md-4 d-flex flex-column">
           <div class="d-flex align-items-center">
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Barcode</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
             <div class="d-flex position-relative">
-              <mat-icon matPrefix class="op-5 barcode_svg">
-                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                  fill="#5f6368">
-                  <path
-                    d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" />
-                </svg>
-              </mat-icon>
-              <input matInput placeholder="Barcode" [(ngModel)]="ADDED_PRODUCT.barcode" readonly=""  (ngModelChange)="onInputChange()"/>
+                <mat-icon matPrefix class="op-5 barcode_svg">
+                  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                    fill="#5f6368">
+                    <path
+                      d="M40-200v-560h80v560H40Zm120 0v-560h80v560h-80Zm120 0v-560h40v560h-40Zm120 0v-560h80v560h-80Zm120 0v-560h120v560H520Zm160 0v-560h40v560h-40Zm120 0v-560h120v560H800Z" />
+                  </svg>
+                </mat-icon>
+                <input class="QR_INPUT" matInput placeholder="Barcode" [(ngModel)]="ADDED_PRODUCT.barcode" readonly=""
+                  (ngModelChange)="onInputChange()" />
               @if(CurrentAction == 'Add Product'){
               <div class="d-flex align-items-center">
                 <mat-icon matPrefix class="generate_code_button" (click)="GENERATE_BARCODE()">
@@ -48,32 +50,10 @@
                   </svg>
                 </mat-icon>
               </div>
-            }
+              }
             </div>
           </mat-form-field>
         </div>
-
-        <!-- DESCRIPTION-->
-        <div class="col-md-4 d-flex flex-column">
-          <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Description</mat-label>
-          </div>
-
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Description" [(ngModel)]="ADDED_PRODUCT.description"  (ngModelChange)="onInputChange()"/>
-            <mat-icon matPrefix class="op-5">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                fill="#5f6368">
-                <path
-                  d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z" />
-              </svg>
-            </mat-icon>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <!-- SECOND ROW :  CATEGORY + COST + SALE -->
-      <div class="row">
         <!-- CATEGORY -->
         <div class="col-md-4 d-flex flex-column">
           <div class="d-flex align-items-center">
@@ -81,7 +61,7 @@
           </div>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Search Categories..." aria-label="Category" [matAutocomplete]="auto"
-              [(ngModel)]="ADDED_PRODUCT.category"  (ngModelChange)="onInputChange()">
+              [(ngModel)]="ADDED_PRODUCT.category" (ngModelChange)="onInputChange()">
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon-20 d-flex" height="24px" viewBox="0 -960 960 960"
                 width="24px" fill="#5f6368">
@@ -109,13 +89,20 @@
           </mat-form-field>
         </div>
 
+      </div>
+
+      <!-- SECOND ROW :  CATEGORY + COST + SALE -->
+      <div class="row">
+
+
         <!-- COST -->
-        <div class="col-md-4 d-flex flex-column">
+        <div class="col-md-6 d-flex flex-column">
           <div class="d-flex align-items-center">
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Cost</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Cost" [(ngModel)]="ADDED_PRODUCT.cost" type="number" min="0"  (ngModelChange)="onInputChange()"/>
+            <input matInput placeholder="Cost" [(ngModel)]="ADDED_PRODUCT.cost" type="number" min="0"
+              (ngModelChange)="onInputChange()" />
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -127,12 +114,13 @@
         </div>
 
         <!-- SALE -->
-        <div class="col-md-4 d-flex flex-column">
+        <div class="col-md-6 d-flex flex-column">
           <div class="d-flex align-items-center">
             <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Sale</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Sale"  (ngModelChange)="onInputChange()" [(ngModel)]="ADDED_PRODUCT.sale" type="number" min="0"/>
+            <input matInput placeholder="Sale" (ngModelChange)="onInputChange()" [(ngModel)]="ADDED_PRODUCT.sale"
+              type="number" min="0" />
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                 fill="#5f6368">
@@ -160,7 +148,7 @@
 
         </div>
       </div>
-  </mat-card-content>
+    </mat-card-content>
   </mat-expansion-panel>
 </mat-card>
 
@@ -168,7 +156,7 @@
 <mat-card class="cardWithShadow">
   <!-- TABLE HEADER -->
   <header>
-<!-- SEARCH -->
+    <!-- SEARCH -->
     <div class="searchbar p-20">
       <mat-form-field appearance="outline" class="w-100">
         <input matInput placeholder="Search Product..." aria-label="Product"
@@ -182,8 +170,8 @@
         </mat-icon>
       </mat-form-field>
     </div>
-    
-<!-- DROPDOWN -->
+
+    <!-- DROPDOWN -->
     <div class="filter-date p-20">
 
       <section>
@@ -273,7 +261,7 @@
   <mat-card-content>
 
     @if(show_shimmer){
-    <app-table-shimmer [headers]="displayedColumns"></app-table-shimmer>
+    <app-table-shimmer [headers]="displayedColumns" [ROWS_COUNT]="30"></app-table-shimmer>
     }
 
     @else{
@@ -378,10 +366,10 @@
                   </div>
                 </div>
 
-            <div class="invoice-btn-div">
-              <button class="invoice-btn">Print invoice</button>
-            </div>
-            
+                <div class="invoice-btn-div">
+                  <button class="invoice-btn">Print invoice</button>
+                </div>
+
               </div>
             </div>
           </td>
@@ -397,19 +385,19 @@
 
       </table>
     </div>
+
+    @if(PRODUCTS_ARRAY_LENGTH===0 && !show_shimmer){
+    <app-no-items-found></app-no-items-found>
+    }
+
     }
 
     <!-- TABLE PAGINATION -->
     <!-- LENGTH : 1-10 of length -->
     <!-- pageSize : Items Per Page -->
-    <mat-paginator
-    [pageSizeOptions]="[30, 50, 100]" 
-    [length]="PRODUCTS_ARRAY_LENGTH" 
-    [pageSize]="pageSize"
-    aria-label="Select page"
-    showFirstLastButtons 
-    (page)="onPageChange($event)">
-   </mat-paginator>
+    <mat-paginator [pageSizeOptions]="[30, 50, 100]" [length]="PRODUCTS_ARRAY_LENGTH" [pageSize]="pageSize"
+      aria-label="Select page" showFirstLastButtons (page)="onPageChange($event)">
+    </mat-paginator>
 
   </mat-card-content>
 

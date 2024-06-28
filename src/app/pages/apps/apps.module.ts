@@ -15,45 +15,16 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
 
-//Contact
-import { AppContactDialogContentComponent } from './contact/contact.component';
-import { AppContactComponent } from './contact/contact.component';
-
 //Notes
 import { AppNotesComponent } from './notes/notes.component';
-
-// Permission
-import { AppPermissionComponent } from './permission/permission.component';
-
 //Calendar
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-
-import { AppEmployeeComponent } from './employee/employee.component';
-import { AppEmployeeDialogContentComponent } from './employee/employee.component';
-import { AppAddEmployeeComponent } from './employee/add/add.component';
-
 import { AppsRoutes } from './apps.routing';
 import { MatNativeDateModule } from '@angular/material/core';
-
-//Invoice
-import { AppInvoiceListComponent } from './invoice/invoice-list/invoice-list.component';
-import { AppInvoiceViewComponent } from './invoice/invoice-view/invoice-view.component';
-import { AppAddInvoiceComponent } from './invoice/add-invoice/add-invoice.component';
-import { AppEditInvoiceComponent } from './invoice/edit-invoice/edit-invoice.component';
-import { OkDialogComponent } from './invoice/edit-invoice/ok-dialog/ok-dialog.component';
-import { AddedDialogComponent } from './invoice/add-invoice/added-dialog/added-dialog.component';
-
-// visa
-import { AdminDialogContentComponent, AdminsComponent } from './admins/admins.component';
-import { AddComponent } from './admins/add-admin/add.component';
 import { ProductsComponent, productsDialogComponent } from './products/products.component';
-
 import { ReportsComponent } from './reports/reports.component';
-import { SettingsComponent } from './settings/settings.component';
 import { UserDialogComponent, UsersComponent } from './users/users.component';
-import { ChangeLogoImageComponent } from './settings/Account/change-logo-image/change-logo-image.component';
-import { ChangeBusinessInfoComponent } from './settings/Account/change-business-info/change-business-info.component';
 import { PurchaseModule } from './purchase/purchase.module';
 import { PurchaseAddComponent } from './purchase/purchase-add/purchase-add.component';
 import { PurchaseInvoicesComponent } from './purchase/purchase-invoices/purchase-invoices.component';
@@ -68,33 +39,20 @@ import { CustomersComponent, CustomersDialogComponent } from './sale/customers/c
 import { SuppliersComponent } from './purchase/suppliers/suppliers.component';
 import { TableShimmerComponent } from './table-shimmer/table-shimmer.component';
 import { EditPurchaseComponent } from './purchase/edit-purchase/edit-purchase.component';
+import { SettingsModule } from './settings/settings.module';
+import { MainComponent } from './settings/main/main.component';
+import { ProfileComponent } from './settings/profile/profile.component';
+import { InvoiceSettingsComponent } from './settings/invoice-settings/invoice-settings.component';
+import { NoItemsFoundComponent } from './no-items-found/no-items-found.component';
 
 @NgModule({
     exports: [TablerIconsModule],
     declarations: [
-        AppPermissionComponent,
         AppNotesComponent,
-        AppContactComponent,
-        AppContactDialogContentComponent,
-        AppEmployeeComponent,
-        AppEmployeeDialogContentComponent,
-        AppAddEmployeeComponent,
-        AppInvoiceListComponent,
-        AppInvoiceViewComponent,
-        AppAddInvoiceComponent,
-        AppEditInvoiceComponent,
-        AddedDialogComponent,
-        OkDialogComponent,
-        AdminsComponent,
-        AdminDialogContentComponent,
-        AddComponent,
         ProductsComponent,
         ReportsComponent,
-        SettingsComponent,
         UsersComponent,
         productsDialogComponent,
-        ChangeLogoImageComponent,
-        ChangeBusinessInfoComponent,
         PurchaseAddComponent,
         PurchaseInvoicesComponent,
         StockComponent,
@@ -111,7 +69,11 @@ import { EditPurchaseComponent } from './purchase/edit-purchase/edit-purchase.co
         TableShimmerComponent,
         CustomersDialogComponent,
         UsersComponent,
-        EditPurchaseComponent
+        EditPurchaseComponent,
+        MainComponent,
+        ProfileComponent,
+        InvoiceSettingsComponent,
+        NoItemsFoundComponent
     ],
     providers: [DatePipe],
     imports: [
@@ -135,6 +97,7 @@ import { EditPurchaseComponent } from './purchase/edit-purchase/edit-purchase.co
         NgScrollbarModule,
         PurchaseModule,
         SaleModule,
+        SettingsModule,
         MatFormField
     ]
 })

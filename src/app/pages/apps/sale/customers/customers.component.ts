@@ -3,9 +3,6 @@ import { Component, Inject, Optional, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
-import { Admin } from 'src/app/classes/admin.class';
-import { AdminService } from 'src/app/services/Admins.service';
-import { UserDialogComponent } from '../../users/users.component';
 import { CustomerClass } from 'src/app/classes/customers.class';
 import { CustomerService } from 'src/app/services/customer.service';
 
@@ -21,7 +18,7 @@ export class CustomersComponent {
 
   //  PANEL : OPEN AND CLOSE
   panelOpenState = false;
-  open_expansion_value = 0;
+  open_expansion_value = 1;
 
   // SHOW ADD BUTTON FOR ADD CUSTOMER / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
   ShowAddButoon = true;
@@ -152,7 +149,7 @@ export class CustomersComponent {
         this.CUSTOMMERS_ARRAY_LENGTH = response.count;
         this.CUSTOMERS_ARRAY = new MatTableDataSource(response.rows);
       },
-      error: (error) => { },
+      error: (error) => { this.show_shimmer = false; },
       complete: () => { this.show_shimmer = false; }
     });
   }
@@ -183,7 +180,7 @@ export class CustomersComponent {
       next: (response: any) => {
         // CHECK IF I AM DELETING THE LAST ITEM LEFT IN THE PAGE I AM AT
         // IF YES --> GO BACK TO THE PREVOUIS PAGE
-        if (this.current_page_array_length == 1) {
+        if (this.current_page_array_length == 1 && this.CUSTOMMERS_ARRAY_LENGTH>1) {
           this.Current_page = this.Current_page - 1
           this.goToPreviousPage()
         }

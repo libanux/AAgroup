@@ -105,7 +105,7 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Settings',
     iconName: 'settings',
-    route: 'apps/settings',
+    route: 'apps/settings/main',
   },
   {
     displayName: 'Users',

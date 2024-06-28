@@ -17,16 +17,17 @@ export class AdjustComponent implements OnInit {
 
   // These two valus are used for the add expnad row in the top of the page
   panelOpenState = false;
-  open_expansion_value = 0;
+  open_expansion_value = 1;
 
-  PRODUCTS_ARRAY = products;
+  PRODUCTS_ARRAY:any [] = [];
   filteredProducts: any[]
   quantity_adjusted = 0;
   added_Product: Product = new Product('', '', '','', '', '', 0, 0);
 
   New_adjust_Array: Product[] = []
   ADJUST_ARRAY = new MatTableDataSource<Product>([]);
-
+  ADJUST_ARRAY_LENGTH = 0
+  
   hide = true;
   hide2 = true;
   conhide = true;
@@ -85,10 +86,10 @@ export class AdjustComponent implements OnInit {
 
   new_quantity_on_hand = 0
   ON_CHANGE_ADJUST_QUANTITY(element: any, field: string, event: any, rowIndex: number) {
-    console.log('element ', element)
-    console.log('field ', field)
-    console.log('event ', event)
-    console.log('rowIndex ', rowIndex)
+    // console.log('element ', element)
+    // console.log('field ', field)
+    // console.log('event ', event)
+    // console.log('rowIndex ', rowIndex)
 
     this.new_quantity_on_hand = element.onHandQuantity + event
     // return element.onHandQuantity*quantity_adjusted
@@ -98,8 +99,7 @@ export class AdjustComponent implements OnInit {
 
   //FETCH ALL PRODUCTS
   FETCH_ADJUSTS(): void {
-    this.ADJUST_ARRAY = new MatTableDataSource(this.New_adjust_Array);
-    console.log(this.ADJUST_ARRAY)
+    this.ADJUST_ARRAY = new MatTableDataSource();
   }
 
   // ADD PRODUCT TO THE TABLE
@@ -114,6 +114,7 @@ export class AdjustComponent implements OnInit {
     this.New_adjust_Array.pop()
     this.FETCH_ADJUSTS()
   }
+
   // OPEN DIALOG TO ADD NEW PRODUCT
   OPEN_DIALOG(action: string, product: Product): void {
     const dialogRef = this.dialog.open(AdjustDialogComponent, {
@@ -132,9 +133,7 @@ export class AdjustComponent implements OnInit {
   }
 
   filterProducts() {
-    // this.filteredProducts = this.dataSource
-    const query = this.searchQuery.toLowerCase();
-    // this.filteredProducts = this.dataSource.filter(product => product.name.toLowerCase().includes(query));
+
   }
 
 }

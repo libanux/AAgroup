@@ -24,7 +24,7 @@ import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_
 })
 
 export class StockComponent implements OnInit {
-// ARRAYS 
+  // ARRAYS 
 
   // STOCK FILTER
   STOCK_Filter_array: any[] = STOCK_Array_Filter
@@ -45,7 +45,7 @@ export class StockComponent implements OnInit {
   ];
 
   show_shimmer = false;
-
+  STOCKS_ARRAY_LENGTH = 0
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: Product | null = null;
 
@@ -66,75 +66,75 @@ export class StockComponent implements OnInit {
   months = Month_Filter_Array
 
 
-    // DATE SELECTION
-    SEARCK_KEY = '';
-    FILTER_TYPE = ''
-    START_DATE = ''
-    END_DATE = ''
-    STATUS = ''
+  // DATE SELECTION
+  SEARCK_KEY = '';
+  FILTER_TYPE = ''
+  START_DATE = ''
+  END_DATE = ''
+  STATUS = ''
 
- //MAIN stock ARRAY
- showCalendar: boolean = false;
- selectedDate: Date | null = null; // Adjusted the type to accept null
-//stockS ARRAY
-stocksArray = new MatTableDataSource<Product>([]);
+  //MAIN stock ARRAY
+  showCalendar: boolean = false;
+  selectedDate: Date | null = null; // Adjusted the type to accept null
+  //stockS ARRAY
+  stocksArray = new MatTableDataSource<Product>([]);
 
   //stock ON EDIT
   viewstock: Product
-  stockExample =  new Product('', '', '','', '', '', 0, 0);
-  editedstock=  new Product('', '', '','', '', '', 0, 0);
+  stockExample = new Product('', '', '', '', '', '', 0, 0);
+  editedstock = new Product('', '', '', '', '', '', 0, 0);
 
-constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
-  this.viewstock = new Product('', '', '','', '', '', 0, 0);
-}
+  constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
+    this.viewstock = new Product('', '', '', '', '', '', 0, 0);
+  }
 
-ngOnInit(): void {
-  this.FETCH_STOCKS();
-}
+  ngOnInit(): void {
+    this.FETCH_STOCKS();
+  }
 
-// PAGING
-pageSize = 10;
-Current_page = 1
-// function when page number changes
-onPageChange(event: PageEvent): void {
-this.pageSize = event.pageSize;
+  // PAGING
+  pageSize = 10;
+  Current_page = 1
+  // function when page number changes
+  onPageChange(event: PageEvent): void {
+    this.pageSize = event.pageSize;
 
-if (this.STATUS != '' || this.FILTER_TYPE != '') {
-  this.Current_page = event.pageIndex + 1;
-  // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
-}
+    if (this.STATUS != '' || this.FILTER_TYPE != '') {
+      this.Current_page = event.pageIndex + 1;
+      // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
+    }
 
-else {
-  this.Current_page = event.pageIndex + 1;
-  // this.FETCH_VISA();
-}
+    else {
+      this.Current_page = event.pageIndex + 1;
+      // this.FETCH_VISA();
+    }
 
-}
-// THIS FUNCTION IS FOR THE PAGING TO GO TO PREVOIUS PAGE
-goToPreviousPage(): void {
-if (this.paginator && this.paginator.hasPreviousPage()) {
-  this.paginator.previousPage();
-}
-}
+  }
+  // THIS FUNCTION IS FOR THE PAGING TO GO TO PREVOIUS PAGE
+  goToPreviousPage(): void {
+    if (this.paginator && this.paginator.hasPreviousPage()) {
+      this.paginator.previousPage();
+    }
+  }
 
 
-// cancelSelection() {
-//     this.showCalendar = false;
-//     this.selectedMonth = '';
-//     this.selectedDate = null;
-// }
+  // cancelSelection() {
+  //     this.showCalendar = false;
+  //     this.selectedMonth = '';
+  //     this.selectedDate = null;
+  // }
 
-ngAfterViewInit(): void {
-  this.stocksArray.paginator = this.paginator;
-}
+  ngAfterViewInit(): void {
+    this.stocksArray.paginator = this.paginator;
+  }
 
-FILTER_BY_CATEGORY(value: string){
-  if(value == 'All'){this.FETCH_STOCKS()}
-  else {this.stocksArray.filter = value.trim().toLowerCase();}
-}
+  FILTER_BY_CATEGORY(value: string) {
+    if (value == 'All') { this.FETCH_STOCKS() }
+    else { this.stocksArray.filter = value.trim().toLowerCase(); }
+  }
 
-//EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
-EXPAND_ROW(event: Event, element: any, column: string): void {
+  //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
+  EXPAND_ROW(event: Event, element: any, column: string): void {
     if (column === 'action') {
       this.expandedElement = element;
     }
@@ -142,83 +142,68 @@ EXPAND_ROW(event: Event, element: any, column: string): void {
       this.expandedElement = this.expandedElement === element ? null : element;
       event.stopPropagation();
     }
-}
+  }
 
-//FETCH stocksArray FROM API
-FETCH_STOCKS(): void {
-  this.stocksArray = new MatTableDataSource(products);
-  // this.totalCount = stockArray.length;
-    // this.stocksService.GET_stocksArray().subscribe({
-    //   next: (response: any) => {
-    //     this.stocksArray = response;
-    //     this.dataSource = new MatTableDataSource(this.stocksArray);
-    //     this.totalCount = this.dataSource.data.length;
-    //     this.Inprogress = this.btnCategoryClick('pending');
-    //     // this.Completed = this.btnCategoryClick('complete');
-    //     // this.Cancelled = this.btnCategoryClick('cancelled');
-    //   },
-    //   error: (error: any) => { },
-    //   complete: () => {
-    //   }
-    // });
-}
+  //FETCH stocksArray FROM API
+  FETCH_STOCKS(): void {
+    this.stocksArray = new MatTableDataSource();
+  }
 
-SORT(){
+  SORT() {
 
-}
+  }
 
-// CANCEL UPDATE
-CANCEL_UPDATE(): void {
-  this.ShowAddButoon = true;
-  this.editedstock =  new Product('', '', '','', '', '', 0, 0);
-}
+  // CANCEL UPDATE
+  CANCEL_UPDATE(): void {
+    this.ShowAddButoon = true;
+    this.editedstock = new Product('', '', '', '', '', '', 0, 0);
+  }
 
-APPLY_SEARCH_FILTER(filterValue: string): void {
-  this.stocksArray.filter = filterValue.trim().toLowerCase();
-}
+  APPLY_SEARCH_FILTER(filterValue: string): void {
+    this.stocksArray.filter = filterValue.trim().toLowerCase();
+  }
 
-//ADD stock
-ADD_STOCK() {
+  //ADD stock
+  ADD_STOCK() {
     this.stocksService.ADD_stock(this.stockExample).subscribe({
-      next: (response: any) => {},
-      error: (error: any) => {console.error(error);},
-      complete: () => {    
+      next: (response: any) => { },
+      error: (error: any) => { console.error(error); },
+      complete: () => {
         this.CANCEL_UPDATE();
-        this.FETCH_STOCKS();}
+        this.FETCH_STOCKS();
+      }
     });
-}
+  }
 
-//TRIGGER THE DROP DOWN FILTER VALUES
-ON_CHANGE_DROPDOWN(value: string) {
+  //TRIGGER THE DROP DOWN FILTER VALUES
+  ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
       // this.OPEN_CALENDAR_DIALOG();
     }
-    else{
+    else {
       this.stocksService.FILTER_stock(value).subscribe({
         next: (response: any) => {
           this.stocksArray = new MatTableDataSource(response);
           this.totalCount = this.stocksArray.data.length;
           // this.Inprogress = this.btnCategoryClick('pending');
         },
-        error: (error: any) => {
-          console.log("Error:", error)
-        },
+        error: (error: any) => {},
         complete: () => {
         }
       });
     }
-}
+  }
 
-//UPDATE ROW VALUES
-EDIT_STOCK(obj: any): void {
-  this.ShowAddButoon = false
-  this.viewstock = obj;
-  this.editedstock = obj;
-}
+  //UPDATE ROW VALUES
+  EDIT_STOCK(obj: any): void {
+    this.ShowAddButoon = false
+    this.viewstock = obj;
+    this.editedstock = obj;
+  }
 
 
-// OPEN UPDATE & DELETE DIALOGS
-OPEN_DIALOG(action: string, delstock: Product): void {
+  // OPEN UPDATE & DELETE DIALOGS
+  OPEN_DIALOG(action: string, delstock: Product): void {
     const dialogRef = this.dialog.open(deleteAjustDialogComponent, {
       data: { action, delstock }
     });
@@ -226,100 +211,100 @@ OPEN_DIALOG(action: string, delstock: Product): void {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.event === 'Delete') {
 
-this.stocksService.DELETE_stock(delstock).subscribe({
-    next: (response: any) => {
-         this.FETCH_STOCKS()
-    },
-    error: (error: any) => {console.error('Error:', error);},
-    complete: () => { }
-      });
+        this.stocksService.DELETE_stock(delstock).subscribe({
+          next: (response: any) => {
+            this.FETCH_STOCKS()
+          },
+          error: (error: any) => { console.error('Error:', error); },
+          complete: () => { }
+        });
+      }
+    });
+  }
+
+
+  // FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
+  showDatePicker = false;
+  DROPDOWN_FILTERATION(value: string, dropdown: string) {
+
+    // Date filtering
+    if (dropdown == 'month') {
+      if (value === 'Calendar') {
+        this.showDatePicker = true;
+      }
+
+      else {
+        this.START_DATE = '';
+        this.END_DATE = '';
+
+        this.showDatePicker = false;
+
+        this.FILTER_TYPE = value;
+
+        this.FILTER_ARRAY_BY_DATE(value)
+      }
     }
-  });
-}
 
-
-// FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
-showDatePicker = false;
-DROPDOWN_FILTERATION(value: string, dropdown: string) {
-
-  // Date filtering
-  if (dropdown == 'month') {
-    if (value === 'Calendar') {
-      this.showDatePicker = true;
+    // Status filtering
+    else if (dropdown == 'status') {
+      if (value == 'all') {
+        // this.FILTER_ARRAY_BY_STATUS('')
+        this.STATUS = ''
+      }
+      else {
+        // this.FILTER_ARRAY_BY_STATUS(value)
+        this.STATUS = value
+      }
     }
 
-    else {
-      this.START_DATE = '';
-      this.END_DATE = '';
-
-      this.showDatePicker = false;
-
-      this.FILTER_TYPE = value;
-
-      this.FILTER_ARRAY_BY_DATE(value)
+    else if (dropdown == 'Download') {
+      // this.DOWNLOAD(value);
+      // this.selectedDownloadOption = 'Download as';
     }
   }
 
-  // Status filtering
-  else if (dropdown == 'status') {
-    if (value == 'all') {
-      // this.FILTER_ARRAY_BY_STATUS('')
-      this.STATUS = ''
-    }
-    else {
-      // this.FILTER_ARRAY_BY_STATUS(value)
-      this.STATUS = value
-    }
+  // DATE FILTERATION
+  FILTER_ARRAY_BY_DATE(filter_type: any) {
+    // this.FILTER_TYPE = filter_type
+    // this.paginator.firstPage();
+    // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
   }
 
-  else if (dropdown == 'Download') {
-    // this.DOWNLOAD(value);
-    // this.selectedDownloadOption = 'Download as';
+  // Method to handle changes in start date input
+  handleStartDateChange(event: any): void {
+    this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+    this.FILTER_ARRAY_BY_DATE('custom')
   }
-}
 
-// DATE FILTERATION
-FILTER_ARRAY_BY_DATE(filter_type: any) {
-  // this.FILTER_TYPE = filter_type
-  // this.paginator.firstPage();
-  // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
-}
+  // Method to handle changes in end date input
+  handleEndDateChange(event: any): void {
+    this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+    this.FILTER_ARRAY_BY_DATE('custom')
+  }
 
-// Method to handle changes in start date input
-handleStartDateChange(event: any): void {
-  this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
-  this.FILTER_ARRAY_BY_DATE('custom')
-}
+  FORMAT_DATE_YYYYMMDD(date: Date): string {
+    return this.generalService.FORMAT_DATE_YYYYMMDD(date)
+  }
 
-// Method to handle changes in end date input
-handleEndDateChange(event: any): void {
-  this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
-  this.FILTER_ARRAY_BY_DATE('custom')
-}
-
-FORMAT_DATE_YYYYMMDD(date: Date): string {
-  return this.generalService.FORMAT_DATE_YYYYMMDD(date)
-}
-
-// Function to format date
-FORMAT_DATE(dateString: string): string {
-  return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
-}
+  // Function to format date
+  FORMAT_DATE(dateString: string): string {
+    return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
+  }
 
 
-//GET THE CATEGORY LENGTH
-// btnCategoryClick(val: string): number {
-//   this.stocksArray.filter = val.trim().toLowerCase();
-//   return this.st.filteredData.length;
-// }
+  //GET THE CATEGORY LENGTH
+  // btnCategoryClick(val: string): number {
+  //   this.stocksArray.filter = val.trim().toLowerCase();
+  //   return this.st.filteredData.length;
+  // }
 
-//TRUNCATE THE TEXT INTO 20 CHARS
-TRUNCATE_TEXT(text: string, limit: number): string {
-  return this.generalService.truncateText(text, limit);
-}
+  //TRUNCATE THE TEXT INTO 20 CHARS
+  TRUNCATE_TEXT(text: string, limit: number): string {
+    return this.generalService.truncateText(text, limit);
+  }
 
-//GET THE STATUS CLASS
-getStatusClass(status: string): string {
+  //GET THE STATUS CLASS
+  getStatusClass(status: string): string {
     switch (status) {
       case 'pending':
         return 'bg-light-warning mat-body-2 f-w-500 p-x-8 p-y-4 f-s-12 rounded-pill';

@@ -160,23 +160,6 @@ expandRow(event: Event, element: any, column: string): void {
 FETCH_STOCKS(): void {
   this.stocksArray = new MatTableDataSource(products);
   this.InventoryArray = new MatTableDataSource(products);
-
-  // this.totalCount = stockArray.length;
-    // this.stocksService.GET_stocksArray().subscribe({
-    //   next: (response: any) => {
-    //     this.stocksArray = response;
-    //     this.dataSource = new MatTableDataSource(this.stocksArray);
-    //     this.totalCount = this.dataSource.data.length;
-    //     this.Inprogress = this.btnCategoryClick('pending');
-    //     // this.Completed = this.btnCategoryClick('complete');
-    //     // this.Cancelled = this.btnCategoryClick('cancelled');
-    //   },
-    //   error: (error: any) => {
-    //     console.log("Error:", error)
-    //   },
-    //   complete: () => {
-    //   }
-    // });
 }
 
 SORT(){
@@ -216,11 +199,8 @@ ON_CHANGE_DROPDOWN(value: string) {
           this.totalCount = this.stocksArray.data.length;
           // this.Inprogress = this.btnCategoryClick('pending');
         },
-        error: (error: any) => {
-          console.log("Error:", error)
-        },
-        complete: () => {
-        }
+        error: (error: any) => {},
+        complete: () => {}
       });
     }
 }
@@ -231,34 +211,6 @@ EDIT_STOCK(obj: any): void {
   this.viewstock = obj;
   this.editedstock = obj;
 }
-
-
-// OPEN UPDATE & DELETE DIALOGS
-// OPEN_DIALOG(action: string, delstock: Product): void {
-//     const dialogRef = this.dialog.open(deleteAjustDialogComponent, {
-//       data: { action, delstock }
-//     });
-
-//     dialogRef.afterClosed().subscribe(result => {
-//       if (result && result.event === 'Delete') {
-
-// this.stocksService.DELETE_stock(delstock).subscribe({
-//     next: (response: any) => {
-//         console.log('Response:', response);
-//          this.FETCH_STOCKS()
-//     },
-//     error: (error: any) => {console.error('Error:', error);},
-//     complete: () => { }
-//       });
-//     }
-//   });
-// }
-
-//GET THE CATEGORY LENGTH
-// btnCategoryClick(val: string): number {
-//   this.stocksArray.filter = val.trim().toLowerCase();
-//   return this.st.filteredData.length;
-// }
 
 //TRUNCATE THE TEXT INTO 20 CHARS
 TRUNCATE_TEXT(text: string, limit: number): string {

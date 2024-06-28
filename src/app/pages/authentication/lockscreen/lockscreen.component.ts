@@ -35,7 +35,6 @@ export class AppLockscreenComponent {
   }
 
   submit() {
-    // console.log(this.form.value);
     this.router.navigate(['/dashboards/dashboard1']);
   }
 }

@@ -105,14 +105,10 @@
     </mat-expansion-panel>
 </mat-card>
 
-
-
 <!-- MAIN TABLE -->
 <div class="table-card">
-
-    <div class="w-100 table-responsive">
-
-        @if(ADJUST_ARRAY.filteredData.length > 0){
+<div class="w-100 table-responsive">
+    
         <table mat-table [dataSource]="ADJUST_ARRAY" class="mat-table">
             <!-- Item Name Column -->
             <ng-container matColumnDef="name">
@@ -202,44 +198,12 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+
+        @if(ADJUST_ARRAY_LENGTH===0 ){
+        <div class="no-items-found">
+            <app-no-items-found></app-no-items-found>
+        </div>
         }
 
-        @else {
-        <table mat-table class="mat-table">
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Item Name </th>
-            </ng-container>
-            <ng-container matColumnDef="barcode">
-                <th mat-header-cell *matHeaderCellDef> Barcode </th>
-            </ng-container>
-            <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef> Description </th>
-            </ng-container>
-            <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef> Category </th>
-            </ng-container>
-            <ng-container matColumnDef="quantity_available">
-                <th mat-header-cell *matHeaderCellDef> Quantity Available </th>
-            </ng-container>
-            <ng-container matColumnDef="new_quantity_on_hand">
-                <th mat-header-cell *matHeaderCellDef> Quantity On Hand </th>
-            </ng-container>
-            <ng-container matColumnDef="quantity_adjusted">
-                <th mat-header-cell *matHeaderCellDef> Quantity Adjusted </th>
-            </ng-container>
-            <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef> Action </th>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <!-- <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr> -->
-        </table>
-
-        <div class="no-items-found">No Products found</div>
-        }
-
-
-    </div>
-
-
+</div>
 </div>

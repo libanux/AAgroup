@@ -25,6 +25,14 @@
 
 
     }
+
+    .row {
+        .col-md-4 {
+            .QR_INPUT {
+                margin-left: 10px;
+            }
+        }
+    }
 }
 
 .mat-expansion-panel:not([class*=mat-elevation-z]) {

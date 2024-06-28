@@ -19,7 +19,7 @@ export class CreateSaleComponent {
     // VARIABLES
   // These two valus are used for the add expnad row in the top of the page
   panelOpenState = false;
-  open_expansion_value = 0;
+  open_expansion_value = 1;
 
   dataSource = products;
   filteredProducts: any[]
@@ -65,18 +65,16 @@ export class CreateSaleComponent {
     displayedColumns: string[] = [  
       'barcode',
       'name',
-      'description',
-      'category',
       'cost',
       'sale',
+      'Total',
       'action'
       ];
 
   
       
       getTotalSale() {
-        // console.log("bb",this.dataSource.map(t => t.sale).reduce((acc, value) => acc + value, 0))
-        // return this.dataSource.map(t => t.sale).reduce((acc, value) => acc + value, 0);
+      
       }
       searchQuery: string;
     editRowIndex: number = -1;
@@ -89,8 +87,6 @@ export class CreateSaleComponent {
 
 
     filterProducts() {
-      // this.filteredProducts = this.dataSource
-      console.log("filtered prod",this.filteredProducts)
       const query = this.searchQuery.toLowerCase();
       this.filteredProducts = this.dataSource.filter(product => product.name.toLowerCase().includes(query));
     }

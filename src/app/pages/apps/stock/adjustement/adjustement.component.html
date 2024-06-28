@@ -80,11 +80,11 @@
 
 <mat-card-content>
   
-    <!-- @if(show_shimmer){
+    @if(show_shimmer){
     <app-table-shimmer [headers]="displayedColumns"></app-table-shimmer>
-    } -->
+    } 
 
-    <!-- @else{ -->
+    @else{
       <!-- TABLE BODY -->
       <div class="table-responsive">
         <table mat-table [dataSource]="ADJUSTMENTsArray" multiTemplateDataRows>
@@ -156,7 +156,13 @@
   
         </table>
       </div>
-    <!-- } -->
+
+      @if(ADJUSTMENT_ARRAY_LENGTH===0 && !show_shimmer){
+        <div class="no-items-found">
+          <app-no-items-found></app-no-items-found>
+      </div>
+      }
+    }
       <!-- TABLE PAGINATION -->
       <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons>
       </mat-paginator>

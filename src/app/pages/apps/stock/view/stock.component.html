@@ -199,6 +199,13 @@
 
       </table>
     </div>
+
+    @if(STOCKS_ARRAY_LENGTH===0 && !show_shimmer){
+      <div class="no-items-found">
+        <app-no-items-found></app-no-items-found>
+    </div>
+    }
+
     }
     <!-- TABLE PAGINATION -->
     <!-- LENGTH : 1-10 of length -->

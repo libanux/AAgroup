@@ -102,35 +102,12 @@ expandRow(event: Event, element: any, column: string): void {
 FETCH_PRODUCTS(): void {
     this.purchaseInvoicesArray =purchaseInvoices ;
     this.totalCount = purchaseInvoices.length;
-    // this.productsService.GET_productsArray().subscribe({
-    //   next: (response: any) => {
-    //     this.productsArray = response;
-    //     this.dataSource = new MatTableDataSource(this.productsArray);
-    //     this.totalCount = this.dataSource.data.length;
-    //     this.Inprogress = this.btnCategoryClick('pending');
-    //     // this.Completed = this.btnCategoryClick('complete');
-    //     // this.Cancelled = this.btnCategoryClick('cancelled');
-    //   },
-    //   error: (error: any) => {
-    //     console.log("Error:", error)
-    //   },
-    //   complete: () => {
-    //   }
-    // });
+ 
 }
 
 //ADD PRODUCT
 ADD_PRODUCT() {
-    // this.productsService.ADD_PRODUCT(this.purchaseInvoiceExample).subscribe({
-    //   next: (response: any) => {
-    //     console.log("Response:", response);
-    //   },
-    //   error: (error: any) => {
-    //     console.error(error);
-    //     console.log("Error::", error);
-    //   },
-    //   complete: () => { }
-    // });
+  
 }
 
   // SEARCH
@@ -147,16 +124,12 @@ ON_CHANGE_DROPDOWN(value: string) {
     else{
       this.productsService.FILTER_PRODUCT(value).subscribe({
         next: (response: any) => {
-          console.log("Response:", response)
           this.purchaseInvoicesArray = response;
           this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
           this.totalCount = this.dataSource.data.length;
         },
-        error: (error: any) => {
-          console.log("Error:", error)
-        },
-        complete: () => {
-        }
+        error: (error: any) => {},
+        complete: () => {}
       });
     }
 }
@@ -245,23 +218,7 @@ CANCEL(){
 
 // OPEN UPDATE & DELETE DIALOGS
 OPEN_DIALOG(action: string, delPRODUCT: Product): void {
-//     const dialogRef = this.dialog.open(productsDialogComponent, {
-//       data: { action, delPRODUCT }
-//     });
 
-//     dialogRef.afterClosed().subscribe(result => {
-//       if (result && result.event === 'Delete') {
-
-// this.productsService.DELETE_PRODUCT(delPRODUCT).subscribe({
-//     next: (response: any) => {
-//         console.log('Response:', response);
-//          this.FETCH_PRODUCTS()
-//     },
-//     error: (error: any) => {console.error('Error:', error);},
-//     complete: () => { }
-//       });
-//     }
-//   });
 }
 
 

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, Inject, Optional, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
@@ -15,11 +15,11 @@ import { UserService } from 'src/app/services/user.service';
   ],
 })
 
-export class UsersComponent {
+export class UsersComponent implements OnInit{
 
   //  PANEL : OPEN AND CLOSE
   panelOpenState = false;
-  open_expansion_value = 0;
+  open_expansion_value = 1;
 
   // SHOW ADD BUTTON FOR ADD CUSTOMER / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
   ShowAddButoon = true;
@@ -150,7 +150,6 @@ export class UsersComponent {
     this.show_shimmer = true;
     this.userService.GET_ALL_USER(this.Current_page, this.pageSize).subscribe({
       next: (response: any) => {
-        console.log(response)
         this.current_page_array_length = response.rows.length
         this.USERS_ARRAY_LENGTH = response.count;
         this.USERS_ARRAY = new MatTableDataSource(response.rows);

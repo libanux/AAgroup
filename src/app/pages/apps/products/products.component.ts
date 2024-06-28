@@ -4,7 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ProductsService } from 'src/app/services/products.service';
-import { Product, products } from 'src/app/classes/products.class';
+import { Product } from 'src/app/classes/products.class';
 import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_ARRAY, STATUS_ARRAY } from 'src/app/services/general.service';
 
 @Component({
@@ -46,9 +46,9 @@ export class ProductsComponent implements OnInit {
 
   //  PANEL : OPEN AND CLOSE
   panelOpenState = false;
-  open_expansion_value = 0;
+  open_expansion_value = 1;
 
-  // SHOW ADD BUTTON FOR ADD PRODUCT / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
+  // SHOW ADD BUTTON FOR ADD PRODUCTPRODUCT / IF NOT SHOWN THE UPDATE BTN WILL BE SHOWN
   ShowAddButoon = true;
   CurrentAction: string = 'Add Product'
 
@@ -61,13 +61,12 @@ export class ProductsComponent implements OnInit {
   START_DATE = ''
   END_DATE = ''
   STATUS = ''
-
+// TABLE SHIMMER
   show_shimmer = false;
 
-
+// SORTING FOR FETCH FUNCTION
   SORT_FIELD: string = 'id';
   SORT_ORDER: string = 'ASC';
-
   ASC: boolean = true;
   DESC: boolean = false;
   // LOADIN SPINNER FOR BUTTONS
@@ -77,6 +76,8 @@ export class ProductsComponent implements OnInit {
 
   //TABLE COLUMNS
   displayedColumns: string[] = ['barcode', 'name', 'category', 'cost', 'sale', 'action'];
+
+
   TableHeaders: string[] = ['Barcode', 'Item Name', 'Category', 'Cost', 'Sale', 'Action'];
   columnsToDisplayWithExpand = [...this.displayedColumns];
   expandedElement: Product | null = null;
@@ -324,7 +325,7 @@ export class ProductsComponent implements OnInit {
         this.PRODUCTS_ARRAY_LENGTH = response.products.count;
         this.PRODUCTS_ARRAY = new MatTableDataSource(response.products.rows);
       },
-      error: (error) => {},
+      error: (error) => {  this.show_shimmer = false; },
       complete: () => { this.show_shimmer = false; }
     });
   }
@@ -347,7 +348,7 @@ export class ProductsComponent implements OnInit {
       next: (response: any) => {
         // CHECK IF I AM DELETING THE LAST ITEM LEFT IN THE PAGE I AM AT
         // IF YES --> GO BACK TO THE PREVOUIS PAGE
-        if (this.current_page_array_length == 1) {
+        if (this.current_page_array_length == 1 && this.PRODUCTS_ARRAY_LENGTH>1) {
           this.Current_page = this.Current_page - 1
           this.goToPreviousPage()
         }
