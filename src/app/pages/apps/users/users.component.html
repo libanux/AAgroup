@@ -81,7 +81,7 @@
 
       <div class="Buttons_div">
         <div *ngIf="ShowAddButoon">
-          <button mat-flat-button color="primary" (click)="ADD_USER()"> Add Customer </button>
+          <button mat-flat-button color="primary" (click)="ADD_USER()"> Add User </button>
         </div>
 
         <div class="TwoButtons" *ngIf="!ShowAddButoon">
@@ -89,7 +89,7 @@
 
           <button mat-flat-button color="primary" (click)="UPDATE_USER()"
             [disabled]="SHOW_LOADING_SPINNER || !DATA_CHANGED">
-            <span *ngIf="!SHOW_LOADING_SPINNER">Update Customer</span>
+            <span *ngIf="!SHOW_LOADING_SPINNER">Update User</span>
             <mat-spinner diameter="20" *ngIf="SHOW_LOADING_SPINNER"></mat-spinner>
           </button>
 

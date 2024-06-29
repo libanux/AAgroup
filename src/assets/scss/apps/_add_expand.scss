@@ -33,6 +33,14 @@
             }
         }
     }
+
+    .purchase-add-row{
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: flex-end;
+        align-items: center;
+    }
 }
 
 .mat-expansion-panel:not([class*=mat-elevation-z]) {
@@ -71,13 +79,7 @@
 
 
 
-.fixed-option {
-    position: sticky;
-    bottom: 0;
-    background: rgb(224, 224, 224); /* Ensure the background matches the menu */
-    z-index: 1; /* Make sure it stays on top */
-    }
-    
+    // DROPDOWN
     .option-content {
     display: flex;
     align-items: center;
@@ -91,28 +93,28 @@
     position: relative;
     }
     
-    .add-new-customer-option {
+    .add-new-option {
     position: sticky;
     bottom: 0;
     background-color: rgb(255, 255, 255);
     z-index: 1;
     margin-bottom: 0;
     }
+
+    .mat-mdc-option.mdc-list-item {
+        background-color: white;
+    }
     
-    .add-new-customer-option:hover {
-        position: sticky;
-        bottom: 0;
-        background-color: rgb(255, 255, 255);
-        z-index: 1;
-        margin-bottom: 0;
-        }
+    .mat-mdc-option.mdc-list-item:hover {
+        background-color: rgb(236, 234, 234);
+    }
     
     .option-content {
     display: flex;
     align-items: center;
     }
     
-    .add-new-customer-option mat-icon {
+    .add-new-option mat-icon {
     margin-right: 8px;
     }
     

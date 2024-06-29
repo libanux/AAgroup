@@ -6,3 +6,11 @@
     justify-content: flex-end;
     align-items: flex-end;
 }
+
+.row {
+    .col-sm-6 {
+        .QR_INPUT {
+            margin-left: 10px;
+        }
+    }
+}

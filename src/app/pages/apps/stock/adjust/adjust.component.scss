@@ -78,16 +78,14 @@
   font-size: inherit;
 }
 
-.mat-table input:focus {
+.mat-table .Edited_Input:focus {
   border: 1px solid #618a06;
   outline-color: #618a06;
 }
 
-.mat-table input:hover {
-  // border: 1px solid #618a06;
-  outline-style: solid;
-  outline-width: 2px;
-  outline-color: #618a06;
+.mat-table .UnEdited_Input:focus {
+  border-style: so;
+  outline-color: #ffffff;
 }
 
 .mat-table .mat-header-cell {
@@ -97,8 +95,6 @@
   font-weight: bold;
   z-index: 1;
 }
-
-
 
 .input-text {
   height: 100%;
@@ -110,3 +106,4 @@
   border: 1px solid #618a06;
   color: #618a06;
 }
+

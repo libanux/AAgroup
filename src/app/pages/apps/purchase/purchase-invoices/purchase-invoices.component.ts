@@ -1,9 +1,9 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Component, Inject, Optional, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
-import { Product, products } from 'src/app/classes/products.class';
+import { Product } from 'src/app/classes/products.class';
 import { ProductsService } from 'src/app/services/products.service';
 import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invoices.class';
 import { Download_Options, GeneralService, Month_Filter_Array } from 'src/app/services/general.service';
@@ -32,6 +32,7 @@ export class PurchaseInvoicesComponent {
 
   //TABLE COLUMNS
   displayedColumns: string[] = [
+    'InvoiceNb',
     'supplier',
     'date',
     'total',
@@ -39,11 +40,11 @@ export class PurchaseInvoicesComponent {
     'balance',
     'action'
   ];
-  
+
   // 
   selectedMonth: string = '';
   selectedCategory: string = '';
-  
+
   //MONTHS FOR FILTER DROPDOWN
   months = Month_Filter_Array
 
@@ -53,12 +54,12 @@ export class PurchaseInvoicesComponent {
   @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
 
-    // DATE SELECTION
-    SEARCK_KEY = '';
-    FILTER_TYPE = ''
-    START_DATE = ''
-    END_DATE = ''
-    STATUS = ''
+  // DATE SELECTION
+  SEARCK_KEY = '';
+  FILTER_TYPE = ''
+  START_DATE = ''
+  END_DATE = ''
+  STATUS = ''
   // 
   searchText: any;
   totalCount = 0;
@@ -66,29 +67,28 @@ export class PurchaseInvoicesComponent {
   Inprogress = 0;
   Completed = 0;
 
-
- //MAIN PRODUCT ARRAY
- purchaseInvoicesArray: any[] = []
- showCalendar: boolean = false;
- selectedDate: Date | null = null; // Adjusted the type to accept null
-//PRODUCTS ARRAY
-dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
+  //MAIN PRODUCT ARRAY
+  purchaseInvoicesArray: any[] = []
+  showCalendar: boolean = false;
+  selectedDate: Date | null = null; // Adjusted the type to accept null
+  //PRODUCTS ARRAY
+  dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
 
   //PRODUCT ON EDIT
   viewInvoice: PurchaseInvoice
- purchaseInvoiceExample = new PurchaseInvoice('', '', 0, 0 ,0, "");
-  editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
+  purchaseInvoiceExample = new PurchaseInvoice('', '', '', 0, 0, 0, "");
+  editedInvoice = new PurchaseInvoice('', '', '', 0, 0, 0, "");
 
-constructor(private router: Router, public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
-  this.viewInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
-}
+  constructor(private router: Router, public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
+    this.viewInvoice = new PurchaseInvoice('', '', '', 0, 0, 0, "");
+  }
 
-ngOnInit(): void {
-  this.FETCH_PRODUCTS();
-}
+  ngOnInit(): void {
+    this.FETCH_PRODUCTS();
+  }
 
-//EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
-expandRow(event: Event, element: any, column: string): void {
+  //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
+  expandRow(event: Event, element: any, column: string): void {
     if (column === 'action') {
       this.expandedElement = element;
     }
@@ -96,19 +96,19 @@ expandRow(event: Event, element: any, column: string): void {
       this.expandedElement = this.expandedElement === element ? null : element;
       event.stopPropagation();
     }
-}
+  }
 
-//FETCH productsArray FROM API
-FETCH_PRODUCTS(): void {
-    this.purchaseInvoicesArray =purchaseInvoices ;
+  //FETCH productsArray FROM API
+  FETCH_PRODUCTS(): void {
+    this.purchaseInvoicesArray = purchaseInvoices;
     this.totalCount = purchaseInvoices.length;
- 
-}
 
-//ADD PRODUCT
-ADD_PRODUCT() {
-  
-}
+  }
+
+  //ADD PRODUCT
+  ADD_PRODUCT() {
+
+  }
 
   // SEARCH
   APPLY_SEARCH_FILTER(filterValue: string): void {
@@ -116,120 +116,120 @@ ADD_PRODUCT() {
   }
 
 
-//TRIGGER THE DROP DOWN FILTER VALUES
-ON_CHANGE_DROPDOWN(value: string) {
+  //TRIGGER THE DROP DOWN FILTER VALUES
+  ON_CHANGE_DROPDOWN(value: string) {
     if (value === 'Calendar') {
       // this.OPEN_CALENDAR_DIALOG();
     }
-    else{
-      this.productsService.FILTER_PRODUCT(value).subscribe({
-        next: (response: any) => {
-          this.purchaseInvoicesArray = response;
-          this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
-          this.totalCount = this.dataSource.data.length;
-        },
-        error: (error: any) => {},
-        complete: () => {}
-      });
+    else {
+      // this.productsService.FILTER_PRODUCT(value).subscribe({
+      //   next: (response: any) => {
+      //     this.purchaseInvoicesArray = response;
+      //     this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
+      //     this.totalCount = this.dataSource.data.length;
+      //   },
+      //   error: (error: any) => {},
+      //   complete: () => {}
+      // });
     }
-}
+  }
 
- // FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
- showDatePicker = false;
- DROPDOWN_FILTERATION(value: string, dropdown: string) {
+  // FILTERING BY DROPDOWN SELECTION : DATE OR STATUS
+  showDatePicker = false;
+  DROPDOWN_FILTERATION(value: string, dropdown: string) {
 
-   // Date filtering
-   if (dropdown == 'month') {
-     if (value === 'Calendar') {
-       this.showDatePicker = true;
-     }
+    // Date filtering
+    if (dropdown == 'month') {
+      if (value === 'Calendar') {
+        this.showDatePicker = true;
+      }
 
-     else {
-       this.START_DATE = '';
-       this.END_DATE = '';
+      else {
+        this.START_DATE = '';
+        this.END_DATE = '';
 
-       this.showDatePicker = false;
+        this.showDatePicker = false;
 
-       this.FILTER_TYPE = value;
+        this.FILTER_TYPE = value;
 
-       this.FILTER_ARRAY_BY_DATE(value)
-     }
-   }
+        this.FILTER_ARRAY_BY_DATE(value)
+      }
+    }
 
-   // Status filtering
-   else if (dropdown == 'status') {
-     if (value == 'all') {
-       // this.FILTER_ARRAY_BY_STATUS('')
-       this.STATUS = ''
-     }
-     else {
-       // this.FILTER_ARRAY_BY_STATUS(value)
-       this.STATUS = value
-     }
-   }
+    // Status filtering
+    else if (dropdown == 'status') {
+      if (value == 'all') {
+        // this.FILTER_ARRAY_BY_STATUS('')
+        this.STATUS = ''
+      }
+      else {
+        // this.FILTER_ARRAY_BY_STATUS(value)
+        this.STATUS = value
+      }
+    }
 
-   else if (dropdown == 'Download') {
-     // this.DOWNLOAD(value);
-     // this.selectedDownloadOption = 'Download as';
-   }
- }
+    else if (dropdown == 'Download') {
+      // this.DOWNLOAD(value);
+      // this.selectedDownloadOption = 'Download as';
+    }
+  }
 
- // DATE FILTERATION
- FILTER_ARRAY_BY_DATE(filter_type: any) {
-   // this.FILTER_TYPE = filter_type
-   // this.paginator.firstPage();
-   // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
- }
+  // DATE FILTERATION
+  FILTER_ARRAY_BY_DATE(filter_type: any) {
+    // this.FILTER_TYPE = filter_type
+    // this.paginator.firstPage();
+    // this.FILTER_VISAS(this.SEARCK_KEY, filter_type, this.START_DATE, this.END_DATE, this.STATUS)
+  }
 
- // Method to handle changes in start date input
- handleStartDateChange(event: any): void {
-   this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
-   this.FILTER_ARRAY_BY_DATE('custom')
- }
+  // Method to handle changes in start date input
+  handleStartDateChange(event: any): void {
+    this.START_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+    this.FILTER_ARRAY_BY_DATE('custom')
+  }
 
- // Method to handle changes in end date input
- handleEndDateChange(event: any): void {
-   this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
-   this.FILTER_ARRAY_BY_DATE('custom')
- }
+  // Method to handle changes in end date input
+  handleEndDateChange(event: any): void {
+    this.END_DATE = this.FORMAT_DATE_YYYYMMDD(event);
+    this.FILTER_ARRAY_BY_DATE('custom')
+  }
 
- FORMAT_DATE_YYYYMMDD(date: Date): string {
-   return this.generalService.FORMAT_DATE_YYYYMMDD(date)
- }
+  FORMAT_DATE_YYYYMMDD(date: Date): string {
+    return this.generalService.FORMAT_DATE_YYYYMMDD(date)
+  }
 
- // Function to format date
- FORMAT_DATE(dateString: string): string {
-   return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
- }
+  // Function to format date
+  FORMAT_DATE(dateString: string): string {
+    return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
+  }
 
-//UPDATE ROW VALUES
-EDIT_PRODUCT(obj: any): void {
-  this.viewInvoice = obj;
-  this.editedInvoice = obj;
+  //UPDATE ROW VALUES
+  EDIT_PRODUCT(obj: any): void {
+    this.viewInvoice = obj;
+    this.editedInvoice = obj;
 
-  this.router.navigate(['/apps/purchase/edit']).then(() => {
-    window.scrollTo(0, 0);
-  });
-}
+    this.router.navigate(['/apps/purchase/edit']).then(() => {
+      window.scrollTo(0, 0);
+    });
+  }
 
-CANCEL(){
-  this.editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
-}
+  CANCEL() {
+    this.editedInvoice = new PurchaseInvoice('', '', '', 0, 0, 0, "");
+  }
 
-// OPEN UPDATE & DELETE DIALOGS
-OPEN_DIALOG(action: string, delPRODUCT: Product): void {
+  // OPEN UPDATE & DELETE DIALOGS
+  OPEN_DIALOG(action: string, delPRODUCT: Product): void {
 
-}
+  }
 
 
-//TRUNCATE THE TEXT INTO 20 CHARS
-truncateText(text: string, limit: number): string {
-if (text && text.length > limit) { return text.substring(0, limit) + '...';  }
-  return text;
-}
+  //TRUNCATE THE TEXT INTO 20 CHARS
+  truncateText(text: string, limit: number): string {
+    if (text && text.length > limit) { return text.substring(0, limit) + '...'; }
+    return text;
+  }
 
-//GET THE STATUS CLASS
-getStatusClass(status: string): string {
+  //GET THE STATUS CLASS
+  getStatusClass(status: string): string {
     switch (status) {
       case 'pending':
         return 'bg-light-warning mat-body-2 f-w-500 p-x-8 p-y-4 f-s-12 rounded-pill';

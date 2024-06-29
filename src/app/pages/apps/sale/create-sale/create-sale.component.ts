@@ -1,6 +1,4 @@
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component } from '@angular/core';
-import { products } from 'src/app/classes/products.class';
 import { Suppliers_ARRAY } from 'src/app/services/general.service';
 interface Supplier {
   id: number;
@@ -21,14 +19,14 @@ export class CreateSaleComponent {
   panelOpenState = false;
   open_expansion_value = 1;
 
-  dataSource = products;
+  dataSource:any [] =  [];
   filteredProducts: any[]
   filteredSuppliers: any[]
   paymentOption: string = 'full';
   suppliers = Suppliers_ARRAY
 
     constructor() {
-      this.filteredProducts = products
+      this.filteredProducts = []
       this.filteredSuppliers = this.suppliers
     }
     hide = true;

@@ -1,7 +1,7 @@
 <mat-card class="cardWithShadow">
     <mat-expansion-panel [expanded]="true">
       <mat-expansion-panel-header>
-        <mat-panel-title class="f-w-600 mat-body-1 currentAction">Create Purchase</mat-panel-title>
+        <mat-panel-title class="f-w-600 mat-body-1 currentAction">Edit Purchase</mat-panel-title>
       </mat-expansion-panel-header>
       <mat-card-content>
         <!-- FIRST ROW :  Supplier + Invoice No. + Purchase Date -->
@@ -92,7 +92,7 @@
   
         <div class="Buttons_div">
           <div>
-            <button mat-flat-button color="primary"> Create Purchase </button>
+            <button mat-flat-button color="primary"> Edit Purchase </button>
           </div>
         </div>
       </mat-card-content>
@@ -141,7 +141,7 @@
       <ng-container matColumnDef="Quantity">
         <th mat-header-cell *matHeaderCellDef> Quantity </th>
         <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
-          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category.CategoryName"
+          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category"
             [readonly]="true" />
         </td>
       </ng-container>
@@ -150,7 +150,7 @@
       <ng-container matColumnDef="Total">
         <th mat-header-cell *matHeaderCellDef> Total </th>
         <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
-          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category.CategoryName"
+          <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category"
             [readonly]="true" />
         </td>
       </ng-container>

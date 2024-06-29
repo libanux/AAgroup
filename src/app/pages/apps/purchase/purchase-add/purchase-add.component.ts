@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product, products } from 'src/app/classes/products.class';
+import { Product } from 'src/app/classes/products.class';
 import { SupplierClass } from 'src/app/classes/suppliers.class';
 import { Suppliers_ARRAY } from 'src/app/services/general.service';
 import { ProductsService } from 'src/app/services/products.service';
@@ -27,7 +27,7 @@ export class PurchaseAddComponent implements OnInit {
   //PURCHASE ARRAY
   PURCHASE_ARRAY: any[] = [];
 
-  ADDED_PRODUCT: Product = new Product('', '', '', '', '', '', 0, 0);
+  ADDED_PRODUCT: Product =  new Product('', '',  '', '', '', 0, 0);
 
 
   // 3 accordian
@@ -160,7 +160,7 @@ export class PurchaseAddComponent implements OnInit {
 
   FETCH_PURCHASE_ARRAY(obj:any){
     this.PURCHASE_ARRAY.push(obj)
-    this.ADDED_PRODUCT = new Product('', '', '', '', '', '', 0, 0);
+    this.ADDED_PRODUCT =  new Product('', '',  '', '', '', 0, 0);
   }
 
 }

@@ -1,9 +1,12 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, Inject, OnInit, Optional, ViewChild } from '@angular/core';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Adjust } from 'src/app/classes/adjust.class';
-import { Product, products } from 'src/app/classes/products.class';
+import { Product } from 'src/app/classes/products.class';
 import { PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
+import { ProductsService } from 'src/app/services/products.service';
+import { SuppliersService } from 'src/app/services/supplier.service';
 
 @Component({
   selector: 'app-adjust',
@@ -14,20 +17,25 @@ import { PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
   ],
 })
 export class AdjustComponent implements OnInit {
-
-  // These two valus are used for the add expnad row in the top of the page
+  // PANEL : OPEN AND CLOSE
   panelOpenState = false;
   open_expansion_value = 1;
 
-  PRODUCTS_ARRAY:any [] = [];
-  filteredProducts: any[]
-  quantity_adjusted = 0;
-  added_Product: Product = new Product('', '', '','', '', '', 0, 0);
-
-  New_adjust_Array: Product[] = []
+  //PRODUCTS ARRAY
+  PRODUCTS_ARRAY: Product[] = [];
+  PRODUCTS_ARRAY_DROPDOWN: Product[] = []
+  PRODUCTS_ARRAY_DISPLYAED_LENGTH = 0
+  PRODUCTS_ARRAY_DISPLYAED = new MatTableDataSource<Product>([]);
+  //ADJUST ARRAY
   ADJUST_ARRAY = new MatTableDataSource<Product>([]);
-  ADJUST_ARRAY_LENGTH = 0
+
+  //  PRODUCT ADDED 
+  ADDED_PRODUCT: Product = new Product('', '', '', '', '', 0, 0);
+NEW_PRODUCT_ADDED: Product = new Product('', '', '', '', '', 0, 0);
   
+filteredProducts: any[]
+  quantity_adjusted = 0;
+
   hide = true;
   hide2 = true;
   conhide = true;
@@ -48,7 +56,6 @@ export class AdjustComponent implements OnInit {
   columnHeaders = [
     { key: 'name', title: 'Item Name' },
     { key: 'barcode', title: 'Barcode' },
-    { key: 'description', title: 'Description' },
     { key: 'category', title: 'Category' },
     { key: 'quantity_available', title: 'Quantity Available' },
     { key: 'new_quantity_on_hand', title: 'New Quantity on Hand' },
@@ -60,10 +67,14 @@ export class AdjustComponent implements OnInit {
   searchQuery: string;
   editRowIndex: number = -1;
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog
+    , private productsService: ProductsService,
+    private suppliersService: SuppliersService
+  ) {
   }
 
   ngOnInit(): void {
+    this.FETCH_PRODUCTS();
     this.displayedColumns = this.columnHeaders.map(column => column.key);
   }
 
@@ -95,46 +106,86 @@ export class AdjustComponent implements OnInit {
     // return element.onHandQuantity*quantity_adjusted
   }
 
-// FETCH ALL + ADD NEW PRODUCT + CREATE ADJUSTMENT + REMOVE PRODUCT + SELECT 
-
-  //FETCH ALL PRODUCTS
-  FETCH_ADJUSTS(): void {
-    this.ADJUST_ARRAY = new MatTableDataSource();
-  }
-
-  // ADD PRODUCT TO THE TABLE
-  ADD_ADUST(object: Product) {
-    this.New_adjust_Array.push(object);
-    this.FETCH_ADJUSTS();
-
-  }
-
-  // REMOVE ADDED PRODUCT FROM TABLE
-  REMOVE_ADJUST() {
-    this.New_adjust_Array.pop()
-    this.FETCH_ADJUSTS()
-  }
-
   // OPEN DIALOG TO ADD NEW PRODUCT
-  OPEN_DIALOG(action: string, product: Product): void {
-    const dialogRef = this.dialog.open(AdjustDialogComponent, {
-      data: { action, product }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      // if (result && result.event === 'Delete') {
-      //   this.DELETE_PRODUCT(product.barcode)
-      // }
-    });
-  }
-
+  OPEN_DIALOG(action: string, product: any): void {
+    product.action = action;
+    
+      const dialogRef = this.dialog.open(AdjustDialogComponent, {
+        data: product,
+      });
+  
+      dialogRef.afterClosed().subscribe((result) => {
+  
+        // if (result.event === 'Cancel') {
+         
+        // }
+  
+        // else if (result.event === 'Delete') {
+        //   this.DELETE_PRODUCT(obj._id)
+        // }
+  
+         if (result.event === 'Add Product') {
+          this.ADDED_PRODUCT = result.data
+          this.ADD_PRODUCT()
+        }
+      });
+    }
   // ADD NEW ADJUSTMENT
   CREATE_ADJUSTEMENT() {
+
   }
 
   filterProducts() {
 
   }
+
+  // ADJUST
+  //FETCH ALL ADJUSTS
+  FETCH_ADJUST() {
+    this.PRODUCTS_ARRAY_DISPLYAED = new MatTableDataSource(this.PRODUCTS_ARRAY);
+    this.PRODUCTS_ARRAY_DISPLYAED_LENGTH = this.PRODUCTS_ARRAY_DISPLYAED.filteredData.length
+  }
+
+
+  // PRODUCTS
+  //FETCH PRODUCTS_ARRAY FROM API
+  FETCH_PRODUCTS(): void {
+    this.productsService.GET_ALL_PRODUCT(0, 10, 'id', 'ASC').subscribe({
+      next: (response: any) => {
+        // this.current_page_array_length = response.products.rows.length
+        // this.PRODUCTS_ARRAY_LENGTH = response.products.count;
+        this.PRODUCTS_ARRAY_DROPDOWN = response.products.rows;
+      },
+      error: (error) => { },
+      complete: () => { }
+    });
+  }
+
+  // GET SELECTED PRODUCT AND ADD IT
+  onProductSelected(event: any) {
+    if(event != 'Add Product'){
+      this.ADDED_PRODUCT = event
+      this.ADD_PRODUCT()
+    }
+
+    else {
+      this.OPEN_DIALOG('Add Product', this.NEW_PRODUCT_ADDED)
+    }
+
+  }
+
+  // ADD PRODUCT TO THE TABLE
+  ADD_PRODUCT() {
+    this.PRODUCTS_ARRAY.push(this.ADDED_PRODUCT);
+    this.FETCH_ADJUST();
+
+  }
+
+  REMOVE_PRODUCT(index: number) {
+    this.PRODUCTS_ARRAY.splice(index, 1); // Remove product at index
+    this.FETCH_ADJUST()
+  }
+
 
 }
 
@@ -147,23 +198,33 @@ export class AdjustComponent implements OnInit {
 })
 export class AdjustDialogComponent {
   action: string;
-  local_data: any;
-  PRODUCT: Product
+  NEW_PRODUCT_ADDED: any
+
   categoryArray = PRODUCT_CATEGORY_ARRAY
 
   constructor(
     public dialogRef: MatDialogRef<AdjustDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: Product
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.local_data = { ...data };
-    this.action = this.local_data.action;
+    this.NEW_PRODUCT_ADDED = { ...data };
+    this.action = this.NEW_PRODUCT_ADDED.action;
   }
 
   doAction(): void {
-    this.dialogRef.close({ event: this.action, data: this.local_data });
+    this.dialogRef.close({ event: this.action, data: this.NEW_PRODUCT_ADDED });
   }
 
   closeDialog(): void {
     this.dialogRef.close({ event: 'Cancel' });
   }
+
+  GENERATE_BARCODE() {
+    let result = '';
+    for (let i = 0; i < 12; i++) {
+      result += Math.floor(Math.random() * 10);
+    }
+
+    this.NEW_PRODUCT_ADDED.barcode = result
+  }
+
 }

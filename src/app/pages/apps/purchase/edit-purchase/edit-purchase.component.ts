@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { products } from 'src/app/classes/products.class';
 import { Suppliers_ARRAY } from 'src/app/services/general.service';
 @Component({
   selector: 'app-edit-purchase',
@@ -16,7 +15,7 @@ export class EditPurchaseComponent {
   panelOpenState = false;
   open_expansion_value = 1;
 
-  dataSource = products;
+  dataSource: any [] = [];
 
   filteredProducts: any[]
   filteredSuppliers: any[]

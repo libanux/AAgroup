@@ -49,7 +49,7 @@ export class SuppliersComponent {
   // CHECK IF DAAT CHANGED TO REMOVE THE DISABLED BUTTON
   DATA_CHANGED: boolean = false;
   //TABLE COLUMNS
-  displayedColumns: string[] = ['firstname', 'lastname', 'email', 'phone', 'companyname', 'contactname', 'balance', 'actions'];
+  displayedColumns: string[] = ['contact_name', 'companyname', 'email', 'phone', 'actions'];
   columnsToDisplayWithExpand = [...this.displayedColumns];
 
   //SUPPLIERS ARRAY
@@ -61,9 +61,9 @@ export class SuppliersComponent {
   //SUPPLIER TO EDIT|ADD
   // THESE TWO OBJECTS ARE TO CHECK IF THE SELECTED SUPPLIER TO UPDATE HAVE DIFFERENT VALUES THAN THE MAIN ONE SO THAT THE DISBALE BUTTON IS ABLE
   // ADDED SUPPLIER IS THE SUPPLIER SELECTED BUT WITH CHANGED VALUE
-  ADDED_SUPPLIER = new SupplierClass('', '', '', '', '', '', '', '');
+  ADDED_SUPPLIER = new SupplierClass('', '', '', '', '');
   // MAIN SUPPLIER IS THE SUPPLIER SELECTED BUT WITHOUT CHANGED VALUE
-  MAIN_SELECTED_SUPPLIER_DATA = new SupplierClass('', '', '', '', '', '', '', '');
+  MAIN_SELECTED_SUPPLIER_DATA = new SupplierClass('', '', '', '', '');
 
   // PAGING
   current_page_array_length = 0
@@ -198,7 +198,11 @@ export class SuppliersComponent {
     this.SHOW_LOADING_SPINNER = true;
     this.supplierService.ADD_SUPPLIER(this.ADDED_SUPPLIER).subscribe({
       next: (response: any) => { },
-      error: (error) => { },
+      error: (error) => {   
+        console.log(error)  
+        this.show_shimmer = false;
+        this.SHOW_LOADING_SPINNER = false;
+      },
       complete: () => { this.FETCH_SUPPLIERS(this.SORT_FIELD, this.SORT_ORDER); this.CANCEL_UPDATE(); }
     });
   }
@@ -254,8 +258,8 @@ export class SuppliersComponent {
     this.ShowAddButoon = true;
     this.CurrentAction = 'Add Supplier'
     // EMPTY THE SELECTED SUPPLIER TO UPDATE
-    this.ADDED_SUPPLIER = new SupplierClass('', '', '', '', '', '', '', '');
-    this.MAIN_SELECTED_SUPPLIER_DATA = new SupplierClass('', '', '', '', '', '', '', '');
+    this.ADDED_SUPPLIER = new SupplierClass('', '', '', '', '');
+    this.MAIN_SELECTED_SUPPLIER_DATA = new SupplierClass('', '', '', '', '');
 
     this.DATA_CHANGED = false;
     this.SHOW_LOADING_SPINNER = false

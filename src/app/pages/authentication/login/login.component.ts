@@ -41,6 +41,7 @@ export class AppLoginComponent {
           next: (response: any) => {
             if(response.user.owner_id == environment.owner_id)
               {
+                console.log(response.user.owner_id)
               localStorage.setItem('TICKET', response.token),
               localStorage.setItem('admin_id', response.user._id)
               this.router.navigate(['/apps/products']).then(() => {

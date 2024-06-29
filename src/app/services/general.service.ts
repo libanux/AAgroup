@@ -88,11 +88,11 @@ export const Categories: any[] =
 
 
   export const PRODUCT_CATEGORY_ARRAY: any[] = [
-    {id: 1, CategoryName:'Category1'},
-    {id: 2, CategoryName:'Category2'},
-    {id: 3, CategoryName:'Category3'},
-    {id: 4, CategoryName:'Category4'},
-    {id: 5, CategoryName:'Category5'},
+    'Snacks',
+    'Sweets',
+    'Food',
+    'Category4',
+    'Category5',
   ];
   
 
