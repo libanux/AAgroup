@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { Product } from 'src/app/classes/products.class';
-import { PurchaseInvoice, purchaseInvoices } from 'src/app/classes/purchase-invoices.class';
 import { ProductsService } from 'src/app/services/products.service';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Download_Options, GeneralService } from 'src/app/services/general.service';
+import { SalesInvoiceClass, Sales_Invoice_array } from 'src/app/classes/sales.invoice.service';
 
 @Component({
   selector: 'app-sale-invoice',
@@ -28,17 +28,30 @@ export class SaleInvoiceComponent {
 // DOWNLOAD
 Options: any[] = Download_Options;
 selectedDownloadOption: string = 'Download as';
-  //TABLE COLUMNS
+
   displayedColumns: string[] = [
-    'supplier',
-    'date',
+    'orderNumber',
+    'orderDate',
+    'inventoryStatus',
+    'paymentStatus',
+    'customer',
+    'dueDate',
     'total',
     'paid',
-    'balance',
-    'action'
+    'balance'
   ];
 
-
+  TableHeaders: string[] = [
+    'Order#',
+    'Order Date',
+    'Inventory Status',
+    'Payment Status',
+    'Customer',
+    'Due Date',
+    'Total',
+    'Paid',
+    'Balance'
+  ];
   // VARIABLES
   // These two valus are used for the add expnad row in the top of the page
   panelOpenState = false;
@@ -61,7 +74,7 @@ selectedDownloadOption: string = 'Download as';
   STATUS = ''
 
   columnsToDisplayWithExpand = [...this.displayedColumns];
-  expandedElement: PurchaseInvoice | null = null;
+  expandedElement: SalesInvoiceClass | null = null;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
@@ -81,19 +94,19 @@ selectedDownloadOption: string = 'Download as';
   ];
 
  //MAIN PRODUCT ARRAY
- purchaseInvoicesArray: any[] = []
+ SALES_INVIOCE_ARRAY: any[] = []
  showCalendar: boolean = false;
  selectedDate: Date | null = null; // Adjusted the type to accept null
 //PRODUCTS ARRAY
-dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
+dataSource = new MatTableDataSource(this.SALES_INVIOCE_ARRAY);
 
   //PRODUCT ON EDIT
-  viewInvoice: PurchaseInvoice
- purchaseInvoiceExample = new PurchaseInvoice('', '', 0, 0 ,0, "");
-  editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
+  viewInvoice: SalesInvoiceClass
+ purchaseInvoiceExample = new SalesInvoiceClass('', '', '', '' ,'', '', '', '', '');
+  editedInvoice = new SalesInvoiceClass('', '', '', '' ,'', '', '', '', '');
 
 constructor(public generalService: GeneralService, public dialog: MatDialog, private productsService: ProductsService) {
-  this.viewInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
+  this.viewInvoice = new SalesInvoiceClass('', '', '', '' ,'', '', '', '', '');
 }
 
 ngOnInit(): void {
@@ -193,8 +206,10 @@ expandRow(event: Event, element: any, column: string): void {
 
 //FETCH productsArray FROM API
 FETCH_PRODUCTS(): void {
-    this.purchaseInvoicesArray =purchaseInvoices ;
-    this.totalCount = purchaseInvoices.length;
+    this.SALES_INVIOCE_ARRAY =Sales_Invoice_array ;
+    this.totalCount = Sales_Invoice_array.length;
+
+    console.log(this.SALES_INVIOCE_ARRAY)
     // this.productsService.GET_productsArray().subscribe({
     //   next: (response: any) => {
     //     this.productsArray = response;
@@ -232,20 +247,20 @@ ON_CHANGE_DROPDOWN(value: string) {
       // this.OPEN_CALENDAR_DIALOG();
     }
     else{
-      this.productsService.FILTER_PRODUCT(value).subscribe({
-        next: (response: any) => {
-          console.log("Response:", response)
-          this.purchaseInvoicesArray = response;
-          this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
-          this.totalCount = this.dataSource.data.length;
-          this.Inprogress = this.btnCategoryClick('pending');
-        },
-        error: (error: any) => {
-          console.log("Error:", error)
-        },
-        complete: () => {
-        }
-      });
+      // this.productsService.FILTER_PRODUCT(value).subscribe({
+      //   next: (response: any) => {
+      //     console.log("Response:", response)
+      //     this.purchaseInvoicesArray = response;
+      //     this.dataSource = new MatTableDataSource(this.purchaseInvoicesArray);
+      //     this.totalCount = this.dataSource.data.length;
+      //     this.Inprogress = this.btnCategoryClick('pending');
+      //   },
+      //   error: (error: any) => {
+      //     console.log("Error:", error)
+      //   },
+      //   complete: () => {
+      //   }
+      // });
     }
 }
 
@@ -258,7 +273,7 @@ EDIT_PRODUCT(obj: any): void {
 
 CANCEL(){
   this.ShowAddButoon = true;
-  this.editedInvoice = new PurchaseInvoice('', '', 0, 0 ,0, "");
+  this.editedInvoice =new SalesInvoiceClass('', '', '', '' ,'', '', '', '', '');
 }
 
 // OPEN UPDATE & DELETE DIALOGS

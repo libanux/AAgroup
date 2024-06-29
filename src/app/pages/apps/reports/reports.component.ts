@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject, Optional, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { stocksService } from 'src/app/services/stock.service';
-import { Product, products } from 'src/app/classes/products.class';
+import { Product } from 'src/app/classes/products.class';
 import { GeneralService, PRODUCT_CATEGORY_ARRAY } from 'src/app/services/general.service';
 
 @Component({
@@ -115,11 +115,11 @@ InventoryArray = new MatTableDataSource<any>(
 
   //stock ON EDIT
   viewstock: Product
-  stockExample =  new Product('', '', '','', '', '', 0, 0);
-  editedstock=  new Product('', '', '','', '', '', 0, 0);
+  stockExample =   new Product('', '',  '', '', '', 0, 0);
+  editedstock=   new Product('', '',  '', '', '', 0, 0);
 
 constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
-  this.viewstock = new Product('', '', '','', '', '', 0, 0);
+  this.viewstock =  new Product('', '',  '', '', '', 0, 0);
 }
 
 ngOnInit(): void {
@@ -158,8 +158,8 @@ expandRow(event: Event, element: any, column: string): void {
 
 //FETCH stocksArray FROM API
 FETCH_STOCKS(): void {
-  this.stocksArray = new MatTableDataSource(products);
-  this.InventoryArray = new MatTableDataSource(products);
+  this.stocksArray = new MatTableDataSource();
+  this.InventoryArray = new MatTableDataSource();
 }
 
 SORT(){
@@ -169,7 +169,7 @@ SORT(){
 // CANCEL UPDATE
 CANCEL_UPDATE(): void {
   this.ShowAddButoon = true;
-  this.editedstock =  new Product('', '', '','', '', '', 0, 0);
+  this.editedstock =   new Product('', '',  '', '', '', 0, 0);
 }
 
 APPLY_SEARCH_FILTER(filterValue: string): void {
@@ -178,13 +178,13 @@ APPLY_SEARCH_FILTER(filterValue: string): void {
 
 //ADD stock
 ADD_STOCK() {
-    this.stocksService.ADD_stock(this.stockExample).subscribe({
-      next: (response: any) => {},
-      error: (error: any) => {console.error(error);},
-      complete: () => {    
-        this.CANCEL_UPDATE();
-        this.FETCH_STOCKS();}
-    });
+    // this.stocksService.ADD_stock(this.stockExample).subscribe({
+    //   next: (response: any) => {},
+    //   error: (error: any) => {console.error(error);},
+    //   complete: () => {    
+    //     this.CANCEL_UPDATE();
+    //     this.FETCH_STOCKS();}
+    // });
 }
 
 //TRIGGER THE DROP DOWN FILTER VALUES

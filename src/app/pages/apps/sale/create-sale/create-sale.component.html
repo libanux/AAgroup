@@ -1,10 +1,10 @@
 <mat-card class="cardWithShadow">
   <mat-expansion-panel [expanded]="open_expansion_value === 1" (opened)="OPEN_PANEL()" (closed)="CLOSE_PANEL()">
     <mat-expansion-panel-header>
-      <mat-panel-title class="f-w-600 mat-body-1 currentAction">Create Purchase</mat-panel-title>
+      <mat-panel-title class="f-w-600 mat-body-1 currentAction">Create Sale</mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
-      <!-- FIRST ROW :  Supplier + Invoice No. + Purchase Date -->
+      <!-- FIRST ROW :  Supplier + Invoice No. + Sale Date -->
       <div class="row">
         <!-- Supplier -->
         <div class="col-md-4 d-flex flex-column">
@@ -37,10 +37,10 @@
           </mat-form-field>
         </div>
 
-        <!-- Purchase Date -->
+        <!-- Sale Date -->
         <div class="col-md-4 d-flex flex-column">
           <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Purchase Date</mat-label>
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Sale Date</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput [matDatepicker]="birthpicker3" placeholder="13-6-2024" />
@@ -76,6 +76,7 @@
             <mat-select value="full" [(ngModel)]="paymentOption">
               <mat-option value="full">Fully paid</mat-option>
               <mat-option value="partial">Partially paid</mat-option>
+              <mat-option value="partial">Debit</mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -115,11 +116,41 @@
         </div>
       </div>
 
-      <div class="Buttons_div">
-        <div>
-          <button mat-flat-button color="primary"> Create Purchase </button>
-        </div>
-      </div>
+            <!-- SECOND ROW :  SEARCH -->
+            <div class="purchase-add-row">
+              <div class="col-md-2 d-flex flex-column">
+                <div class="d-flex align-items-center">
+                  <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Balance</mat-label>
+                </div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="1200" aria-label="Product"  name="Product"  readonly="true">
+                  <mat-icon matPrefix class="op-5">
+                    <svg  class="icon-20 d-flex" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z"/></svg>
+                  </mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2 d-flex flex-column">
+                <div class="d-flex align-items-center">
+                  <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Total</mat-label>
+                </div>
+                <mat-form-field appearance="outline" class="w-100">
+                  <input matInput placeholder="127.000" aria-label="Product" name="Product" readonly="true">
+                  <mat-icon matPrefix class="op-5">
+                    <svg class="icon-20 d-flex" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M268-240 42-466l57-56 170 170 56 56-57 56Zm226 0L268-466l56-57 170 170 368-368 56 57-424 424Zm0-226-57-56 198-198 57 56-198 198Z"/></svg>
+                  </mat-icon>
+                </mat-form-field>
+              </div>
+              <div class="col-md-2 d-flex flex-column">
+                <div class="Buttons_div">
+                  <div>
+                    <button mat-flat-button color="primary"> Create Sale </button>
+                  </div>
+                </div>
+          </div>
+          </div>
+      
+
+
     </mat-card-content>
   </mat-expansion-panel>
 </mat-card>

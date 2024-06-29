@@ -55,7 +55,11 @@ export class ProfileComponent implements OnInit{
   SAVE_UPDATE() {
     this.SHOW_LOADING_SPINNER = true;
     this.userService.UPDATE_USER(this.EDITED_PROFILE).subscribe({
-      next: (response: any) => {  },
+      next: (response: any) => {
+        console.log(response);
+        this.LOGGED_USER = response.user;
+        this.EDITED_PROFILE = response.user
+        },
       error: (error) => {  },
       complete: () => {
         this.UpdateProfile = false;

@@ -85,10 +85,11 @@ export class CustomerService {
             "last_name": CUSTOMER.last_name,
             "email": CUSTOMER.email,
             "number": CUSTOMER.number,
-            "country_code": CUSTOMER.country_code,
+            "country_code": "1",
             "company_name": CUSTOMER.company_name,
             "owner_id": environment.owner_id
         };
+        console.log(requestBody)
         return this.httpClient.post<any>(this.apiUrl + '/CREATE_CUSTOMER', requestBody, { headers });
     }
 

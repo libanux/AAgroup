@@ -157,9 +157,10 @@ export class CustomersComponent {
   // ADD NEW CUSTOMER
   ADD_CUSTOMER() {
     this.SHOW_LOADING_SPINNER = true;
+    console.log('added customer : ' , this.ADDED_CUSTOMER), 
     this.customerService.ADD_CUSTOMER(this.ADDED_CUSTOMER).subscribe({
       next: (response: any) => { },
-      error: (error) => { },
+      error: (error) => { console.log(error) },
       complete: () => { this.FETCH_CUSTOMERS(); this.CANCEL_UPDATE(); }
     });
   }

@@ -23,7 +23,7 @@
             </mat-icon>
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option *ngFor="let supplier of SUPPLIER_ARRAY" [value]="supplier">
-                {{supplier.first_name}}
+                {{supplier.contact_name}}
               </mat-option>
               <mat-option (click)="addNewProduct()">
                 <div class="option-content">
@@ -87,12 +87,40 @@
           </mat-form-field>
         </div>
       </div>
-
+  
+      <!-- SECOND ROW :  SEARCH -->
+      <div class="purchase-add-row">
+        <div class="col-md-2 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Balance</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="1200" aria-label="Product"  name="Product"  readonly="true">
+            <mat-icon matPrefix class="op-5">
+              <svg  class="icon-20 d-flex" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M441-120v-86q-53-12-91.5-46T293-348l74-30q15 48 44.5 73t77.5 25q41 0 69.5-18.5T587-356q0-35-22-55.5T463-458q-86-27-118-64.5T313-614q0-65 42-101t86-41v-84h80v84q50 8 82.5 36.5T651-650l-74 32q-12-32-34-48t-60-16q-44 0-67 19.5T393-614q0 33 30 52t104 40q69 20 104.5 63.5T667-358q0 71-42 108t-104 46v84h-80Z"/></svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 d-flex flex-column">
+          <div class="d-flex align-items-center">
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Total</mat-label>
+          </div>
+          <mat-form-field appearance="outline" class="w-100">
+            <input matInput placeholder="127.000" aria-label="Product" name="Product" readonly="true">
+            <mat-icon matPrefix class="op-5">
+              <svg class="icon-20 d-flex" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#5f6368"><path d="M268-240 42-466l57-56 170 170 56 56-57 56Zm226 0L268-466l56-57 170 170 368-368 56 57-424 424Zm0-226-57-56 198-198 57 56-198 198Z"/></svg>
+            </mat-icon>
+          </mat-form-field>
+        </div>
+        <div class="col-md-2 d-flex flex-column">
       <div class="Buttons_div">
         <div>
           <button mat-flat-button color="primary"> Create Purchase </button>
         </div>
       </div>
+    </div>
+    </div>
+
     </mat-card-content>
   </mat-expansion-panel>
 </mat-card>
@@ -140,7 +168,7 @@
     <ng-container matColumnDef="Quantity">
       <th mat-header-cell *matHeaderCellDef> Quantity </th>
       <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
-        <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category.CategoryName"
+        <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.quantity_available"
           [readonly]="true" />
       </td>
     </ng-container>
@@ -149,7 +177,7 @@
     <ng-container matColumnDef="Total">
       <th mat-header-cell *matHeaderCellDef> Total </th>
       <td mat-cell *matCellDef="let element; let rowIndex = index;" [class.editing]="editRowIndex === rowIndex">
-        <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.category.CategoryName"
+        <input class="input-text UnEdited_Input" matInput [(ngModel)]="element.quantity_adjusted"
           [readonly]="true" />
       </td>
     </ng-container>

@@ -53,8 +53,7 @@
           <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
             placeholder="All">
             <mat-option [value]="'All'">All</mat-option>
-            <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
-              }}</mat-option>
+            <mat-option *ngFor="let category of categoryArray" [value]="category">{{category}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -243,8 +242,7 @@
   <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
     placeholder="All">
     <mat-option [value]="'All'">All</mat-option>
-    <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
-      }}</mat-option>
+    <mat-option *ngFor="let category of categoryArray" [value]="category">{{ category}}</mat-option>
   </mat-select>
 </mat-form-field>
 </div>
@@ -427,8 +425,7 @@
   <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
     placeholder="All">
     <mat-option [value]="'All'">All</mat-option>
-    <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
-      }}</mat-option>
+    <mat-option *ngFor="let category of categoryArray" [value]="category">{{ category}}</mat-option>
   </mat-select>
 </mat-form-field>
 </div>
@@ -614,8 +611,7 @@
   <mat-select [(ngModel)]="selectedCategory" (selectionChange)="FILTER_BY_CATEGORY($event.value)"
     placeholder="All">
     <mat-option [value]="'All'">All</mat-option>
-    <mat-option *ngFor="let category of categoryArray" [value]="category.CategoryName">{{ category.CategoryName
-      }}</mat-option>
+    <mat-option *ngFor="let category of categoryArray" [value]="category">{{category}}</mat-option>
   </mat-select>
 </mat-form-field>
 </div>

@@ -112,7 +112,7 @@
     @else{
     <!-- TABLE BODY -->
     <div class="table-responsive">
-      <table mat-table [dataSource]="stocksArray" multiTemplateDataRows>
+      <table mat-table [dataSource]="STOCKS_ARRAY" multiTemplateDataRows>
 
         <!-- Iterate over displayedColumns using ngFor -->
         @for( column of displayedColumns; track column) {
@@ -210,7 +210,11 @@
     <!-- TABLE PAGINATION -->
     <!-- LENGTH : 1-10 of length -->
     <!-- pageSize : Items Per Page -->
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" [length]="totalCount" [pageSize]="pageSize" aria-label="Select page"
+    <mat-paginator 
+    [pageSizeOptions]="[10, 20, 30]" 
+    [length]="STOCKS_ARRAY_LENGTH" 
+    [pageSize]="pageSize" 
+    aria-label="Select page"
       showFirstLastButtons (page)="onPageChange($event)">
     </mat-paginator>
   </mat-card-content>

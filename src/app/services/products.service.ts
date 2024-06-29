@@ -21,6 +21,20 @@ export class ProductsService {
 
   }
 
+  // VALIDATE TOKEN
+  isTokenExpired1(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+    const tokenParts = token.split('.');
+    if (tokenParts.length !== 3) return true;
+    const payload = JSON.parse(atob(tokenParts[1]));
+    if (!payload.exp) return true;
+    const expirationTime = payload.exp * 1000;
+    const currentTime = new Date().getTime();
+    return expirationTime < currentTime;
+  }
+
+
   // GET TOKEN FROM LOCAL STORAGE
   getToken(): string | null {
     return localStorage.getItem('TICKET');
@@ -31,7 +45,7 @@ export class ProductsService {
     let startRow = CURRENT_PAGE * PAGE_SIZE
     let endRow = PAGE_SIZE + (CURRENT_PAGE * PAGE_SIZE)
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.storedToken}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     });
     const requestBody = {
@@ -41,19 +55,19 @@ export class ProductsService {
       "sort_order": SORT_ORDER,
       "owner_id": environment.owner_id
     }
+    console.log(requestBody)
     return this.httpClient.post<any>(this.apiUrl + '/GET_ALL_PRODUCTS_BY_OWNER_ID', requestBody, { headers });
   }
 
   //UPDATE PRODUCT
   UPDATE_PRODUCT(PRODUCT: Product): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.storedToken}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     });
     const requestBody = {
       "_id": PRODUCT._id,
       "name": PRODUCT.name,
-      "description": PRODUCT.description,
       "category": PRODUCT.category,
       "cost": PRODUCT.cost,
       "sale": PRODUCT.sale,
@@ -66,7 +80,7 @@ export class ProductsService {
   //ADD PRODUCT
   ADD_PRODUCT(PRODUCT: Product): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.storedToken}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     });
     // Define the request body
@@ -74,7 +88,6 @@ export class ProductsService {
       "name": PRODUCT.name,
       "barcode": PRODUCT.barcode,
       "category": PRODUCT.category,
-      "description": PRODUCT.description,
       "cost": PRODUCT.cost,
       "sale": PRODUCT.sale,
       "user_id": localStorage.getItem('admin_id'),
@@ -86,42 +99,46 @@ export class ProductsService {
   //DELETE PRODUCT
   DELETE_PRODUCT(ID: string): Observable<any> {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.storedToken}`,
+      'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     });
-
     const requestBody = { "id": ID };
 
     return this.httpClient.post<any>(this.apiUrl + '/DELETE_PRODUCT_BY_ID', requestBody, { headers });
   }
 
   //GET PRODUCT BY ID
-  // GET_PRODUCT_BY_ID(paymentID: number): Observable<any> {
-  //   const jwt = this.generalService.storedToken;
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${this.storedToken}`,
-  //     'Content-Type': 'application/json'
-  //   });
-  //   const requestBody = {
-  //     PAYMENT_ID: paymentID
-  //   };
-  //   return this.httpClient.post<any>(this.apiUrl + '/GET_PAYMENT_BY_PAYMENT_ID_ADV', requestBody, { headers });
-  // }
+  GET_PRODUCT_BY_ID(ID: number): Observable<any> {
+    const jwt = this.generalService.storedToken;
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.storedToken}`,
+      'Content-Type': 'application/json'
+    });
+    const requestBody = {
+      "id": IDBTransaction,
+      "owner_id": environment.owner_id
+  }
+    return this.httpClient.post<any>(this.apiUrl + '/GET_PAYMENT_BY_PAYMENT_ID_ADV', requestBody, { headers });
+  }
 
 
   // FILTER Product BY DATE
-  FILTER_PRODUCT(filterType: string): Observable<any> {
+  FILTER_PRODUCT(SEARCK_KEY: string, FILTER_TYPE: string, START_DATE: string, END_DATE: string, CATEGORY: string, CURRENT_PAGE:number, PAGE_SIZE:number): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`,
       'Content-Type': 'application/json'
     });
-
     const requestBody = {
-      "filterType": filterType,
-      "startDate": this.dateSignal.startDate(),
-      "endDate": this.dateSignal.endDate()
+        "search": SEARCK_KEY,
+        "filterType": FILTER_TYPE,
+        "startDate": START_DATE,
+        "endDate": END_DATE,
+        "category":CATEGORY,
+        "page": CURRENT_PAGE,
+        "pageSize": PAGE_SIZE
     };
-    return this.httpClient.post<any>(this.apiUrl + '/FILTER_ProductS_BY_DATE', requestBody, { headers })
+    console.log(requestBody)
+    return this.httpClient.post<any>(this.apiUrl + '/SEARCH_AND_FILTER_PRODUCTS', requestBody, { headers })
   }
 
 }

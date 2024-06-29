@@ -52,11 +52,9 @@ export class SuppliersService {
     });
     const requestBody = {
       "_id": SUPPLIER._id,
+      "contact_name": SUPPLIER.contact_name,
       "owner_id": environment.owner_id,
-      "first_name": SUPPLIER.first_name,
-      "last_name": SUPPLIER.last_name,
       "email": SUPPLIER.email,
-      "country_code": SUPPLIER.country_code,
       "number": SUPPLIER.number,
       "company_name": SUPPLIER.company_name,
     };
@@ -71,10 +69,8 @@ export class SuppliersService {
     });
     // Define the request body
     const requestBody = {
-      "first_name": SUPPLIER.first_name,
-      "last_name": SUPPLIER.last_name,
+      "contact_name": SUPPLIER.contact_name,
       "email": SUPPLIER.email,
-      "country_code": SUPPLIER.country_code,
       "number": SUPPLIER.number,
       "company_name": SUPPLIER.company_name,
       "owner_id": environment.owner_id

@@ -4,8 +4,8 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { stocksService } from 'src/app/services/stock.service';
-import { Product, products } from 'src/app/classes/products.class';
 import { Download_Options, GeneralService, Month_Filter_Array, PRODUCT_CATEGORY_ARRAY, STOCK_Array_Filter } from 'src/app/services/general.service';
+import { StockClass } from 'src/app/classes/stock.class';
 
 @Component({
   selector: 'app-stock',
@@ -29,42 +29,32 @@ export class StockComponent implements OnInit {
   // STOCK FILTER
   STOCK_Filter_array: any[] = STOCK_Array_Filter
   selectedFilteraTION: string = '';
+  //STOCK CATEGORIES ARRAY
+  categoryArray = PRODUCT_CATEGORY_ARRAY
+  //MONTHS FOR FILTER DROPDOWN
+  months = Month_Filter_Array
   // DOWNLOAD
   Options: any[] = Download_Options;
   selectedDownloadOption: string = 'Download as';
   ShowAddButoon = true;
   selectedMonth: string = '';
-
+  //STOCKS ARRAY
+  STOCKS_ARRAY = new MatTableDataSource<StockClass>([]);
+  STOCKS_ARRAY_LENGTH = 0;
   //TABLE COLUMNS
-  displayedColumns: string[] = [
-    'barcode',
-    'name',
-    'category',
-    'onHandQuantity',
-    'action'
-  ];
-
-  show_shimmer = false;
-  STOCKS_ARRAY_LENGTH = 0
+  displayedColumns: string[] = ['barcode', 'product_id', 'category', 'on_hand_quantity', 'action'];
   columnsToDisplayWithExpand = [...this.displayedColumns];
-  expandedElement: Product | null = null;
+  expandedElement: StockClass | null = null;
+  // SORTING FOR FETCH FUNCTION
+  SORT_FIELD: string = 'id';
+  SORT_ORDER: string = 'ASC';
+  ASC: boolean = true;
+  DESC: boolean = false;
+  // TABLE SHIMMER
+  show_shimmer = false;
 
   @ViewChild(MatTable, { static: true }) table: MatTable<any> = Object.create(null);
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator = Object.create(null);
-
-  // 
-  selectedCategory: string = '';
-  searchText: any;
-  totalCount = 0;
-  Cancelled = 0;
-  Inprogress = 0;
-  Completed = 0;
-
-  categoryArray = PRODUCT_CATEGORY_ARRAY
-
-  //MONTHS FOR FILTER DROPDOWN
-  months = Month_Filter_Array
-
 
   // DATE SELECTION
   SEARCK_KEY = '';
@@ -73,41 +63,42 @@ export class StockComponent implements OnInit {
   END_DATE = ''
   STATUS = ''
 
+  // PAGING
+  current_page_array_length = 0
+  pageSize = 30;
+  Current_page = 0
+
   //MAIN stock ARRAY
   showCalendar: boolean = false;
   selectedDate: Date | null = null; // Adjusted the type to accept null
   //stockS ARRAY
-  stocksArray = new MatTableDataSource<Product>([]);
 
   //stock ON EDIT
-  viewstock: Product
-  stockExample = new Product('', '', '', '', '', '', 0, 0);
-  editedstock = new Product('', '', '', '', '', '', 0, 0);
+  stockExample = new StockClass('', '', '', '', '');
+  editedstock = new StockClass('', '', '', '', '');
 
   constructor(public generalService: GeneralService, public dialog: MatDialog, private stocksService: stocksService) {
-    this.viewstock = new Product('', '', '', '', '', '', 0, 0);
   }
 
   ngOnInit(): void {
-    this.FETCH_STOCKS();
-  }
+    this.show_shimmer = true;
+    this.FETCH_STOCKS(this.SORT_FIELD, this.SORT_ORDER);
+   }
 
-  // PAGING
-  pageSize = 10;
-  Current_page = 1
+
   // function when page number changes
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
 
-    if (this.STATUS != '' || this.FILTER_TYPE != '') {
-      this.Current_page = event.pageIndex + 1;
+    // if (this.STATUS != '' || this.FILTER_TYPE != '') {
+    //   this.Current_page = event.pageIndex + 1;
       // this.FILTER_VISAS(this.SEARCK_KEY, this.FILTER_TYPE, this.START_DATE, this.END_DATE, this.STATUS)
-    }
+    // }
 
-    else {
+    // else {
       this.Current_page = event.pageIndex + 1;
-      // this.FETCH_VISA();
-    }
+      this.FETCH_STOCKS(this.SORT_FIELD, this.SORT_ORDER);
+    // }
 
   }
   // THIS FUNCTION IS FOR THE PAGING TO GO TO PREVOIUS PAGE
@@ -117,20 +108,9 @@ export class StockComponent implements OnInit {
     }
   }
 
-
-  // cancelSelection() {
-  //     this.showCalendar = false;
-  //     this.selectedMonth = '';
-  //     this.selectedDate = null;
-  // }
-
-  ngAfterViewInit(): void {
-    this.stocksArray.paginator = this.paginator;
-  }
-
   FILTER_BY_CATEGORY(value: string) {
-    if (value == 'All') { this.FETCH_STOCKS() }
-    else { this.stocksArray.filter = value.trim().toLowerCase(); }
+    // if (value == 'All') { this.FETCH_STOCKS() }
+    // else { this.stocksArray.filter = value.trim().toLowerCase(); }
   }
 
   //EXPAND THE ROW AND CHECK IF THE COLUMN IS ACTION THEN DO NOT EXPAND
@@ -144,36 +124,17 @@ export class StockComponent implements OnInit {
     }
   }
 
-  //FETCH stocksArray FROM API
-  FETCH_STOCKS(): void {
-    this.stocksArray = new MatTableDataSource();
-  }
+
 
   SORT() {
 
   }
 
-  // CANCEL UPDATE
-  CANCEL_UPDATE(): void {
-    this.ShowAddButoon = true;
-    this.editedstock = new Product('', '', '', '', '', '', 0, 0);
-  }
-
+  
   APPLY_SEARCH_FILTER(filterValue: string): void {
-    this.stocksArray.filter = filterValue.trim().toLowerCase();
+    // this.stocksArray.filter = filterValue.trim().toLowerCase();
   }
 
-  //ADD stock
-  ADD_STOCK() {
-    this.stocksService.ADD_stock(this.stockExample).subscribe({
-      next: (response: any) => { },
-      error: (error: any) => { console.error(error); },
-      complete: () => {
-        this.CANCEL_UPDATE();
-        this.FETCH_STOCKS();
-      }
-    });
-  }
 
   //TRIGGER THE DROP DOWN FILTER VALUES
   ON_CHANGE_DROPDOWN(value: string) {
@@ -181,29 +142,14 @@ export class StockComponent implements OnInit {
       // this.OPEN_CALENDAR_DIALOG();
     }
     else {
-      this.stocksService.FILTER_stock(value).subscribe({
-        next: (response: any) => {
-          this.stocksArray = new MatTableDataSource(response);
-          this.totalCount = this.stocksArray.data.length;
-          // this.Inprogress = this.btnCategoryClick('pending');
-        },
-        error: (error: any) => {},
-        complete: () => {
-        }
-      });
+      
     }
   }
 
-  //UPDATE ROW VALUES
-  EDIT_STOCK(obj: any): void {
-    this.ShowAddButoon = false
-    this.viewstock = obj;
-    this.editedstock = obj;
-  }
 
 
   // OPEN UPDATE & DELETE DIALOGS
-  OPEN_DIALOG(action: string, delstock: Product): void {
+  OPEN_DIALOG(action: string, delstock: StockClass): void {
     const dialogRef = this.dialog.open(deleteAjustDialogComponent, {
       data: { action, delstock }
     });
@@ -211,13 +157,13 @@ export class StockComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result && result.event === 'Delete') {
 
-        this.stocksService.DELETE_stock(delstock).subscribe({
-          next: (response: any) => {
-            this.FETCH_STOCKS()
-          },
-          error: (error: any) => { console.error('Error:', error); },
-          complete: () => { }
-        });
+        // this.stocksService.DELETE_stock(delstock).subscribe({
+        //   next: (response: any) => {
+        //     this.FETCH_STOCKS()
+        //   },
+        //   error: (error: any) => { console.error('Error:', error); },
+        //   complete: () => { }
+        // });
       }
     });
   }
@@ -291,13 +237,6 @@ export class StockComponent implements OnInit {
     return this.generalService.FORMAT_DATE_WITH_HOUR(dateString)
   }
 
-
-  //GET THE CATEGORY LENGTH
-  // btnCategoryClick(val: string): number {
-  //   this.stocksArray.filter = val.trim().toLowerCase();
-  //   return this.st.filteredData.length;
-  // }
-
   //TRUNCATE THE TEXT INTO 20 CHARS
   TRUNCATE_TEXT(text: string, limit: number): string {
     return this.generalService.truncateText(text, limit);
@@ -316,6 +255,92 @@ export class StockComponent implements OnInit {
         return '';
     }
   }
+
+
+
+  // FETCH ALL + ADD + UPDATE + DELETE + SELECT + SEARCH + FILTER
+
+  //FETCH STOCKS_ARRAY FROM API
+  FETCH_STOCKS(SORT_FIELD: string, SORT_ORDER: string): void {
+    this.stocksService.GET_ALL_STOCKS(this.Current_page, this.pageSize, SORT_FIELD, SORT_ORDER).subscribe({
+      next: (response: any) => {
+        console.log(response)
+        this.current_page_array_length = response.stock.stock.length
+        this.STOCKS_ARRAY_LENGTH = response.stock.count;
+        this.STOCKS_ARRAY = new MatTableDataSource(response.stock.stock);
+      },
+      error: (error) => {  this.show_shimmer = false; },
+      complete: () => { this.show_shimmer = false; }
+    });
+  }
+
+  //ADD STOCK
+  ADD_STOCK() {
+    // this.show_shimmer = true;
+    // this.SHOW_LOADING_SPINNER = true;
+    // this.STOCKsService.ADD_STOCK(this.ADDED_STOCK).subscribe({
+    //   next: (response: any) => {},
+    //   error: (error) => { this.SHOW_LOADING_SPINNER = false},
+    //   complete: () => { this.FETCH_STOCKS(this.SORT_FIELD, this.SORT_ORDER); this.CANCEL_UPDATE(); }
+    // });
+  }
+
+  // DELETE STOCK BY STOCK ID
+  DELETE_STOCK(ID: any): void {
+    // this.show_shimmer = true;
+    // this.STOCKsService.DELETE_STOCK(ID).subscribe({
+    //   next: (response: any) => {
+    //     // CHECK IF I AM DELETING THE LAST ITEM LEFT IN THE PAGE I AM AT
+    //     // IF YES --> GO BACK TO THE PREVOUIS PAGE
+    //     if (this.current_page_array_length == 1 && this.STOCKS_ARRAY_LENGTH>1) {
+    //       this.Current_page = this.Current_page - 1
+    //       this.goToPreviousPage()
+    //     }
+    //   },
+    //   error: (error) => {  },
+    //   complete: () => { this.FETCH_STOCKS(this.SORT_FIELD, this.SORT_ORDER); this.CANCEL_UPDATE() }
+    // });
+  }
+
+  // UPDATE
+  UPDATE_STOCK(): void {
+    // this.show_shimmer = true;
+    // this.SHOW_LOADING_SPINNER = true;
+    // this.stocksService.UPDATE_STOCK(this.ADDED_STOCK).subscribe({
+    //   next: (response: any) => { },
+    //   error: (error) => { },
+    //   complete: () => {
+    //     this.CANCEL_UPDATE(); this.FETCH_STOCKS(this.SORT_FIELD, this.SORT_ORDER);
+    //   }
+    // });
+  }
+
+  // //SELECT STOCK TO UPDATE
+  // SELECTED_STOCK(obj: any): void {
+  //   // HIDE THE ADD BUTTON AND DISPLAY THE UPDATE BTN INSTEAD
+  //   this.ShowAddButoon = false;
+  //   this.CurrentAction = 'Update STOCK'
+  //   // FILL THE OBJ WITH THE SELECTED STOCK TO UPDATE
+  //   this.ADDED_STOCK = { ...obj };
+  //   this.MAIN_SELECTED_STOCK_DATA = obj;
+  //   // OPEN THE PANEL
+  //   this.OPEN_PANEL()
+  // }
+
+  // // CANCEL UPDATE
+  // CANCEL_UPDATE(): void {
+  //   // CLOSE THE PANEL
+  //   this.CLOSE_PANEL();
+  //   // HIDE THE UPDATE BUTTON AND DISPLAY THE ADD BTN INSTEAD
+  //   this.ShowAddButoon = true;
+  //   this.CurrentAction = 'Add STOCK'
+  //   // EMPTY THE SELECTED STOCK TO UPDATE
+  //   this.MAIN_SELECTED_STOCK_DATA = new STOCK('', '', '', '', '', 0, 0);
+  //   this.ADDED_STOCK = new STOCK('', '',  '', '', '', 0, 0);
+  //   // 
+  //   this.DATA_CHANGED = false;
+  //   this.SHOW_LOADING_SPINNER = false
+  // }
 }
 
 //MONTHS INTERFACE
@@ -326,19 +351,19 @@ interface month {
 
 
 @Component({
-  selector: 'products-dialog-content',
+  selector: 'STOCKs-dialog-content',
   templateUrl: 'delete-dialog-content.html',
   styleUrl: '../../../../../assets/scss/apps/_dialog_delete.scss'
 })
 export class deleteAjustDialogComponent {
   action: string;
   local_data: any;
-  PRODUCT: Product
+  STOCK: any
   categoryArray = PRODUCT_CATEGORY_ARRAY
 
   constructor(
     public dialogRef: MatDialogRef<deleteAjustDialogComponent>,
-    @Optional() @Inject(MAT_DIALOG_DATA) public data: Product
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.local_data = { ...data };
     this.action = this.local_data.action;

@@ -4,15 +4,15 @@
       <mat-panel-title class="f-w-600 mat-body-1 currentAction">{{CurrentAction}}</mat-panel-title>
     </mat-expansion-panel-header>
     <mat-card-content>
-      <!-- FIRST ROW :  FIRST NAME + LAST NAME +  COMPANY NAME -->
+      <!-- FIRST ROW : CONTACT NAME + LAST NAME +  COMPANY NAME -->
       <div class="row">
         <!-- FIRST NAME -->
-        <div class="col-md-4 d-flex flex-column">
+        <div class="col-md-3 d-flex flex-column">
           <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">First Name</mat-label>
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Contact Name</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="First Name" [(ngModel)]="ADDED_SUPPLIER.first_name"
+            <input matInput placeholder="Contact Name" [(ngModel)]="ADDED_SUPPLIER.contact_name"
               (ngModelChange)="onInputChange()" />
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -23,51 +23,30 @@
             </mat-icon>
           </mat-form-field>
         </div>
-        <!-- LAST NAME-->
-        <div class="col-md-4 d-flex flex-column">
-          <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Last Name</mat-label>
+          <!-- COMPANY NAME -->
+          <div class="col-md-3 d-flex flex-column">
+            <div class="d-flex align-items-center">
+              <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Company Name</mat-label>
+            </div>
+            <mat-form-field appearance="outline" class="w-100">
+              <input matInput placeholder="Company Name" [(ngModel)]="ADDED_SUPPLIER.company_name"
+                (ngModelChange)="onInputChange()" />
+              <mat-icon matPrefix class="op-5">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                  fill="#5f6368">
+                  <path
+                    d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z" />
+                </svg>
+              </mat-icon>
+            </mat-form-field>
           </div>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Last Name" [(ngModel)]="ADDED_SUPPLIER.last_name"
-              (ngModelChange)="onInputChange()" />
-            <mat-icon matPrefix class="op-5">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                fill="#5f6368">
-                <path
-                  d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
-              </svg>
-            </mat-icon>
-          </mat-form-field>
-        </div>
         <!-- EMAIL-->
-        <div class="col-md-4 d-flex flex-column">
+        <div class="col-md-3 d-flex flex-column">
           <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email (optional)</mat-label>
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Email</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Email (OPTIONAL)" [(ngModel)]="ADDED_SUPPLIER.email"
-              (ngModelChange)="onInputChange()" />
-            <mat-icon matPrefix class="op-5">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                fill="#5f6368">
-                <path
-                  d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z" />
-              </svg>
-            </mat-icon>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <!-- SECOND ROW :  EMAIL + PHONE + COUNTRY CODE -->
-      <div class="row">
-        <!-- COUNTRY CODE -->
-        <div class="col-md-4 d-flex flex-column">
-          <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Country Code</mat-label>
-          </div>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="country_code" [(ngModel)]="ADDED_SUPPLIER.country_code"
+            <input matInput placeholder="Email" [(ngModel)]="ADDED_SUPPLIER.email"
               (ngModelChange)="onInputChange()" />
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -79,12 +58,12 @@
           </mat-form-field>
         </div>
         <!-- PHONE-->
-        <div class="col-md-4 d-flex flex-column">
+        <div class="col-md-3 d-flex flex-column">
           <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Phone (optional)</mat-label>
+            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Phone</mat-label>
           </div>
           <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Phone (OPTIONAL)" [(ngModel)]="ADDED_SUPPLIER.number"
+            <input matInput placeholder="Phone" [(ngModel)]="ADDED_SUPPLIER.number" type="number"
               (ngModelChange)="onInputChange()" />
             <mat-icon matPrefix class="op-5">
               <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
@@ -95,24 +74,10 @@
             </mat-icon>
           </mat-form-field>
         </div>
-        <!-- COMPANY NAME -->
-        <div class="col-md-4 d-flex flex-column">
-          <div class="d-flex align-items-center">
-            <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Company Name</mat-label>
-          </div>
-          <mat-form-field appearance="outline" class="w-100">
-            <input matInput placeholder="Company Name" [(ngModel)]="ADDED_SUPPLIER.company_name"
-              (ngModelChange)="onInputChange()" />
-            <mat-icon matPrefix class="op-5">
-              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                fill="#5f6368">
-                <path
-                  d="M120-120v-560h160v-160h400v320h160v400H520v-160h-80v160H120Zm80-80h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 320h80v-80h-80v80Zm0-160h80v-80h-80v80Zm0-160h80v-80h-80v80Zm160 480h80v-80h-80v80Zm0-160h80v-80h-80v80Z" />
-              </svg>
-            </mat-icon>
-          </mat-form-field>
-        </div>
+
       </div>
+
+ 
 
       <div class="Buttons_div">
         <div *ngIf="ShowAddButoon">
@@ -163,15 +128,9 @@
     <div class="table-responsive">
       <table mat-table [dataSource]="SUPPLIERS_ARRAY" class="w-100">
         <!-- First Name Column -->
-        <ng-container matColumnDef="firstname">
-          <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">First Name</th>
-          <td mat-cell *matCellDef="let supplier" class="p-x-24 f-s-14 p-l-0">{{ supplier.first_name }}</td>
-        </ng-container>
-
-        <!-- Last Name Column -->
-        <ng-container matColumnDef="lastname">
-          <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">Last Name</th>
-          <td mat-cell *matCellDef="let supplier" class="p-x-24 f-s-14 p-l-0">{{ supplier.last_name }}</td>
+        <ng-container matColumnDef="contact_name">
+          <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">contact_name</th>
+          <td mat-cell *matCellDef="let supplier" class="p-x-24 f-s-14 p-l-0">{{ supplier.contact_name }}</td>
         </ng-container>
 
         <!-- First Name Column -->
@@ -190,12 +149,6 @@
         <ng-container matColumnDef="companyname">
           <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">Company Name</th>
           <td mat-cell *matCellDef="let supplier" class="p-x-24 f-s-14 p-l-0">{{ supplier.company_name }}</td>
-        </ng-container>
-
-        <!-- Contact name Column -->
-        <ng-container matColumnDef="contactname">
-          <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-x-24 p-l-0">Contact Name</th>
-          <td mat-cell *matCellDef="let supplier" class="p-x-24 f-s-14 p-l-0">{{ supplier.country_code }}</td>
         </ng-container>
 
         <!-- Balance Column -->
