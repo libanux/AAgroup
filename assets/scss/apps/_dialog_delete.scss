@@ -1,0 +1,16 @@
+.two_buttons_div {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    column-gap: 5px;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.row {
+    .col-sm-6 {
+        .QR_INPUT {
+            margin-left: 10px;
+        }
+    }
+}
